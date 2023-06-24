@@ -4,11 +4,21 @@
   <title>My Blog</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <style>
+    .post {
+      margin-bottom: 20px;
+      animation: fade-in 1s ease-out;
+    }
+  
     .post-title {
       font-size: 24px;
       font-weight: bold;
       color: #333;
-      animation: fade-in 1s ease-out;
+      margin-bottom: 5px;
+    }
+  
+    .post-date {
+      color: #888;
+      margin-bottom: 10px;
     }
   
     .post-content {
@@ -40,4 +50,20 @@
 <body>
   <h1>Welcome to My Blog</h1>
 
- 
+  <ul class="post-list">
+    <li class="post">
+      <h2 class="post-title">First Blog Post</h2>
+      <p class="post-date">June 1, 2023</p>
+      <p class="post-content">This is my first blog post. Welcome!</p>
+    </li>
+
+    <li class="post">
+      <h2 class="post-title">Second Blog Post</h2>
+      <p class="post-date">June 15, 2023</p>
+      <p class="post-content">This is my second blog post. Enjoy!</p>
+    </li>
+  </ul>
+
+  <script src="main.js"></script>
+</body>
+</html>

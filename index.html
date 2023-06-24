@@ -2,13 +2,56 @@
 <html>
 <head>
   <title>My Blog - Home</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    .post-list {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+  
+    .post-list-item {
+      margin-bottom: 10px;
+      animation: fade-in 1s ease-out;
+    }
+  
+    .post-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+  
+    .post-date {
+      color: #888;
+      margin-bottom: 5px;
+    }
+  
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Welcome to My Blog</h1>
   <p>Check out my latest posts:</p>
-  <ul>
-    <li><a href="blog.html">First Blog Post</a></li>
-    <li><a href="blog.html">Second Blog Post</a></li>
+
+  <ul class="post-list">
+    <li class="post-list-item">
+      <h2 class="post-title"><a href="blog.html">First Blog Post</a></h2>
+      <p class="post-date">June 1, 2023</p>
+    </li>
+    <li class="post-list-item">
+      <h2 class="post-title"><a href="blog.html">Second Blog Post</a></h2>
+      <p class="post-date">June 15, 2023</p>
+    </li>
   </ul>
+
+  <script src="main.js"></script>
 </body>
 </html>
