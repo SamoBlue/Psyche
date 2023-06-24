@@ -42,7 +42,7 @@ function extractDominantColor(imagePath, callback) {
   
   // Call the functions when the document is ready
   document.addEventListener("DOMContentLoaded", function() {
-    var imagePaths = ["path_to_image_1.jpg", "path_to_image_2.jpg"]; // Add image paths here
+    var imagePaths = ["Images/niijima.jpg", "Images/niijima.jpg"]; // Add image paths here
     imagePaths.forEach(function(imagePath) {
       extractDominantColor(imagePath, applyTabColor);
     });

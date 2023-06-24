@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f3f3f3;
+  background-color: #faaaaa;
   color: #333;
 }
 
@@ -12,10 +12,58 @@ h1 {
 
 .post {
   background-color: #fff;
+  border: 1px solid #ccc;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  animation: fade-in 1s ease-out;
+  animation: fade-in 2s ease-out;
+  transition: border-color 0.3s;
+  border-radius: 20px; /* Updated border-radius value */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+}
+
+.post:hover {
+  border-color: #ff6600;
+  animation: slide-left 0.5s forwards;
+}
+
+.post:not(:hover) {
+  animation: slide-right 0.5s forwards;
+}
+
+
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+/* Additional styles */
+
+.post {
+  width: 500px;
+  height: 100px;
+  margin-bottom: 10px;
+  margin-left: 70px;
+}
+
+.post:hover {
+  border-color: #ff6600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .post-title {
@@ -53,28 +101,4 @@ h1 {
 .post-date {
   color: #888;
   margin-bottom: 10px;
-}
-
-/* Additional Styles */
-
-body {
-  background-color: #e9f1f7;
-}
-
-.post {
-  background-color: #fff;
-  border: 1px solid #ccc;
-}
-
-.post-list-item a {
-  color: #337ab7;
-}
-
-.post-list-item a:hover {
-  color: #23527c;
-}
-
-.post-tab {
-  background-color: #337ab7;
-  color: #fff;
 }

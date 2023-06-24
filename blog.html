@@ -4,8 +4,25 @@
   <title>My Blog</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <style>
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff7606;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .back-button:hover {
+      background-color: #6ea121;
+    }
+
+    .back-button.go-left {
+      transform: translateX(-100%);
+    }
     .post {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       animation: fade-in 1s ease-out;
     }
   
@@ -25,7 +42,7 @@
     }
   
     .post-content {
-      color: #555;
+      color: #ff2424;
       animation: slide-up 1s ease-out;
     }
   
@@ -51,59 +68,62 @@
   </style>
   <script src="main.js"></script>
   <script>
-    // Function to extract the dominant color from an image
-    function extractDominantColor(imagePath, callback) {
-      var img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = imagePath;
-      img.onload = function() {
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
-        context.drawImage(img, 0, 0, img.width, img.height);
-        var imageData = context.getImageData(0, 0, img.width, img.height).data;
-        var colorCounts = {};
-        var maxCount = 0;
-        var dominantColor = null;
 
-        for (var i = 0; i < imageData.length; i += 4) {
-          var r = imageData[i];
-          var g = imageData[i + 1];
-          var b = imageData[i + 2];
-          var rgb = r + "," + g + "," + b;
-          if (colorCounts[rgb]) {
-            colorCounts[rgb]++;
-          } else {
-            colorCounts[rgb] = 1;
-          }
-          if (colorCounts[rgb] > maxCount) {
-            maxCount = colorCounts[rgb];
-            dominantColor = rgb;
-          }
-        }
+     function goBack() {
+      var backButton = document.getElementById("backButton");
+      backButton.classList.add("go-left");
+      setTimeout(function() {
+        window.location.href = "index.html";
+      }, 300);
+    }
+    
+// Function to extract the dominant color from an image
+function extractDominantColor(imagePath, postElement) {
+  var img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.src = imagePath;
+  img.onload = function() {
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0, img.width, img.height);
+    var imageData = context.getImageData(0, 0, img.width, img.height).data;
+    var rSum = 0;
+    var gSum = 0;
+    var bSum = 0;
+    var pixelCount = 0;
 
-        callback(dominantColor);
-      };
+    for (var i = 0; i < imageData.length; i += 4) {
+      var r = imageData[i];
+      var g = imageData[i + 1];
+      var b = imageData[i + 2];
+      rSum += r;
+      gSum += g;
+      bSum += b;
+      pixelCount++;
     }
 
-    // Apply the dominant color to the tab
-    function applyTabColor(dominantColor) {
-      var tabs = document.querySelectorAll(".post-tab");
-      tabs.forEach(function(tab) {
-        tab.style.backgroundColor = "rgb(" + dominantColor + ")";
-      });
-    }
+    var averageR = Math.floor(rSum / pixelCount);
+    var averageG = Math.floor(gSum / pixelCount);
+    var averageB = Math.floor(bSum / pixelCount);
 
-    // Call the functions when the document is ready
-    document.addEventListener("DOMContentLoaded", function() {
-      var imagePaths = ["path_to_image_1.jpg", "path_to_image_2.jpg"]; // Add image paths here
-      imagePaths.forEach(function(imagePath) {
-        extractDominantColor(imagePath, applyTabColor);
-      });
-    });
+    var averageColor = "rgb(" + averageR + "," + averageG + "," + averageB + ")";
+    postElement.style.backgroundColor = averageColor;
+  };
+}
+
+// Call the function when the document is ready
+document.addEventListener("DOMContentLoaded", function() {
+  var postElements = document.querySelectorAll(".post");
+  var imagePaths = ["Images/Image2.gif", "path_to_image_2.jpg"]; // Add image paths here
+  postElements.forEach(function(postElement, index) {
+    extractDominantColor(imagePaths[index], postElement);
+  });
+});
   </script>
 </head>
 <body>
   <h1>Welcome to My Blog</h1>
+
 
   <div class="post">
     <div class="post-image">
@@ -119,6 +139,10 @@
     <h2 class="post-title">Second Blog Post</h2>
     <p class="post-content">This is my second blog post. Enjoy!</p>
   </div>
+
+    <!-- Back button -->
+    <a id="backButton" class="back-button" onclick="goBack()">Back</a>
+
 
   <script src="main.js"></script>
 </body>
