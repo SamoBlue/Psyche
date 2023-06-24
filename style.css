@@ -58,17 +58,23 @@ h1 {
 /* Additional Styles */
 
 body {
-  background-color: #f9f9f9;
+  background-color: #e9f1f7;
 }
 
 .post {
   background-color: #fff;
+  border: 1px solid #ccc;
 }
 
 .post-list-item a {
-  color: #555;
+  color: #337ab7;
 }
 
 .post-list-item a:hover {
-  color: #ff6600;
+  color: #23527c;
+}
+
+.post-tab {
+  background-color: #337ab7;
+  color: #fff;
 }
