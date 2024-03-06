@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 120px);
+            gap: 10px;
+        }
+
+        .card {
+            width: 120px;
+            height: 60px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        #score-board {
+            margin-top: 450px;
+        }
+
+        .score {
+            margin-right: 20px;
+        }
+
+        .card-flipped {
+            background-color: #aaf;
+        }
+
+        .card-matched {
+            background-color: #afa;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-board"></div>
+    <div id="score-board">
+        <span class="score" id="player1Score">Player 1: 0</span>
+        <span class="score" id="player2Score">Player 2: 0</span>
+    </div>
+
+    <script>
+        const gameBoard = document.getElementById('game-board');
+        const player1ScoreElement = document.getElementById('player1Score');
+        const player2ScoreElement = document.getElementById('player2Score');
+
+        let words = [
+            "Apple", "Banana", "Cherry", "Date", "Elderberry",
+            "Fig", "Grape", "Honeydew", "Kiwi", "Lemon",
+            "Mango", "Nectarine", "Orange", "Papaya", "Quince",
+            "Raspberry", "Strawberry", "Tomato", "Uva", "Watermelon"
+        ];
+
+        let cards = [];
+        let flippedCards = [];
+        let player1Score = 0;
+        let player2Score = 0;
+        let currentPlayer = 1;
+
+        function initializeGame() {
+            // Create an array of card words (pairs)
+            for (let i = 0; i < words.length; i++) {
+                cards.push(words[i], words[i]);
+            }
+
+            // Shuffle the cards
+            cards = shuffleArray(cards);
+
+            // Create card elements on the game board
+            for (let i = 0; i < cards.length; i++) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.index = i;
+                card.textContent = '?';
+                card.addEventListener('click', flipCard);
+                gameBoard.appendChild(card);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function flipCard(event) {
+            const cardElement = event.target;
+            const cardIndex = cardElement.dataset.index;
+
+            if (!flippedCards.includes(cardIndex) && flippedCards.length < 2) {
+                flippedCards.push(cardIndex);
+                cardElement.textContent = cards[cardIndex];
+                cardElement.classList.add('card-flipped');
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [cardIndex1, cardIndex2] = flippedCards;
+            const cardElement1 = document.querySelector(`.card[data-index="${cardIndex1}"]`);
+            const cardElement2 = document.querySelector(`.card[data-index="${cardIndex2}"]`);
+
+            if (cards[cardIndex1] === cards[cardIndex2]) {
+                // Match found
+                updateScore();
+                cardElement1.classList.add('card-matched');
+                cardElement2.classList.add('card-matched');
+            } else {
+                // No match, flip cards back
+                flipBackCards();
+            }
+
+            flippedCards = [];
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+        }
+
+        function updateScore() {
+            if (currentPlayer === 1) {
+                player1Score++;
+                player1ScoreElement.textContent = `Player 1: ${player1Score}`;
+            } else {
+                player2Score++;
+                player2ScoreElement.textContent = `Player 2: ${player2Score}`;
+            }
+        }
+
+        function flipBackCards() {
+            for (const index of flippedCards) {
+                const cardElement = document.querySelector(`.card[data-index="${index}"]`);
+                cardElement.textContent = '?';
+                cardElement.classList.remove('card-flipped');
+            }
+        }
+
+        initializeGame();
+    </script>
+</body>
+</html>

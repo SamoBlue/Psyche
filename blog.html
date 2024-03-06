@@ -1,87 +1,28 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Blog</title>
-  <link rel="stylesheet" type="text/css" href="ccs/style.css">
+  <title>Pleione</title>
+  <link rel="stylesheet" type="text/css" href="ccs/Style1.css">
 
-  <script src="main.js"></script>
-  <script>
-
-     function goBack() {
-      var backButton = document.getElementById("backButton");
-      backButton.classList.add("go-left");
-      setTimeout(function() {
-        window.location.href = "index.html";
-      }, 300);
-    }
-    
-// Function to extract the dominant color from an image
-function extractDominantColor(imagePath, postElement) {
-  var img = new Image();
-  img.crossOrigin = "Anonymous";
-  img.src = imagePath;
-  img.onload = function() {
-    var canvas = document.createElement("canvas");
-    var context = canvas.getContext("2d");
-    context.drawImage(img, 0, 0, img.width, img.height);
-    var imageData = context.getImageData(0, 0, img.width, img.height).data;
-    var rSum = 0;
-    var gSum = 0;
-    var bSum = 0;
-    var pixelCount = 0;
-
-    for (var i = 0; i < imageData.length; i += 4) {
-      var r = imageData[i];
-      var g = imageData[i + 1];
-      var b = imageData[i + 2];
-      rSum += r;
-      gSum += g;
-      bSum += b;
-      pixelCount++;
-    }
-
-    var averageR = Math.floor(rSum / pixelCount);
-    var averageG = Math.floor(gSum / pixelCount);
-    var averageB = Math.floor(bSum / pixelCount);
-
-    var averageColor = "rgb(" + averageR + "," + averageG + "," + averageB + ")";
-    postElement.style.backgroundColor = averageColor;
-  };
-}
-
-// Call the function when the document is ready
-document.addEventListener("DOMContentLoaded", function() {
-  var postElements = document.querySelectorAll(".post");
-  var imagePaths = ["Images/Image2.gif", "path_to_image_2.jpg"]; // Add image paths here
-  postElements.forEach(function(postElement, index) {
-    extractDominantColor(imagePaths[index], postElement);
-  });
-});
-  </script>
 </head>
 <body>
-  <h1>Welcome to My Blog</h1>
-
-
-  <div class="post">
-    <div class="post-image">
-      <img src="Images/Image2.gif" alt="Post Image"> </div>
-    <h2 class="post-title">First Blog Post</h2>
-    <p class="post-content">This is my first blog post. Welcome!</p>
+  <div class="container">
+    <div class="box box-1" style="--img: url(https://safebooru.org//images/4552/35247c7f12ee2ea3806f2d5793de360654bdd11e.png);" data-text="Celaeno" onclick="window.location.href='your-link-url-here';"></div>
+    <div class="box box-2" style="--img: url(https://safebooru.org//images/4384/7daee74bb7bf66aec87eddadd990998f9cc64e28.jpg);" data-text="Heaven"></div>
+    <div class="box box-3" style="--img: url(https://safebooru.org//images/4469/b48af8cca3e969ede983b1697a7673db8f4aa0ac.jpg);" data-text="Natsuki"></div>
+    <div class="box box-4" style="--img: url(https://safebooru.org//images/3197/6116fca199f2f0b7057fef9f9e155eec79bdc165.png);" data-text="Ephesus"></div>
+    <div class="box box-5" style="--img: url(https://metroom.files.wordpress.com/2023/09/99663712_p0_master1200.jpg);" data-text="superbia"></div>
+    <div class="box box-6" style="--img: url(https://i.postimg.cc/C1W9d9n5/Paused.gif);" data-text="Sieben"></div>
+    <div class="box box-7" style="--img: url(https://safebooru.org//images/2315/30d8b4ed04943267627404043f1fd7adacbad9de.jpg);" data-text="Choi Yu-ju"></div>
+    
   </div>
 
-  <div class="post">
-    <div class="post-image">
-      <img src="Images/niijima.jpg" alt="Post Image">
-    </div>
-    <h2 class="post-title">Second Blog Post</h2>
-    <p class="post-content">This is my second blog post. Enjoy!</p>
-  </div>
-
-    <!-- Back button -->
-    <a id="backButton" class="back-button" onclick="goBack()">Back</a>
-
-
-  <script src="main.js"></script>
+  <audio autoplay loop>
+    <source src="perfect-beauty-191271.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
 </body>
 </html>
+
+

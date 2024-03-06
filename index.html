@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>My Blog - Home</title>
+  <title>My Blog</title>
   <link rel="stylesheet" type="text/css" href="ccs/style.css">
-  <style>
-    .post-list {
-      list-style-type: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-  
-    .post-list-item {
-      margin-bottom: 10px;
-      animation: fade-in 1s ease-out;
-    }
-  
-    .post-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 5px;
-    }
-  
-    .post-date {
-      color: #888;
-      margin-bottom: 5px;
-    }
-  
-    @keyframes fade-in {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-  </style>
 </head>
+
 <body>
-  <h1>Welcome to My Blog</h1>
-  <p>Check out my latest posts:</p>
 
-  <ul class="post-list">
-    <li class="post-list-item">
-      <h2 class="post-title"><a href="blog.html">First Blog Post</a></h2>
-      <p class="post-date">June 1, 2023</p>
-    </li>
-    <li class="post-list-item">
-      <h2 class="post-title"><a href="blog.html">Second Blog Post</a></h2>
-      <p class="post-date">June 15, 2023</p>
-    </li>
-  </ul>
+  <div class="header">
+    <img src="Images/wtmb.gif" alt="Header Image"> 
+  </div>
 
-  <script src="main.js"></script>
+
+  <div class="post-container">
+    <div class="post">
+      <a href="https://www.google.com">
+        <div class="post-image" id="post-image-1">
+          <img src="Images/Games.png" alt="Post Image">
+        </div>
+        <h2 class="post-title">Web Games</h2>
+        <p class="post-content">HTML games I made</p>
+      </a>
+    </div>
+
+
+    <div class="post">
+      <a href="blog.html">
+        <div class="post-image" id="post-image-2">
+          <img src="Images/web.jpg" alt="Post Image">
+        </div>
+        <h2 class="post-title">Websites</h2>
+        <p class="post-content">Web pages I designed</p>
+      </a>
+    </div>
+
+
+    <div class="post">
+      <a href="https://www.google.com">
+        <div class="post-image" id="post-image-3">
+          <img src="Images/final.gif" alt="Post Image" class="gif-image">
+        </div>
+        <h2 class="post-title">Effects</h2>
+        <p class="post-content">Java/CSS effects</p>
+      </a>
+    </div>
+
+    
+    <div class="post">
+      <a href="blog.html">
+        <div class="post-image" id="post-image-4">
+          <img src="Images/Story.png" alt="Post Image" class="normal-image">
+          <img src="Images/Image2.gif" alt="Post Image (Hover)" class="hover-image">
+        </div>
+        <h2 class="post-title">About me</h2>
+        <p class="post-content">Random things I know</p>
+      </a>
+    </div>
+  </div>
+
+
 </body>
 </html>

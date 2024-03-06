@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pingPongCanvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('pingPongCanvas');
+        const context = canvas.getContext('2d');
+
+        const paddleWidth = 10;
+        const paddleHeight = 60;
+        const paddleSpeed = 5;
+        const ballSize = 10;
+
+        let paddle1Y = (canvas.height - paddleHeight) / 2;
+        let paddle2Y = (canvas.height - paddleHeight) / 2;
+        let paddle1DY = 0;
+        let paddle2DY = 0;
+
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        let ballSpeedX = 5;
+        let ballSpeedY = 5;
+
+        function draw() {
+            // Clear canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw paddles
+            context.fillStyle = '#000';
+            context.fillRect(0, paddle1Y, paddleWidth, paddleHeight);
+            context.fillRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight);
+
+            // Draw ball
+            context.beginPath();
+            context.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
+            context.fillStyle = '#000';
+            context.fill();
+            context.closePath();
+        }
+
+        function update() {
+            // Update paddles
+            paddle1Y += paddle1DY;
+            paddle2Y += paddle2DY;
+
+            // Update ball
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Bounce off the top and bottom edges
+            if (ballY < 0 || ballY > canvas.height) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            // Bounce off paddles
+            if (
+                (ballX < paddleWidth && ballY > paddle1Y && ballY < paddle1Y + paddleHeight) ||
+                (ballX > canvas.width - paddleWidth - ballSize && ballY > paddle2Y && ballY < paddle2Y + paddleHeight)
+            ) {
+                ballSpeedX = -ballSpeedX;
+            }
+
+            // Reset ball if it goes out of bounds
+            if (ballX < 0 || ballX > canvas.width) {
+                resetBall();
+            }
+        }
+
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeedX = -ballSpeedX;
+        }
+
+        function gameLoop() {
+            draw();
+            update();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function keyDownHandler(event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    paddle2DY = -paddleSpeed;
+                    break;
+                case 'ArrowDown':
+                    paddle2DY = paddleSpeed;
+                    break;
+                case 'w':
+                    paddle1DY = -paddleSpeed;
+                    break;
+                case 's':
+                    paddle1DY = paddleSpeed;
+                    break;
+            }
+        }
+
+        function keyUpHandler(event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    paddle2DY = 0;
+                    break;
+                case 'w':
+                case 's':
+                    paddle1DY = 0;
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', keyDownHandler);
+        document.addEventListener('keyup', keyUpHandler);
+
+        gameLoop();
+    </script>
+</body>
+</html>

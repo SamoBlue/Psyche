@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helicopter Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: #87CEEB; /* Sky Blue */
+        }
+
+        #helicopter {
+            position: absolute;
+            bottom: 50%;
+            left: 10%;
+            width: 50px;
+            height: 30px;
+            background-color: #FFD700; /* Gold */
+            transition: transform 0.1s ease;
+        }
+
+        .plane {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background-color: #FF6347; /* Tomato */
+            transform-origin: 50% 50%;
+            animation: planeMove 2s linear infinite;
+        }
+
+        @keyframes planeMove {
+            to {
+                transform: translateX(-150%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="helicopter"></div>
+        <!-- Add more planes as needed -->
+        <div class="plane" style="bottom: 70%; left: 100%;"></div>
+        <div class="plane" style="bottom: 30%; left: 150%;"></div>
+    </div>
+
+    <script>
+        const helicopter = document.getElementById('helicopter');
+        let helicopterPosition = 50; // Initial position (percentage from bottom)
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowUp') {
+                moveHelicopterUp();
+            } else if (event.key === 'ArrowDown') {
+                moveHelicopterDown();
+            }
+        });
+
+        function moveHelicopterUp() {
+            if (helicopterPosition > 10) {
+                helicopterPosition -= 10;
+                updateHelicopterPosition();
+            }
+        }
+
+        function moveHelicopterDown() {
+            if (helicopterPosition < 90) {
+                helicopterPosition += 10;
+                updateHelicopterPosition();
+            }
+        }
+
+        function updateHelicopterPosition() {
+            helicopter.style.transform = `translateY(${helicopterPosition}%)`;
+        }
+
+        // Create and manage planes
+        function createPlane() {
+            const plane = document.createElement('div');
+            plane.classList.add('plane');
+            plane.style.bottom = `${Math.random() * 80 + 10}%`;
+            plane.style.left = '100%';
+            document.getElementById('game-container').appendChild(plane);
+            return plane;
+        }
+
+        function movePlanes() {
+            const planes = document.querySelectorAll('.plane');
+            planes.forEach(plane => {
+                if (plane.getBoundingClientRect().left < 0) {
+                    resetPlane(plane);
+                }
+            });
+        }
+
+        function resetPlane(plane) {
+            plane.style.left = '100%';
+            plane.style.bottom = `${Math.random() * 80 + 10}%`;
+        }
+
+        function updateGame() {
+            movePlanes();
+            requestAnimationFrame(updateGame);
+        }
+
+        setInterval(() => {
+            const newPlane = createPlane();
+            newPlane.style.animationDuration = `${Math.random() * 2 + 1}s`; // Randomize plane speed
+        }, 2000); // Add a new plane every 2 seconds
+
+        updateGame();
+    </script>
+</body>
+</html>
