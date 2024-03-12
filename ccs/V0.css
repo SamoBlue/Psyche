@@ -28,11 +28,20 @@ body {
 
 }
 
+.name-highlight {
+    color: #ff65ed; /* Replace with your desired color code */
+    font-weight: bold; /* Optional: Make the name bold or adjust styling as needed */
+}
+
+.name {
+    color: #fff36efa; /* Replace with your desired color code */
+    font-weight: bold; /* Optional: Make the name bold or adjust styling as needed */
+}
 
   .image-container .text-box {
 	position: absolute;
-	bottom: 40%; /* Adjust the vertical position as a percentage or value */
-	font-size: 2em; /* Adjust the font size as needed */
+	bottom: 30%; /* Adjust the vertical position as a percentage or value */
+	font-size: 1.8em; /* Adjust the font size as needed */
 	color: #fefefefa;
 	padding: 25px; /* Adjust the padding as needed */
 	display: none;
@@ -43,6 +52,26 @@ body {
 	text-shadow: 2px 2px 10px rgb(0, 0, 0); /* Adjust the shadow values as needed */
 	line-height: 1.5;
   }
+
+  .image-container .text-box2 {
+	position: absolute;
+	bottom: 35%; /* Adjust the vertical position as a percentage or value */
+	font-size: 6em; /* Adjust the font size as needed */
+	color: #fff36efa;
+	padding: 25px; /* Adjust the padding as needed */
+	display: none;
+	width: 73%; /* Adjust the width as needed */
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out; /* Adjust the transition duration as needed */
+	text-shadow: 2px 2px 10px rgb(0, 0, 0); /* Adjust the shadow values as needed */
+	line-height: 1.5;
+  }
+
+  .image-container:hover .text-box2 {
+	display: block;
+	animation: fadeIn 0.7s ease-in-out 0.5s forwards; /* 2s delay before the animation starts */
+}
   
   .image-container:hover .text-box {
 	display: block;
