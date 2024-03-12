@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree&display=swap");
+
+
+body {
+	height: 100vh;
+	width: 100vw;
+	background-color: rgb(0, 0, 0);
+	margin: 0rem;
+	overflow: hidden;
+  }
+
+  #image-track {
+	display: flex;
+	gap: 3vmin;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	user-select: none;
+  }
+
+  .image-container {
+	position: relative;
+	display: flex;
+	gap: 4vmin;
+	object-position: center center; /* Center horizontally and vertically */
+	user-select: none;
+
+}
+
+
+  .image-container .text-box {
+	position: absolute;
+	bottom: 40%; /* Adjust the vertical position as a percentage or value */
+	font-size: 2em; /* Adjust the font size as needed */
+	color: #fefefefa;
+	padding: 25px; /* Adjust the padding as needed */
+	display: none;
+	width: 80%; /* Adjust the width as needed */
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out; /* Adjust the transition duration as needed */
+	text-shadow: 2px 2px 10px rgb(0, 0, 0); /* Adjust the shadow values as needed */
+	line-height: 1.5;
+  }
+  
+  .image-container:hover .text-box {
+	display: block;
+	animation: fadeIn 0.7s ease-in-out 0.5s forwards; /* 2s delay before the animation starts */
+}
+  @keyframes fadeIn {
+	to {
+	  opacity: 1;
+	}
+  }
+  
+
+.image-container:nothover .text-box {
+	display: block;
+	animation: fadeIn 0.7s ease-in-out 0.5s forwards; /* 2s delay before the animation starts */
+}
+  
+  
+  .image-container .image-item {
+	position: relative;
+	display: inline-block;
+  }
+  
+  .image-container .image {
+	width: 46vmin;
+	height: 72vmin;
+	object-fit: cover;
+	object-position: 100% center;
+	display: block;
+	
+  }
+
+  .image-container .image2 {
+	width: 100vmin;
+	height: 72vmin;
+	object-fit: cover;
+	object-position: 100% center;
+	display: block;
+	
+  }
