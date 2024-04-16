@@ -1,3 +1,9 @@
+
+
+  window.onload = function() {
+      window.scrollTo(0, 0); // Scroll to the leftmost position (x: 0, y: 0)
+  };
+
 const track = document.getElementById("image-track");
 
 const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
