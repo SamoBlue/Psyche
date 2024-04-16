@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "c:/Users/al_fe/OneDrive/المستندات/GitHub/Psyche/ccs",
+      "program": "c:/Users/al_fe/OneDrive/المستندات/GitHub/Psyche/ccs/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

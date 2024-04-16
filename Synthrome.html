@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="ccs/Synthrome.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthrome</title>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="Images/SynthTitleScreen.png" alt="Game"></h1>
+        <div class="game-images">
+            <img src="Images/wave.jpg" alt="Game Screenshot 1">
+            <img src="Images/wave 2.jpg" alt="Game Screenshot 2">
+            <img src="Images/synth (2).jpg" alt="Game Screenshot 3">
+            <img src="Images/synth (1).jpg" alt="Game Screenshot 4">
+        </div>
+        <div class="download-link">
+            <p>Hello everyone, 
+              We've been hard at work on Synthrome and we feel like we're finally
+              ready to share some of the levels with you. Keep in mind it's
+              still beta and has some issues, but we hope you enjoy it regardless,  
+              and we'd be happy to hear your feedback and your report on any 
+              issue you encounter throughout your experience. 
+              <br><br>
+              Thank you!  
+              SFS team.</p>
+            <a href="https://drive.google.com/file/d/1XXZJvA_UTOj1RwIh3yzGL0TmgJwJSS_x/view?usp=drive_link">Download Now</a>
+        </div>
+        <br><br>
+        <div class="feedback-box">
+            <h2>Feedback</h2>
+            <input id="name" type="text" placeholder="Name ❤">
+            <br>
+            <textarea id="feedback-text" placeholder="Type your feedback here..." rows="4" style="width: 60%;"></textarea>
+            <br>
+            <button onclick="saveFeedback()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function saveFeedback() {
+            var name = document.getElementById("name").value.trim();
+            var feedback = document.getElementById("feedback-text").value.trim();
+            if (name !== "" && feedback !== "") {
+                // Get existing feedback array or create a new one
+                var existingFeedback = JSON.parse(localStorage.getItem("feedback")) || [];
+                // Add new feedback with name
+                existingFeedback.push({ name: name, feedback: feedback });
+                // Save to localStorage
+                localStorage.setItem("feedback", JSON.stringify(existingFeedback));
+                alert("Feedback saved!");
+            } else {
+                alert("Please enter your name and feedback before submitting.");
+            }
+        }
+    </script>
+</body>
+</html>
