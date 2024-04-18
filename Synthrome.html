@@ -10,10 +10,10 @@
     <div class="container">
         <h1><img src="Images/SynthTitleScreen.png" alt="Game"></h1>
         <div class="game-images">
-            <img src="Images/wave.jpg" alt="Game Screenshot 1">
-            <img src="Images/wave 2.jpg" alt="Game Screenshot 2">
-            <img src="Images/synth (2).jpg" alt="Game Screenshot 3">
-            <img src="Images/synth (1).jpg" alt="Game Screenshot 4">
+            <img src="Images/ScreenShot00002.png" alt="Game Screenshot 1">
+            <img src="Images/ScreenShot00003.png" alt="Game Screenshot 2">
+            <img src="Images/ScreenShot00011.png" alt="Game Screenshot 3">
+            <img src="Images/wave3.png" alt="Game Screenshot 4">
         </div>
         <div class="download-link">
             <p>Hello everyone, 
@@ -28,32 +28,12 @@
             <a href="https://drive.google.com/file/d/1XXZJvA_UTOj1RwIh3yzGL0TmgJwJSS_x/view?usp=drive_link">Download Now</a>
         </div>
         <br><br>
-        <div class="feedback-box">
-            <h2>Feedback</h2>
-            <input id="name" type="text" placeholder="Name ❤">
-            <br>
-            <textarea id="feedback-text" placeholder="Type your feedback here..." rows="4" style="width: 60%;"></textarea>
-            <br>
-            <button onclick="saveFeedback()">Submit</button>
+        <div class="google-form-link">
+            <p class="feedback-text">Give us your feedback on Google Forms</p>
+            <a href="https://forms.gle/95zCZRxjhBXd1eoMA" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Google_Forms_2020_Logo.svg/1489px-Google_Forms_2020_Logo.svg.png" alt="Google Forms">
+            </a>
         </div>
     </div>
-
-    <script>
-        function saveFeedback() {
-            var name = document.getElementById("name").value.trim();
-            var feedback = document.getElementById("feedback-text").value.trim();
-            if (name !== "" && feedback !== "") {
-                // Get existing feedback array or create a new one
-                var existingFeedback = JSON.parse(localStorage.getItem("feedback")) || [];
-                // Add new feedback with name
-                existingFeedback.push({ name: name, feedback: feedback });
-                // Save to localStorage
-                localStorage.setItem("feedback", JSON.stringify(existingFeedback));
-                alert("Feedback saved!");
-            } else {
-                alert("Please enter your name and feedback before submitting.");
-            }
-        }
-    </script>
 </body>
 </html>

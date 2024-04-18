@@ -91,3 +91,15 @@ h1 img {
     color: #b1b1b1; /* Black text */
 	
 }
+
+.google-form-link img {
+    color: #007bff;
+    margin-left: 350px; /* Align text to center */
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
+}
+
+.feedback-text {
+    color: #007bff; /* Change color to blue, you can specify any color you want */
+    text-align: center; /* Align text to center */
+}
