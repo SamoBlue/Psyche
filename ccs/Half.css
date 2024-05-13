@@ -1,0 +1,50 @@
+body {
+    background: url(https://w0.peakpx.com/wallpaper/965/735/HD-wallpaper-fence-design-black-dark-grey-lines-metal.jpg) ;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    backdrop-filter: blur(3px); /* Apply a blur effect to the background */
+}
+
+
+header {
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+	color: rgb(255, 169, 169);
+}
+
+main {
+    margin-top: 20px;
+}
+
+article {
+    background-color: rgba(0, 137, 179, 0.299);
+    padding: 10px;
+    border-radius: 10px;
+    width: 70%; /* Set the width */
+	margin-left: 10px;
+}
+
+article h2 {
+    margin-top: 0;
+}
+
+footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+.blog-image {
+    width: 800px; /* Adjust the width as needed */
+    height: 400px; /* Maintain aspect ratio */
+    display: block; /* Ensure each image is on its own line */
+    margin: 20px auto; /* Center the images horizontally with some spacing */
+    border: 2px solid rgb(0, 253, 253); /* Add a solid border with the desired color */
+    border-radius: 20px; /* Add rounded corners */
+}
+
