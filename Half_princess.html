@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Melancholy of Sami Swell</title>
     <link rel="stylesheet" href="ccs/Half.css">
+    <style>
+
+    </style>
 </head>
 <body>
     <header>
@@ -13,10 +16,20 @@
     </header>
 
     <main>
+        <div class="container">
+        </div>
         <article>
             <p><span style="color: #ffffff;"><strong><span style="color: #ff6464;">Note I </span></strong>This is an early vision of the Story, and everything is subject to change.While it may seem like the narrative is progressing quickly, please note that this only 10% of the whole story. I might fill in the gaps if the readers like it</span></p>
             <br>
-            <p><span style="color: #4affa2;">The year is 2016, and Sammy has just enrolled in the University of Game Development with a goal to create a game that would positively impact players. he coudn't finish creating any game as he was lacking in his artistic style. Determined to find a friend who excelled in character drawing, he went to the Game Design department. Despite his efforts, he couldn't find any students interested in drawing in the style he envisioned. Most of them were focused on 3D realistic and rounded-edge drawings. So he gave up and was planning to go home and just hire an artist online. But as he was walking towards the bus station, he saw a girl sitting on the grass next to a tree, holding a tablet. As he glanced at what she was drawing, it was...</span></p>
+            <p><span style="color: #4affa2;">The year is 2016, and Sammy has just enrolled in the University of Game Development with a goal to create a game that would positively impact players. 
+                he coudn't finish creating any game as he was lacking in his artistic style. 
+                Determined to find a friend who excelled in character drawing, he went to the 
+                Game Design department. Despite his efforts, he couldn't find any students interested 
+                in drawing in the style he envisioned. Most of them were focused on 3D realistic and 
+                rounded-edge drawings. So he gave up and was planning to go home and just hire an artist online. 
+                But as he was walking towards the bus station, he saw a girl sitting on the grass next to a tree, 
+                holding a tablet. As he glanced at what she was drawing, it was... <button onclick="toggleSpoiler()">The Most beautiful drawing i've seen</button></span></p>
+            <p class="spoiler-text" style="display: none;"><img src="Images/kiki.jpg" alt="Image 3" class="book-image"></p>
         </article>
 
         <img src="Images/Game.png" alt="Image 2" class="game-image">
@@ -34,5 +47,19 @@
     <footer>
         <p>&copy; 2024 Mori. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleSpoiler() {
+            var spoiler = document.querySelector('.spoiler-text');
+            var button = document.querySelector('button');
+            if (spoiler.style.display === 'none') {
+                spoiler.style.display = 'block';
+                button.style.display = 'none'; // Hide the button after revealing the spoiler
+            } else {
+                spoiler.style.display = 'none';
+            }
+        }
+    </script>
+
 </body>
 </html>
