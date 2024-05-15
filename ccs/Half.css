@@ -1,11 +1,14 @@
 body {
-    background: url(https://wallpapers.com/images/hd/dark-background-b59iy2towqy5yrgb.jpg);
+    background: url(Back2.jpg);
     background-repeat: no-repeat; /* Prevent background from repeating */
     background-attachment: fixed; /* Keep the background fixed as you scroll */
+    background-size: cover; /* Ensure the background covers the entire screen */
     font-family: monospace;
-    font-size: large;
-    backdrop-filter: blur(1px); /* Apply a blur effect to the background */
+    margin-right: 10px;
+    backdrop-filter: brightness(60%); /* Adjust brightness to 70% */
 }
+
+
 
 
 
@@ -23,17 +26,41 @@ main {
 }
 
 article {
-    background-color: rgba(93, 93, 93, 0.658);
+    background-color: rgba(73, 59, 59, 0.568);
     padding: 10px;
     border-radius: 10px;
     width: 70%; /* Set the width */
 	margin-left: 10px;
     display: hide;
+font-size: 18px;
+text-shadow:
+-1px -1px 0 #000,  
+ 1px -1px 0 #000,
+-1px  1px 0 #000,
+ 1px  1px 0 #000; /* Outline color and thickness */
+ line-height: 1.5; /* Increase line spacing */
+
 }
+
 
 article h2 {
     margin-top: 0;
 }
+
+.spoiler-button {
+    background-color: #000000;
+    color: #00ffd900;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px; /* Add rounded corners */
+    transition: color 0.3s; /* Add transition effect for color change */
+}
+
+.spoiler-button:hover {
+    color: #4affa2; /* Change text color on hover */
+}
+
 
 footer {
     margin-top: auto;
@@ -44,8 +71,8 @@ footer {
 
 .game-image {
     text-align: center;
-    width: 800px; /* Adjust the width as needed */
-    height: 400px; /* Maintain aspect ratio */
+    width: 600px; /* Adjust the width as needed */
+    height: 300px; /* Maintain aspect ratio */
     display: block; /* Ensure each image is on its own line */
     margin: 20px auto; /* Center the images horizontally with some spacing */
     border: 4px solid rgb(22, 22, 22); /* Add a solid border with the desired color */
@@ -63,9 +90,6 @@ footer {
 
 .spoiler-text  {
 display: none;
-align-items: center;
-width: 100%;
-display: block; /* Ensure each image is on its own line */
-margin: -20px auto; /* Center the images horizontally with some spacing */
-margin-left: 400px;
+margin: -20px ; /* Center the images horizontally with some spacing */
+margin-left: 20px;
 }
