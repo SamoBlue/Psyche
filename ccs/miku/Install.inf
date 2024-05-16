@@ -1,0 +1,52 @@
+; miku cursors - by minimoonbun - batch1 v3
+; Credit to iamtalhassghar on GitHub for the script
+
+[DefaultInstall]
+CopyFiles = Scheme.Cur, Scheme.Txt
+AddReg    = Scheme.Reg
+
+[DestinationDirs]
+Scheme.Cur = 10,"%CUR_DIR%"
+Scheme.Txt = 10,"%CUR_DIR%"
+
+[Scheme.Reg]
+HKCU,"Control Panel\Cursors\Schemes","%SCHEME_NAME%",,"%10%\%CUR_DIR%\%pointer%,%10%\%CUR_DIR%\%help%,%10%\%CUR_DIR%\%work%,%10%\%CUR_DIR%\%busy%,%10%\%CUR_DIR%\%cross%,%10%\%CUR_DIR%\%Text%,%10%\%CUR_DIR%\%Hand%,%10%\%CUR_DIR%\%unavailiable%,%10%\%CUR_DIR%\%Vert%,%10%\%CUR_DIR%\%Horz%,%10%\%CUR_DIR%\%Dgn1%,%10%\%CUR_DIR%\%Dgn2%,%10%\%CUR_DIR%\%move%,%10%\%CUR_DIR%\%alternate%,%10%\%CUR_DIR%\%link%"
+
+[Scheme.Cur]
+01-normal-select.ani
+02-help-select.ani
+03-working-in-background.ani
+04-busy.ani
+06-text-select.ani
+08-unavailable.ani
+09-vertical-resize.ani
+10-horizontal-resize.ani
+11-diagonal-resize-1.ani
+12-diagonal-resize-2.ani
+13-move.ani
+15-link-select.ani
+05-precision-select.ani
+07-handwriting.ani
+14-alternate-select.ani
+
+[Strings]
+CUR_DIR       = "Cursors\miku cursors - by minimoonbun - batch1 v3"
+SCHEME_NAME   = "miku cursors - by minimoonbun - batch1 v3"
+pointer       = "01-normal-select.ani"
+help          = "02-help-select.ani"
+work          = "03-working-in-background.ani"
+busy          = "04-busy.ani"
+text          = "06-text-select.ani"
+unavailiable  = "08-unavailable.ani"
+vert          = "09-vertical-resize.ani"
+horz          = "10-horizontal-resize.ani"
+dgn1          = "11-diagonal-resize-1.ani"
+dgn2          = "12-diagonal-resize-2.ani"
+move          = "13-move.ani"
+link          = "15-link-select.ani"
+cross         = "05-precision-select.ani"
+hand          = "07-handwriting.ani"
+alternate     = "14-alternate-select.ani"
+
+[Version]
+signature="$CHICAGO$"
