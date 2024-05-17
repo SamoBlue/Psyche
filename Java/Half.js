@@ -1,3 +1,47 @@
+const clickSound = new Audio('audio/spookyclick.mp3');
+let firstJumpScareActivated = false;
+
+function playFirstJumpScare() {
+  const scrollDistance = 900; // Fixed distance for each scroll
+  const scrollIntervals = [200, 200, 200, 200, 200, 200, 200, 200, 200]; // Shorter intervals with additional setTimeouts
+
+  clickSound.play();
+
+  scrollIntervals.forEach((interval, index) => {
+    setTimeout(() => {
+      window.scrollBy(0, scrollDistance);
+    }, interval * (index ));
+  });
+
+  firstJumpScareActivated = true;
+}
+
+function handler(entries) {
+  for (entry of entries) {
+    if (
+      entry.target.id === 'firstTarget' &&
+      entry.isIntersecting &&
+      !firstJumpScareActivated
+    ) {
+      playFirstJumpScare();
+    }
+  }
+}
+
+function emojiClickChange() {
+  document.getElementById('clickEmoji').innerText = "👻";
+}
+
+let observer = new IntersectionObserver(handler);
+setTimeout(() => {
+  observer.observe(document.getElementById('firstTarget'));
+}, 3000);
+
+
+
+
+
+
 function toggleSpoiler() {
     var spoiler = document.querySelector(".spoiler-text");
     var button = document.querySelector(".spoiler-button");
