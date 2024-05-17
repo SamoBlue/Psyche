@@ -1,4 +1,5 @@
 const clickSound = new Audio('audio/spookyclick.mp3');
+const clickSound2 = new Audio('audio/umineko-laugh.mp3');
 let firstJumpScareActivated = false;
 
 function playFirstJumpScare() {
@@ -114,16 +115,29 @@ function toggleSpoiler() {
   function toggleSpoiler3() {
     var buttons = document.querySelectorAll(".spoiler-button3"); // Select all buttons with the class spoiler-button3
     var articles = document.querySelectorAll("article"); // Select all article elements
-
+    
     buttons.forEach(function(button) {
         button.style.display = "none"; // Hide each button
     });
 
-    articles.forEach(function(article) {
+    articles.forEach(function(article, index) {
         article.style.display = "none"; // Hide each article
-    });
-}
 
+        // Play the sound multiple times simultaneously
+        setTimeout(function() {
+            var audio = new Audio(clickSound2.src);
+            audio.play();
+            var fireImage = document.querySelector('.fire-image');
+            fireImage.style.display = 'block'; // Show the fire image
+            fireImage.style.width = `${500 - index * 100}px`; // Increase width by 50 pixels each time
+        }, (3 - index) * 1000); // Start each sound with a decreasing delay
+    });
+
+    // Close the window after a delay
+    setTimeout(function() {
+        window.close();
+    }, 5000); // Close the window after 5 seconds
+}
 
   
   function toggleSpoiler1() {
