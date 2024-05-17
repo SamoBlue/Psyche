@@ -136,7 +136,7 @@ function toggleSpoiler() {
     // Close the window after a delay
     setTimeout(function() {
         window.close();
-    }, 5000); // Close the window after 5 seconds
+    }, 4500); // Close the window after 5 seconds
 }
 
   
