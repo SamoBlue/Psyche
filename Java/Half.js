@@ -2,19 +2,23 @@ const clickSound = new Audio('audio/spookyclick.mp3');
 let firstJumpScareActivated = false;
 
 function playFirstJumpScare() {
-  const scrollDistance = 900; // Fixed distance for each scroll
-  const scrollIntervals = [200, 200, 200, 200, 200, 200, 200, 200, 200]; // Shorter intervals with additional setTimeouts
+  const initialScrollDistance = 850; // Initial scroll distance
+  const subsequentScrollDistance = 850; // Distance for subsequent scrolls
+  const scrollIntervals = [150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150]; // Shorter intervals with additional setTimeouts
 
   clickSound.play();
 
+  window.scrollBy(0, initialScrollDistance); // Scroll by initial distance
+
   scrollIntervals.forEach((interval, index) => {
     setTimeout(() => {
-      window.scrollBy(0, scrollDistance);
+      window.scrollBy(0, subsequentScrollDistance);
     }, interval * (index ));
   });
 
   firstJumpScareActivated = true;
 }
+
 
 function handler(entries) {
   for (entry of entries) {

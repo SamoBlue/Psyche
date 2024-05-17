@@ -174,8 +174,10 @@ margin-left: -250px;  }
 
 
 .horror-image {
-    width: 65%;  /* Set the desired width */
-    margin-left: 100px;
+    width: 55%;  /* Set the desired width */
+    margin-left: 250px;
+    margin-top: 4px;
+    border-radius: 40px;
 }
     
 
