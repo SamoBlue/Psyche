@@ -16,7 +16,7 @@ body
 	 border: 5px solid #ff55f9;
 	 margin: 200px auto 0 auto;
 	 box-shadow: inset 10px 0px 15px 0px rgba(0, 0, 0, 0.1);
-    background-image: linear-gradient(to bottom, rgba(108, 108, 108, 0.205), rgba(232, 232, 232, 0.001)), url("BACKGROUND/Girl1.jpg");
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.587), rgba(0, 0, 0, 0)), url("BACKGROUND/Girl0.jpg.jpg");
 }
  .card .text-container {
 	 width: 80%;
@@ -28,17 +28,23 @@ body
 }
  .card .text-container #head {
 	 font-family: 'Nobile', sans-serif;
-	 font-size: 1.5em;
+	 font-size: 2em;
 	 margin: 60px auto 60px auto;
+	 color: brown;
+	 text-overflow: inherit;
+	 text-shadow: 0px 0px 2px #ffffff; /* Main shadow */
+	 
 }
  .card p {
-	 font-size: 1.1em;
+	 font-size: 1.2em;
 	 line-height: 1.4;
 	 font-family: 'Nobile';
-	 color: #331717;
+	 color: #e8ff3c;
 	 font-style: italic;
 	 text-align: center;
 	 margin: 30px auto 0px auto;
+	 text-shadow: 0px 0px 4px #ff0ab6; /* Main shadow */
+
 }
  .card .front {
 	 position: absolute;
