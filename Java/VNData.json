@@ -1,0 +1,32 @@
+{ 
+    "Characters": {
+        "Viola": {
+        	"Happy": "Images/New Project.png",
+        	"Thinking": "sample_pictures/pink2.png",
+        	"Peeved": "sample_pictures/pink3.png"
+        },
+        "Me": {
+        	"Happy": "",
+        	"Thinking": "",
+        	"Peeved": ""
+        }
+    },
+    
+    "Scene1": {
+    	"Background": "Java/Vback5.webp",
+    	"PAGES": {
+			"Page0" : {
+				"Character": "Viola",
+				"Sprite": "Happy",
+				"PageText": "Something something Welcome to our animals Hospital!"
+				
+			},
+			"Page1" : {
+				"Character": "Viola",
+				"Sprite": "Happy",
+				"PageText": "And just so you know, the questions were made for me by Miss Smith next door. "
+				
+			}
+		}
+    }
+}
