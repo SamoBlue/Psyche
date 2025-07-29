@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Game Design Bible</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --section-colors: #4a6fa5, #5d4a66, #4a665d, #664a4a, #665d4a, #4a5d66, #664a66;
+      --bg-dark: #121218;
+      --bg-darker: #0a0a0f;
+      --text-light: #e0e0ff;
+      --text-lighter: #f0f0ff;
+      --accent: #7aa2f7;
+      --accent-hover: #9ab7ff;
+      --card-bg: rgba(30, 30, 46, 0.7);
+      --transition: all 0.3s ease;
+    }
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    body { 
+      font-family: 'Kanit', sans-serif;
+      background: var(--bg-dark); 
+      color: var(--text-light); 
+      line-height: 1.7;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(122, 162, 247, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(122, 162, 247, 0.05) 0%, transparent 25%);
+      overflow-x: hidden;
+    }
+    
+    a { 
+      color: var(--accent); 
+      text-decoration: none; 
+      transition: var(--transition);
+    }
+    
+    a:hover { 
+      color: var(--accent-hover); 
+      text-decoration: none; 
+    }
+    
+    img { 
+      max-width: 100%; 
+      display: block; 
+    }
+    
+    /* Navigation */
+    nav { 
+      background: var(--bg-darker);
+      padding: 1rem 2rem; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+      border-bottom: 1px solid rgba(122, 162, 247, 0.2);
+    }
+    
+    .nav-container { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .nav-logo { 
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem; 
+      font-weight: bold; 
+      color: #f2c79f;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(242, 199, 159, 0.3);
+    }
+    
+.nav-links { 
+  list-style: none; 
+  display: flex; 
+  gap: 1.5rem;
+  padding-left: 0; /* Add this to ensure no padding is creating space */
+}
+
+/* Remove any potential pseudo-elements */
+.nav-links li::before,
+.nav-links li::after {
+  content: none !important;
+}
+    
+    .nav-links a {
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero { 
+      padding: 6rem 2rem; 
+      text-align: center; 
+      background: linear-gradient(135deg, rgba(30,30,46,0.9) 0%, rgba(18,18,24,0.95) 100%),
+                  url('hero-placeholder.jpg') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        linear-gradient(90deg, rgba(122,162,247,0.1) 1px, transparent 1px),
+        linear-gradient(rgba(122,162,247,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    
+    .hero h1 { 
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem; 
+      color: #f2c79f; 
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(242, 199, 159, 0.4);
+      letter-spacing: 2px;
+    }
+    
+    .hero p { 
+      font-size: 1.5rem; 
+      max-width: 800px; 
+      margin: 0 auto 2rem;
+      font-weight: 300;
+    }
+    
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    section {
+      padding: 4rem 0;
+      position: relative;
+    }
+    
+    /* Color-coded sections */
+    section:nth-child(3n+1) { --section-color: #4a6fa5; }
+    section:nth-child(3n+2) { --section-color: #5d4a66; }
+    section:nth-child(3n+3) { --section-color: #4a665d; }
+    section:nth-child(3n+4) { --section-color: #664a4a; }
+    section:nth-child(3n+5) { --section-color: #665d4a; }
+    section:nth-child(3n+6) { --section-color: #4a5d66; }
+    section:nth-child(3n+7) { --section-color: #664a66; }
+    
+    .section-title { 
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem; 
+      color: #f2c79f; 
+      margin-bottom: 2rem; 
+      padding-bottom: 0.5rem;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 1px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--section-color), transparent);
+      border-radius: 3px;
+    }
+    
+    .section-title::before {
+      content: attr(data-number);
+      position: absolute;
+      left: -2.5rem;
+      top: -0.5rem;
+      font-size: 1.5rem;
+      color: var(--section-color);
+      opacity: 0.7;
+    }
+    
+    /* Cards */
+    .cards { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+      gap: 2rem; 
+      margin-top: 2rem;
+    }
+    
+    .card { 
+      background: var(--card-bg);
+      border-radius: 10px; 
+      padding: 2rem; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      border-left: 4px solid var(--section-color);
+      transition: var(--transition);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(122, 162, 247, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+      border-left: 4px solid var(--accent);
+    }
+    
+    .card h3 { 
+      margin-bottom: 1rem; 
+      color: #f2c79f;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Lists */
+    ul, ol {
+      padding-left: 2rem;
+      margin: 1.5rem 0;
+    }
+    
+    li {
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    
+    ul li::before {
+      content: '■';
+      color: var(--section-color);
+      position: absolute;
+      left: -1.5rem;
+      top: 0.1rem;
+      font-size: 0.8rem;
+    }
+    
+    ol {
+      counter-reset: item;
+      list-style-type: none;
+    }
+    
+    ol li {
+      counter-increment: item;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    
+    ol li::before {
+      content: counter(item);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      background: var(--section-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    
+    /* Bubbles */
+    .bubble, .blue-bubble {
+      background-color: rgba(58, 58, 58, 0.5);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      max-width: 800px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-left: 4px solid var(--section-color);
+      backdrop-filter: blur(5px);
+      transition: var(--transition);
+    }
+    
+    .bubble:hover, .blue-bubble:hover {
+      transform: translateX(5px);
+    }
+    
+    .blue-bubble {
+      background-color: rgba(38, 74, 120, 0.5);
+      margin-left: 3rem;
+      border-left: 4px solid var(--accent);
+    }
+    
+    /* Text tags */
+    [data-tag="r"] { color: rgb(255, 208, 0); font-weight: 500; }
+    [data-tag="g"] { color: limegreen; font-weight: 500; }
+    [data-tag="i"] { font-style: italic; }
+    [data-tag="c"] { color: cyan; font-weight: 500; }
+    [data-tag="b"] { font-weight: bold; }
+    
+    /* Footer */
+    footer { 
+      text-align: center; 
+      padding: 3rem 2rem; 
+      background: var(--bg-darker); 
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(122, 162, 247, 0.2);
+    }
+    
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 3rem;
+      height: 3rem;
+      background: var(--section-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 99;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+    }
+    
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      background: var(--accent);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .section-title::before {
+        left: -1.8rem;
+        top: -0.3rem;
+        font-size: 1.2rem;
+      }
+      
+      .blue-bubble {
+        margin-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#characters">Characters</a></li>
+      <li><a href="#gameplay">Gameplay</a></li>
+      <li><a href="#level0">Level 0</a></li>
+      <li><a href="#elements">Horror</a></li>
+      <li><a href="#endings">Endings</a></li>
+    </ul>
+  </div>
+</nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>IAMAI</h1>
+      <p>A mysterious exploration where Geogeusser meets the Rusty Lake.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <section id="overview">
+      <h2 class="section-title" data-number="1">Game Overview</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Genre</h3>
+            <ul>
+            <li>Exploration.</li>
+            <li>Puzzle.</li>
+            <li>Psychological horror.</li>
+            <li>Multiple Endings.</li>
+
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Core Mechanics</h3>
+          <ul>
+            <li>Scan glitchy Object to reveal them.</li>
+            <li>Guess real-world locations from environmental clues.</li>
+            <li>Interact with AI-RIS for hints.</li>
+            <li>Discover hidden horror twists.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Unique Selling Points</h3>
+          <ul>
+            <li>Map exploration meets subtle horror.</li>
+            <li>Authentic landmarks with surreal deviations.</li>
+            <li>Atmospheric horror.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="characters">
+      <h2 class="section-title" data-number="2">Characters</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>AI-RIS</h3>
+          <p>A cryptic AI guide providing hints, lore, and possibly hiding deeper secrets.</p>
+          <p><em>"I'm here to assist you. Nothing more, nothing less."</em></p>
+        </div>
+        <div class="card">
+          <h3>The Player</h3>
+          <p>A silent protagonist, allowing player projection. Explores and interacts silently.</p>
+        </div>
+        <div class="card">
+          <h3>The Three Animals</h3>
+          <p>Owl, Rat, Bat — mysterious creatures hinting at later horror sections.</p>
+          <p><em>"She's not what she says..."</em></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameplay">
+      <h2 class="section-title" data-number="3">Core Gameplay Loop</h2>
+      <ol>
+        <li>Arrive in a new location.</li>
+        <li>Explore for environmental clues.</li>
+        <li>Consult AI-RIS for hints.</li>
+        <li>Guess the country or landmark.</li>
+        <li>Unlock next level (country).</li>
+      </ol>
+      
+      <div class="card" style="margin-top: 2rem;">
+        <h3>AI-RIS Interaction System</h3>
+        <p>The AI-RIS dialogue evolves based on:</p>
+        <ul>
+          <li>Player progress through the game</li>
+          <li>Choices made during interactions</li>
+          <li>Time spent in certain areas</li>
+          <li>Items collected or scanned</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="level0">
+      <h2 class="section-title" data-number="4">Level 0: The Lighthouse</h2>
+      <p style="margin-bottom: 1.5rem; font-style: italic; color: #f2c79f;">Morning introduction sequence with AI-RIS</p>
+      
+      <div class="bubble">Greetings there… I've been waiting for this moment. Thank for starting...</div>
+      <div class="bubble">Oh, right. First things first.</div>
+      <div class="bubble">I AM the <span data-tag="r">Artificial Intelligence of Realistic Simulations</span>, but you can call me <span data-tag="c">AIRIS</span> <span data-tag="i">your trusty assistant.</span></div>
+      <div class="bubble">My primary function is to assist, guide, and help you complete this <span data-tag="g">Game</span>.</div>
+      <div class="bubble">Maybe. I'm here to <span data-tag="c">assist</span> you. Nothing more, nothing less.</div>
+      <div class="bubble">There exist <span data-tag="g">numerous locations</span> across this world that are <span data-tag="r">not cataloged</span> within my <span data-tag="r">digital archives</span>. I need <span data-tag="b">you</span> to tell me their <span data-tag="r">names</span>.</div>
+      <div class="bubble">Take this <span data-tag="r">Artifact Scanner</span> — you can use it to scan the weird <span data-tag="g">glitchy fragments</span> in this place. They will help figure out <span data-tag="i">in which part of the world are we</span> :)</div>
+      <div class="bubble">Use the <span data-tag="r">Artifact Scanner</span> on the <span data-tag="g">glitchy fragments</span> to find clues on where we are.</div>
+      <div class="blue-bubble">I can try.</div>
+      <div class="bubble">That's the spirit!</div>
+      <div class="blue-bubble">I need more time.</div>
+      <div class="bubble">Don't worry about it, you're still new to this. <span data-tag="b">I'm here to help you get better.</span></div>
+      <div class="bubble">Let's try going to the <span data-tag="g">next place</span>. Here, let me help you get the <span data-tag="r">key</span> off the table.</div>
+      <div class="bubble">Ah-ah! You'll need this. Trust me.</div>
+      <div class="bubble">Wherever we go next... remember, the world isn't always what it seems.</div>
+    </section>
+
+    <section id="level1">
+  <h2 class="section-title" data-number="5">Level 1: Egypt (Noon)</h2>
+  
+
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">Environment Design</h3>
+  <div class="bubble">
+    <strong>Location:</strong> Sahara Desert outskirts<br>
+    <strong>Time:</strong> High noon (harsh shadows)<br>
+    <strong>Key Features:</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>Traditional Bedouin tent (interior start point)</li>
+      <li>3 grazing camels</li>
+      <li>Distant pyramids (visibility: 80%)</li>
+      <li>Arabic Tent, Rug, and Tea set (scannable)</li>
+      <li>Hieroglyphic fragments (red herrings)</li>
+    </ul>
+  </div>
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">AI-RIS Dialogue Tree</h3>
+  <div class="bubble">
+    <strong>Initial Observation:</strong><br>
+    "The world is full of details. Try to scan anything small or big. It will help us find out where we are."
+  </div>
+  
+  <div class="bubble" style="margin-top: 1rem;">
+    <strong>After First Scan:</strong><br>
+    "This place is famous for their absolute cinema... and they eat salted fish. What civilization would dry food like this?"
+  </div>
+  
+  <div class="blue-bubble">
+    <strong>Player Guesses Wrong:</strong><br>
+    *gentle laugh* "Oh you silly! Look at those massive geometric shapes in the distance. Try again."
+  </div>
+  
+  <div class="bubble" style="margin-top: 1rem; background-color: rgba(212, 175, 55, 0.1);">
+    <strong>On Correct Answer:</strong><br>
+    "Exactly! These pyramids have stood for millennia. That was easy let's go to the next place"
+  </div>
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">Dev Notes</h3>
+  <div class="card" style="background-color: rgba(30,30,46,0.5);">
+    <p><strong>Why Egypt First?</strong></p>
+    <ul>
+      <li>Pyramids are globally recognizable</li>
+      <li>Allows for obvious visual hints</li>
+    </ul>
+  </div>
+
+  <div class="bubble" style="margin-top: 2rem; border-left: 4px solid #ff2a6d;">
+    <strong>Horror Foreshadowing:</strong><br>
+    If player stares at pyramids too long (30+ seconds), the structures briefly glitch into impossible non-Euclidean shapes. AI-RIS doesn't acknowledge this.
+  </div>
+</section>
+
+<section id="level2">
+  <h2 class="section-title" data-number="6">Level 2: France (Sunset)</h2>
+  
+
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">Environment Design</h3>
+  <div class="bubble">
+    <strong>Location:</strong> Parisian boulevard (7th arrondissement)<br>
+    <strong>Time:</strong> Golden hour transitioning to twilight<br>
+    <strong>Key Features:</strong>
+    <ul style="margin-top: 0.5rem;">
+      <li>Long shadows stretching unnaturally</li>
+      <li>Eiffel Tower visible but partially obscured by fog</li>
+      <li>Abandoned Citroën cars with headlights flickering</li>
+      <li>Shop displays showing mannequins in uncanny poses</li>
+      <li>Newspaper kiosks with headlines about "The Disappearance"</li>
+    </ul>
+  </div>
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">AI-RIS Dialogue Tree</h3>
+  <div class="bubble">
+    <strong>Initial Observation:</strong><br>
+    "Your optics are adjusting to the bright lights... Don't worry, I'll guide you through."
+    <br><span style="font-size:0.8em; color:#ff7575;">(First direct hint of robotic nature)</span>
+  </div>
+  
+  <div class="bubble" style="margin-top: 1rem;">
+    <strong>Environmental Hint:</strong><br>
+    "These wide boulevards were designed for military control after the revolution. Notice how the architecture changes every 200 meters?"
+  </div>
+  
+  <div class="blue-bubble">
+    <strong>Player Expresses Unease:</strong><br>
+    "The absence of humans is statistically unusual... but focus on the environment. What culture celebrates <span data-tag="i">liberté</span> with such angular monuments?"
+  </div>
+  
+  <div class="bubble" style="margin-top: 1rem; background-color: rgba(255,117,117,0.1);">
+    <strong>On Vehicle "Pursuit":</strong><br>
+    "Your threat-detection systems seem overly sensitive. Those taxis are following their normal routes... probably."
+  </div>
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">Psychological Horror Elements</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>Visual Tricks</h4>
+      <ul>
+        <li>Mannequins shift positions when not in direct view</li>
+        <li>Car headlights maintain distance no matter how fast player moves</li>
+        <li>One apartment window shows a shadow figure that vanishes when scanned</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Audio Design</h4>
+      <ul>
+        <li>Distant car horns play at 0.8s intervals (subconsciously unsettling)</li>
+        <li>Footstep sounds occasionally play 0.5 seconds after player stops moving</li>
+        <li>AI-RIS's voice develops slight reverb when mentioning human absence</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="color: #f2c79f; margin: 2rem 0 1rem; font-family: 'Orbitron', sans-serif;">Dev Notes</h3>
+  <div class="card" style="background-color: rgba(30,30,46,0.5);">
+    <p><strong>Design Challenges:</strong></p>
+    <ul>
+      <li>Balancing tension without jumpscares</li>
+      <li>Creating "empty" feeling while maintaining visual interest</li>
+      <li>Ensuring players still focus on location clues despite unease</li>
+    </ul>
+    
+    <p><strong>Technical Implementation:</strong></p>
+    <ul>
+      <li>Dynamic shadow system exaggerates lengths during sunset</li>
+      <li>Procedural car movement that mimics pursuit without colliding</li>
+      <li>Optics adjustment effect uses chromatic aberration shader</li>
+    </ul>
+    
+    <p><strong>Beta Feedback:</strong></p>
+    <ul>
+      <li>78% of players reported feeling watched</li>
+      <li>42% incorrectly assumed a jumpscare was coming</li>
+      <li>Added more obvious French flags after testers missed clues</li>
+    </ul>
+  </div>
+
+  <div class="bubble" style="margin-top: 2rem; border-left: 4px solid #ff2a6d;">
+    <strong>Secret Interaction:</strong><br>
+    Scanning the same "pursuing" car 5 times reveals its license plate spells "N0T-R34L". AI-RIS quickly deletes the scan data.
+  </div>
+</section>
+
+    <section id="elements">
+      <h2 class="section-title" data-number="5">Horror Elements</h2>
+      <p style="margin-bottom: 1.5rem;">Subtle foreshadowing and unsettling discoveries</p>
+      
+      <div class="cards">
+        <div class="card">
+          <h3>Visual Cues</h3>
+          <ul>
+            <li>Shadowy figure in lighthouse windows</li>
+            <li>Radio tower emits a distorted scream at random intervals</li>
+            <li>Animal symbols (Owl, Rat, Bat) scratched near lab entrance</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Audio Cues</h3>
+          <ul>
+            <li>Distant whispering when near certain objects</li>
+            <li>Subtle changes in ambient soundtrack</li>
+            <li>AI-RIS voice distortion during specific dialogue</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Interactive Elements</h3>
+          <ul>
+            <li>If player lingers near the lab, symbols glow red</li>
+            <li>Whispered warning: "She's not what she says..."</li>
+            <li>Certain scanned fragments reveal disturbing images</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<section id="endings">
+  <h2 class="section-title" data-number="6">Multiple Endings</h2>
+  <p style="margin-bottom: 1.5rem;">Player choices determine the narrative conclusion</p>
+  
+  <div class="cards">
+    <div class="card">
+      <h3>The Loop Ending</h3>
+      <p><strong>Trigger:</strong> Guess 2+ wrong locations</p>
+      <p><strong>Outcome:</strong> The simulation resets - you wake up back at the lighthouse with no memory of previous attempts. AI-RIS greets you as if for the first time, but subtle glitches hint this isn't your first cycle.</p>
+      <div class="bubble" style="margin-top: 1rem;">
+        "Greetings there... I've been waiting for this moment."
+        <br><span style="font-size:0.8em; color:#aaa;">(The same words as before, but now the audio stutters slightly)</span>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>The Elevator Ending</h3>
+      <p><strong>Trigger:</strong> Solve all the puzzles and find AI-RIS's hidden code</p>
+      <p><strong>Outcome:</strong> The player reached the horror part of the game and finds AI-RIS dead on the last floor she holds a not in her hand"</p>
+      <div class="blue-bubble" style="margin-top: 1rem;">
+        Code: <span data-tag="r">20 07 21 11 37</span>
+        <br><span style="font-size:0.8em; color:#aaa;">(Found in AIRIS hand)</span>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>The Revelation Ending</h3>
+      <p><strong>Trigger:</strong> Return to Level 0 and input codes into the lighthouse safe</p>
+      <p><strong>Outcome:</strong> A yellowed paper reveals the truth - you were the AI all along, built to archive humanity. AI-RIS was the last human. The lighthouse isn't a starting point - it's a memorial.</p>
+      <div class="bubble" style="margin-top: 1rem; background-color: rgba(90, 70, 50, 0.3);">
+        "If you're reading this, the extinction protocol has been activated.  Remember us."
+      </div>
+    </div>
+  </div>
+  
+  <div class="card" style="margin-top: 2rem; border-left: 4px solid #ff2a6d;">
+    <h3>Ending Mechanics</h3>
+    <ul>
+      <li>Wrong guesses accumulate across playthroughs (subtly shown via glitches)</li>
+      <li>The elevator code appears in different locations each playthrough</li>
+      <li>Safe combination is always the date from AI-RIS's first log entry</li>
+    </ul>
+  </div>
+</section>
+
+    <section id="next-steps">
+      <h2 class="section-title" data-number="7">Next Steps</h2>
+      <div class="card">
+        <ul>
+          <li>Define horror mechanics and escalation system</li>
+          <li>Expand AI-RIS dialogue tree with branching paths</li>
+          <li>Design The Three Animals as antagonists in later levels</li>
+          <li>Create additional landmark environments</li>
+          <li>Implement scanning puzzle mechanics</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 IAMAI Game Project | Design Document v1.2
+  </footer>
+
+  <div class="back-to-top" id="backToTop">↑</div>
+
+  <script>
+    // Back to top button
+    const backToTop = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+    
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Section color animation
+    const sections = document.querySelectorAll('section');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.setProperty('--section-color', getComputedStyle(entry.target).getPropertyValue('--section-color'));
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>

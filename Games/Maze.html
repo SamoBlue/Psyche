@@ -3,125 +3,487 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random Maze Game</title>
+  <title>Dungeon Seeker</title>
   <style>
     body {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      background: #0a0a12;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      overflow: hidden;
     }
+
+    h1 {
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(100, 200, 255, 0.7);
+      color: #64c8ff;
+      font-size: 2.5rem;
+    }
+
+    .game-container {
+      position: relative;
+      border: 4px solid #64c8ff;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(100, 200, 255, 0.3);
+      overflow: hidden;
+    }
+
     .maze {
       display: grid;
-      grid-template-columns: repeat(10, 40px);
-      grid-template-rows: repeat(10, 40px);
-      gap: 2px;
+      background: #121220;
+      position: relative;
     }
+
     .cell {
-      width: 40px;
-      height: 40px;
-      background-color: white;
-      border: 1px solid black;
+      position: relative;
+      transition: background-color 0.3s;
     }
-    .start {
-      background-color: green;
+
+    .wall {
+      background: #2a2a3a;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
     }
-    .end {
-      background-color: red;
+
+    .path {
+      background: #1a1a2a;
     }
+
     .player {
-      background-color: green;
+      background: radial-gradient(circle, #64c8ff, #3a6bff);
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(100, 200, 255, 0.8);
+      z-index: 2;
+      transform: scale(0.8);
     }
-    .blocked {
-      background-color: gray;
+
+    .exit {
+      background: radial-gradient(circle, #ff6464, #ff3a3a);
+      box-shadow: 0 0 15px rgba(255, 100, 100, 0.8);
+      animation: pulse 1.5s infinite;
     }
+
+    .fog {
+      background: #0a0a12;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s;
+      z-index: 1;
+    }
+
+    .revealed {
+      opacity: 0;
+    }
+
+    .controls {
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .stats {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-around;
+      width: 500px;
+    }
+
+    .stat-box {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 20px;
+      border-radius: 5px;
+      min-width: 100px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .victory-message {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+
+    .victory-message.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .victory-message h2 {
+      color: #64c8ff;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(100, 200, 255, 0.7);
+    }
+
+    button {
+      background: #3a6bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #2a4bdf;
+      transform: scale(1.05);
+    }
+
+    .visibility-3 .fog { opacity: 1; }
+    .visibility-3 .cell.in-view .fog { opacity: 0; }
+
+    .visibility-5 .fog { opacity: 1; }
+    .visibility-5 .cell.in-view .fog,
+    .visibility-5 .cell.in-view-2 .fog { opacity: 0; }
+
+    .visibility-7 .fog { opacity: 1; }
+    .visibility-7 .cell.in-view .fog,
+    .visibility-7 .cell.in-view-2 .fog,
+    .visibility-7 .cell.in-view-3 .fog { opacity: 0; }
   </style>
 </head>
 <body>
-  <div class="maze" id="maze"></div>
+  <h1>Dungeon Seeker</h1>
+  
+  <div class="stats">
+    <div class="stat-box">Moves: <span id="movesDisplay">0</span></div>
+    <div class="stat-box">Visibility: 
+      <select id="visibilitySelect">
+        <option value="3">Short</option>
+        <option value="5" selected>Medium</option>
+        <option value="7">Long</option>
+      </select>
+    </div>
+    <div class="stat-box">Level: <span id="levelDisplay">1</span></div>
+  </div>
+
+  <div class="game-container">
+    <div class="maze" id="maze"></div>
+    <div class="victory-message" id="victoryMessage">
+      <h2>Dungeon Escaped!</h2>
+      <p id="completionStats">You escaped in 0 moves</p>
+      <button id="nextLevel">Next Dungeon</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <p>Use arrow keys to navigate through the dungeon to the red exit</p>
+    <p>Explore carefully - you can only see a short distance ahead!</p>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const maze = document.getElementById("maze");
-      const gridSize = 10;
-      let playerPosition = { row: 0, col: 0 };
-      let endPosition = { row: Math.floor(Math.random() * gridSize), col: Math.floor(Math.random() * gridSize) };
-      const blockedCells = generateRandomBlockedCells(Math.floor(Math.random() * 11) + 10); // Random between 10 and 20
-      let startCellShown = true;
+      const victoryMessage = document.getElementById("victoryMessage");
+      const completionStats = document.getElementById("completionStats");
+      const nextLevelBtn = document.getElementById("nextLevel");
+      const movesDisplay = document.getElementById("movesDisplay");
+      const levelDisplay = document.getElementById("levelDisplay");
+      const visibilitySelect = document.getElementById("visibilitySelect");
 
-      function generateRandomBlockedCells(count) {
-        const blocked = [];
-        for (let i = 0; i < count; i++) {
-          const blockedCell = { row: Math.floor(Math.random() * gridSize), col: Math.floor(Math.random() * gridSize) };
-          blocked.push(blockedCell);
-        }
-        return blocked;
+      const cellSize = 25;
+      const gridWidth = 21; // Odd number works better for maze generation
+      const gridHeight = 21;
+      let playerPosition = { x: 1, y: 1 };
+      let exitPosition = { x: gridWidth - 2, y: gridHeight - 2 };
+      let moveCount = 0;
+      let level = 1;
+      let visibility = 5;
+      let mazeGrid = [];
+
+      // Initialize the game
+      function initGame() {
+        generateMaze();
+        renderMaze();
+        updateVisibility();
       }
 
+      // Generate a perfect maze (no unreachable areas)
       function generateMaze() {
-        maze.innerHTML = '';
+        // Initialize grid with all walls (1 = wall, 0 = path)
+        mazeGrid = Array(gridHeight).fill().map(() => 
+          Array(gridWidth).fill(1));
+        
+        // Start position
+        mazeGrid[1][1] = 0;
+        playerPosition = { x: 1, y: 1 };
+        
+        // Generate paths using recursive backtracking
+        carvePaths(1, 1);
+        
+        // Set exit position
+        exitPosition = findFarthestPoint(playerPosition);
+        mazeGrid[exitPosition.y][exitPosition.x] = 0;
+        
+        // Add some optional dead ends to make it more interesting
+        addSomeDeadEnds();
+      }
 
-        for (let row = 0; row < gridSize; row++) {
-          for (let col = 0; col < gridSize; col++) {
-            const cell = document.createElement("div");
-            cell.classList.add("cell");
+      // Recursive backtracking maze generation
+      function carvePaths(x, y) {
+        const directions = [
+          { dx: 2, dy: 0 },
+          { dx: -2, dy: 0 },
+          { dx: 0, dy: 2 },
+          { dx: 0, dy: -2 }
+        ];
+        
+        // Shuffle directions
+        for (let i = directions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [directions[i], directions[j]] = [directions[j], directions[i]];
+        }
+        
+        for (const dir of directions) {
+          const nx = x + dir.dx;
+          const ny = y + dir.dy;
+          
+          if (nx > 0 && nx < gridWidth - 1 && ny > 0 && ny < gridHeight - 1 && mazeGrid[ny][nx] === 1) {
+            mazeGrid[ny][nx] = 0;
+            mazeGrid[y + dir.dy/2][x + dir.dx/2] = 0; // Remove wall between
+            carvePaths(nx, ny);
+          }
+        }
+      }
 
-            if (row === playerPosition.row && col === playerPosition.col) {
-              cell.classList.add("player");
-            } else if (row === 0 && col === 0 && startCellShown) {
-              cell.classList.add("start");
-            } else if (row === endPosition.row && col === endPosition.col) {
-              cell.classList.add("end");
-            } else if (blockedCells.some(blockedCell => blockedCell.row === row && blockedCell.col === col)) {
-              cell.classList.add("blocked");
+      // Find the farthest point from the player to place the exit
+      function findFarthestPoint(start) {
+        const visited = Array(gridHeight).fill().map(() => Array(gridWidth).fill(false));
+        const queue = [{ x: start.x, y: start.y, dist: 0 }];
+        let farthest = { x: start.x, y: start.y, dist: 0 };
+        
+        visited[start.y][start.x] = true;
+        
+        while (queue.length > 0) {
+          const current = queue.shift();
+          
+          if (current.dist > farthest.dist) {
+            farthest = current;
+          }
+          
+          const neighbors = [
+            { x: current.x + 1, y: current.y },
+            { x: current.x - 1, y: current.y },
+            { x: current.x, y: current.y + 1 },
+            { x: current.x, y: current.y - 1 }
+          ];
+          
+          for (const neighbor of neighbors) {
+            if (neighbor.x >= 0 && neighbor.x < gridWidth && 
+                neighbor.y >= 0 && neighbor.y < gridHeight &&
+                mazeGrid[neighbor.y][neighbor.x] === 0 && 
+                !visited[neighbor.y][neighbor.x]) {
+              visited[neighbor.y][neighbor.x] = true;
+              queue.push({ x: neighbor.x, y: neighbor.y, dist: current.dist + 1 });
             }
+          }
+        }
+        
+        return { x: farthest.x, y: farthest.y };
+      }
 
+      // Add some dead ends to make the maze more interesting
+      function addSomeDeadEnds() {
+        const deadEndsToAdd = Math.floor(gridWidth * gridHeight * 0.02 * level);
+        
+        for (let i = 0; i < deadEndsToAdd; i++) {
+          const x = Math.floor(Math.random() * (gridWidth - 2)) + 1;
+          const y = Math.floor(Math.random() * (gridHeight - 2)) + 1;
+          
+          if (mazeGrid[y][x] === 0) {
+            // Count open neighbors
+            let openNeighbors = 0;
+            if (x > 0 && mazeGrid[y][x-1] === 0) openNeighbors++;
+            if (x < gridWidth - 1 && mazeGrid[y][x+1] === 0) openNeighbors++;
+            if (y > 0 && mazeGrid[y-1][x] === 0) openNeighbors++;
+            if (y < gridHeight - 1 && mazeGrid[y+1][x] === 0) openNeighbors++;
+            
+            // If this cell has only one open neighbor, it's a corridor end
+            if (openNeighbors === 1) {
+              // Randomly block one side to create a dead end
+              const directions = [];
+              if (x > 1 && mazeGrid[y][x-1] === 0) directions.push({x: x-1, y});
+              if (x < gridWidth - 2 && mazeGrid[y][x+1] === 0) directions.push({x: x+1, y});
+              if (y > 1 && mazeGrid[y-1][x] === 0) directions.push({x, y: y-1});
+              if (y < gridHeight - 2 && mazeGrid[y+1][x] === 0) directions.push({x, y: y+1});
+              
+              if (directions.length > 0) {
+                const toBlock = directions[Math.floor(Math.random() * directions.length)];
+                mazeGrid[toBlock.y][toBlock.x] = 1;
+              }
+            }
+          }
+        }
+      }
+
+      // Render the maze
+      function renderMaze() {
+        maze.innerHTML = '';
+        maze.style.gridTemplateColumns = `repeat(${gridWidth}, ${cellSize}px)`;
+        maze.style.gridTemplateRows = `repeat(${gridHeight}, ${cellSize}px)`;
+        
+        for (let y = 0; y < gridHeight; y++) {
+          for (let x = 0; x < gridWidth; x++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+            
+            if (mazeGrid[y][x] === 1) {
+              cell.classList.add('wall');
+            } else {
+              cell.classList.add('path');
+              
+              if (x === playerPosition.x && y === playerPosition.y) {
+                cell.classList.add('player');
+              } else if (x === exitPosition.x && y === exitPosition.y) {
+                cell.classList.add('exit');
+              }
+              
+              // Add fog overlay
+              const fog = document.createElement('div');
+              fog.className = 'fog';
+              cell.appendChild(fog);
+            }
+            
             maze.appendChild(cell);
           }
         }
       }
 
-      function movePlayer(newRow, newCol) {
-        const isBlocked = blockedCells.some(blockedCell => blockedCell.row === newRow && blockedCell.col === newCol);
+      // Update visibility around player
+      function updateVisibility() {
+        // Clear all visibility classes
+        document.querySelectorAll('.cell').forEach(cell => {
+          cell.classList.remove('in-view', 'in-view-2', 'in-view-3');
+        });
         
-        if (!isBlocked && newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
-          playerPosition = { row: newRow, col: newCol };
-          startCellShown = false;
-          generateMaze();
-          checkGameStatus();
+        const playerX = playerPosition.x;
+        const playerY = playerPosition.y;
+        
+        // Reveal cells around player based on visibility range
+        for (let dy = -visibility; dy <= visibility; dy++) {
+          for (let dx = -visibility; dx <= visibility; dx++) {
+            const x = playerX + dx;
+            const y = playerY + dy;
+            
+            if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight) {
+              const distance = Math.abs(dx) + Math.abs(dy);
+              const cell = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
+              
+              if (cell && distance <= visibility) {
+                if (distance <= 1) cell.classList.add('in-view');
+                else if (distance <= Math.floor(visibility/2)) cell.classList.add('in-view-2');
+                else if (distance <= visibility) cell.classList.add('in-view-3');
+              }
+            }
+          }
         }
       }
 
-      function checkGameStatus() {
-        if (playerPosition.row === endPosition.row && playerPosition.col === endPosition.col) {
-          alert("Congratulations! You reached the end!");
-          endPosition = { row: Math.floor(Math.random() * gridSize), col: Math.floor(Math.random() * gridSize) };
-          playerPosition = { row: 0, col: 0 };
-          startCellShown = true;
-          blockedCells = generateRandomBlockedCells(Math.floor(Math.random() * 11) + 10); // Random between 10 and 20
-          generateMaze();
+      // Move player
+      function movePlayer(dx, dy) {
+        const newX = playerPosition.x + dx;
+        const newY = playerPosition.y + dy;
+        
+        if (newX >= 0 && newX < gridWidth && 
+            newY >= 0 && newY < gridHeight && 
+            mazeGrid[newY][newX] === 0) {
+          
+          // Update player position
+          const oldPlayerCell = document.querySelector('.player');
+          if (oldPlayerCell) {
+            oldPlayerCell.classList.remove('player');
+          }
+          
+          playerPosition.x = newX;
+          playerPosition.y = newY;
+          moveCount++;
+          movesDisplay.textContent = moveCount;
+          
+          // Update player display
+          const newPlayerCell = document.querySelector(`.cell[data-x="${newX}"][data-y="${newY}"]`);
+          if (newPlayerCell) {
+            newPlayerCell.classList.add('player');
+          }
+          
+          // Update visibility
+          updateVisibility();
+          
+          // Check if player reached exit
+          if (newX === exitPosition.x && newY === exitPosition.y) {
+            showVictory();
+          }
         }
       }
 
-      generateMaze();
+      // Show victory message
+      function showVictory() {
+        completionStats.textContent = `You escaped in ${moveCount} moves`;
+        victoryMessage.classList.add('show');
+      }
 
-      document.addEventListener("keydown", (event) => {
-        switch (event.key) {
-          case "ArrowUp":
-            movePlayer(playerPosition.row - 1, playerPosition.col);
-            break;
-          case "ArrowDown":
-            movePlayer(playerPosition.row + 1, playerPosition.col);
-            break;
-          case "ArrowLeft":
-            movePlayer(playerPosition.row, playerPosition.col - 1);
-            break;
-          case "ArrowRight":
-            movePlayer(playerPosition.row, playerPosition.col + 1);
-            break;
+      // Start next level
+      function nextLevel() {
+        level++;
+        levelDisplay.textContent = level;
+        moveCount = 0;
+        movesDisplay.textContent = '0';
+        victoryMessage.classList.remove('show');
+        generateMaze();
+        renderMaze();
+        updateVisibility();
+      }
+
+      // Event listeners
+      document.addEventListener('keydown', (e) => {
+        switch(e.key) {
+          case 'ArrowUp': movePlayer(0, -1); break;
+          case 'ArrowDown': movePlayer(0, 1); break;
+          case 'ArrowLeft': movePlayer(-1, 0); break;
+          case 'ArrowRight': movePlayer(1, 0); break;
         }
       });
+
+      visibilitySelect.addEventListener('change', () => {
+        visibility = parseInt(visibilitySelect.value);
+        maze.className = `maze visibility-${visibility}`;
+        updateVisibility();
+      });
+
+      nextLevelBtn.addEventListener('click', nextLevel);
+
+      // Initialize
+      maze.className = `maze visibility-${visibility}`;
+      initGame();
     });
   </script>
 </body>

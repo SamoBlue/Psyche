@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dodging Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB; /* Sky Blue */
+        }
+
+        canvas {
+            display: block;
+            margin: 50px auto;
+            background-color: #f0f0f0; /* Light Gray */
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="carDodgingCanvas" width="480" height="320"></canvas>
+
+    <script>
+        const canvas = document.getElementById('carDodgingCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const laneWidth = canvas.width / 3;
+
+        // Car properties
+        const car = {
+            x: laneWidth - -65, // Initial position in the middle lane
+            y: canvas.height - 50,
+            width: 30,
+            height: 50,
+            color: '#FF6347', // Tomato
+            speed: 2,
+        };
+
+        // Other cars
+        const otherCars = [];
+
+        // Game state
+        let isGameOver = false;
+
+        function drawLaneLines() {
+            ctx.strokeStyle = '#000'; /* White lines */
+            ctx.lineWidth = 2;
+
+            for (let i = 1; i < 3; i++) {
+                const x = i * laneWidth;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+        }
+
+        function drawCar() {
+            ctx.fillStyle = car.color;
+            ctx.fillRect(car.x, car.y, car.width, car.height);
+        }
+
+        function drawOtherCars() {
+            ctx.fillStyle = '#008000'; // Green for other cars
+            otherCars.forEach(otherCar => {
+                ctx.fillRect(otherCar.x, otherCar.y, otherCar.width, otherCar.height);
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (isGameOver) {
+                ctx.fillStyle = '#000';
+                ctx.font = '40px Arial';
+                ctx.fillText('Game Over', canvas.width / 4, canvas.height / 2 - 20);
+                ctx.font = '24px Arial';
+                ctx.fillText('Press R to restart', canvas.width / 4, canvas.height / 2 + 20);
+                return;
+            }
+
+            drawLaneLines();
+            drawCar();
+            drawOtherCars();
+
+            // Update and draw other cars
+            for (let i = 0; i < otherCars.length; i++) {
+                otherCars[i].y += otherCars[i].speed;
+
+                // Check for collisions with the player's car
+                if (
+                    car.x < otherCars[i].x + otherCars[i].width &&
+                    car.x + car.width > otherCars[i].x &&
+                    car.y < otherCars[i].y + otherCars[i].height &&
+                    car.y + car.height > otherCars[i].y
+                ) {
+                    isGameOver = true;
+                }
+
+                // Remove cars that are off-screen
+                if (otherCars[i].y > canvas.height) {
+                    otherCars.splice(i, 1);
+                    i--;
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        function spawnOtherCar() {
+            const laneIndex = Math.floor(Math.random() * 3);
+            const randomX = laneIndex * laneWidth + (laneWidth - 30) / 2;
+
+            otherCars.push({
+                x: randomX,
+                y: 0,
+                width: 30,
+                height: 50,
+                speed: Math.random() * 3 + 2, // Random speed between 2 and 5
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'ArrowLeft' && car.x > 0) {
+                car.x -= laneWidth;
+            } else if (event.key === 'ArrowRight' && car.x + car.width < canvas.width - laneWidth) {
+                car.x += laneWidth;
+            } else if (event.key === 'r' || event.key === 'R') {
+                restartGame();
+            }
+        }
+
+        function restartGame() {
+            isGameOver = false;
+            car.x = laneWidth - -65;
+            car.y = canvas.height - 50;
+            otherCars.length = 0;
+            draw();
+        }
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        setInterval(spawnOtherCar, 1000); // Spawn a new car every second
+
+        draw();
+    </script>
+</body>
+</html>

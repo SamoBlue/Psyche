@@ -3,119 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helicopter Game</title>
+    <title>Core Defender</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         #game-container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: #87CEEB; /* Sky Blue */
+            width: 100vmin;
+            height: 100vmin;
         }
 
-        #helicopter {
+        #core {
             position: absolute;
-            bottom: 50%;
-            left: 10%;
-            width: 50px;
-            height: 30px;
-            background-color: #FFD700; /* Gold */
-            transition: transform 0.1s ease;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff5e00, #b30000);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px #ff5e00;
+            z-index: 1;
         }
 
-        .plane {
+        #cannon {
             position: absolute;
-            width: 50px;
-            height: 30px;
-            background-color: #FF6347; /* Tomato */
-            transform-origin: 50% 50%;
-            animation: planeMove 2s linear infinite;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 20px;
+            background: linear-gradient(to right, #555, #999);
+            border-radius: 10px;
+            transform-origin: left center;
+            transform: translate(0, -50%) rotate(0deg);
+            z-index: 2;
+            transition: transform 0.1s ease-out;
         }
 
-        @keyframes planeMove {
+        #cannon::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            width: 30px;
+            height: 10px;
+            background: #ff0;
+            border-radius: 5px;
+            transform: translateY(-50%);
+        }
+
+        .projectile {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0;
+            border-radius: 50%;
+            transform-origin: center;
+            z-index: 3;
+        }
+
+        .enemy {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, #00f, #005);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .explosion {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #ff5e00 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            animation: explode 0.5s forwards;
+        }
+
+        @keyframes explode {
             to {
-                transform: translateX(-150%);
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
             }
+        }
+
+        #score-display {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+        }
+
+        #health-display {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+        }
+
+        #wave-display {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
-        <div id="helicopter"></div>
-        <!-- Add more planes as needed -->
-        <div class="plane" style="bottom: 70%; left: 100%;"></div>
-        <div class="plane" style="bottom: 30%; left: 150%;"></div>
+        <div id="core"></div>
+        <div id="cannon"></div>
+        <div id="score-display">Score: 0</div>
+        <div id="health-display">Health: 3</div>
+        <div id="wave-display">Wave: 1</div>
     </div>
 
     <script>
-        const helicopter = document.getElementById('helicopter');
-        let helicopterPosition = 50; // Initial position (percentage from bottom)
+        const gameContainer = document.getElementById('game-container');
+        const cannon = document.getElementById('cannon');
+        const core = document.getElementById('core');
+        const scoreDisplay = document.getElementById('score-display');
+        const healthDisplay = document.getElementById('health-display');
+        const waveDisplay = document.getElementById('wave-display');
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'ArrowUp') {
-                moveHelicopterUp();
-            } else if (event.key === 'ArrowDown') {
-                moveHelicopterDown();
+        // Game state
+        let cannonAngle = 0;
+        let score = 0;
+        let health = 3;
+        let wave = 1;
+        let enemiesDestroyedThisWave = 0;
+        let enemiesPerWave = 5;
+        let projectiles = [];
+        let enemies = [];
+        let explosions = [];
+        let lastShotTime = 0;
+        const shotCooldown = 100; // ms
+        const rotationSpeed = 1.0; // degrees per frame (slower and smoother)
+
+        // Game area dimensions
+        const gameWidth = gameContainer.clientWidth;
+        const gameHeight = gameContainer.clientHeight;
+        const centerX = gameWidth / 2;
+        const centerY = gameHeight / 2;
+        const coreRadius = 40;
+        const cannonLength = 60;
+
+        // Controls
+        const keyState = {};
+        document.addEventListener('keydown', (e) => keyState[e.key.toLowerCase()] = true);
+        document.addEventListener('keyup', (e) => keyState[e.key.toLowerCase()] = false);
+
+        // Game loop
+        function gameLoop(timestamp) {
+            update(timestamp);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function update(timestamp) {
+            // Rotate cannon (smoother movement)
+            if (keyState['a'] || keyState['arrowleft']) {
+                cannonAngle -= rotationSpeed;
             }
-        });
+            if (keyState['d'] || keyState['arrowright']) {
+                cannonAngle += rotationSpeed;
+            }
 
-        function moveHelicopterUp() {
-            if (helicopterPosition > 10) {
-                helicopterPosition -= 10;
-                updateHelicopterPosition();
+            // Auto-shoot projectiles
+            if (timestamp - lastShotTime > shotCooldown) {
+                shootProjectile();
+                lastShotTime = timestamp;
+            }
+
+            // Update cannon position
+            updateCannonPosition();
+
+            // Spawn enemies based on wave
+            if (enemies.length < Math.min(3 + wave, 10) && Math.random() < 0.01) {
+                spawnEnemy();
+            }
+
+            // Update projectiles
+            updateProjectiles();
+
+            // Update enemies
+            updateEnemies();
+
+            // Update explosions
+            updateExplosions();
+
+            // Check wave completion
+            if (enemiesDestroyedThisWave >= enemiesPerWave) {
+                nextWave();
             }
         }
 
-        function moveHelicopterDown() {
-            if (helicopterPosition < 90) {
-                helicopterPosition += 10;
-                updateHelicopterPosition();
-            }
+        function render() {
+            // Visual updates are handled via CSS
         }
 
-        function updateHelicopterPosition() {
-            helicopter.style.transform = `translateY(${helicopterPosition}%)`;
+        function updateCannonPosition() {
+            const rad = cannonAngle * Math.PI / 180;
+            
+            cannon.style.left = `${centerX}px`;
+            cannon.style.top = `${centerY}px`;
+            cannon.style.transform = `translate(0, -50%) rotate(${cannonAngle}deg)`;
         }
 
-        // Create and manage planes
-        function createPlane() {
-            const plane = document.createElement('div');
-            plane.classList.add('plane');
-            plane.style.bottom = `${Math.random() * 80 + 10}%`;
-            plane.style.left = '100%';
-            document.getElementById('game-container').appendChild(plane);
-            return plane;
-        }
-
-        function movePlanes() {
-            const planes = document.querySelectorAll('.plane');
-            planes.forEach(plane => {
-                if (plane.getBoundingClientRect().left < 0) {
-                    resetPlane(plane);
-                }
+        function shootProjectile() {
+            const rad = cannonAngle * Math.PI / 180;
+            const projectile = document.createElement('div');
+            projectile.className = 'projectile';
+            
+            const startX = centerX + Math.cos(rad) * (cannonLength + 10);
+            const startY = centerY + Math.sin(rad) * (cannonLength + 10);
+            
+            projectile.style.left = `${startX}px`;
+            projectile.style.top = `${startY}px`;
+            
+            gameContainer.appendChild(projectile);
+            
+            projectiles.push({
+                element: projectile,
+                x: startX,
+                y: startY,
+                angle: cannonAngle,
+                speed: 8,
+                distance: 0
             });
         }
 
-        function resetPlane(plane) {
-            plane.style.left = '100%';
-            plane.style.bottom = `${Math.random() * 80 + 10}%`;
+        function spawnEnemy() {
+            // Spawn from edge of screen
+            const side = Math.floor(Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
+            let x, y;
+            
+            switch (side) {
+                case 0: // top
+                    x = Math.random() * gameWidth;
+                    y = -30;
+                    break;
+                case 1: // right
+                    x = gameWidth + 30;
+                    y = Math.random() * gameHeight;
+                    break;
+                case 2: // bottom
+                    x = Math.random() * gameWidth;
+                    y = gameHeight + 30;
+                    break;
+                case 3: // left
+                    x = -30;
+                    y = Math.random() * gameHeight;
+                    break;
+            }
+            
+            const enemy = document.createElement('div');
+            enemy.className = 'enemy';
+            enemy.style.left = `${x}px`;
+            enemy.style.top = `${y}px`;
+            gameContainer.appendChild(enemy);
+            
+            // Slower enemies in early waves, faster in later waves
+            const baseSpeed = 0.5 + (wave * 0.1);
+            const speedVariation = 0.2;
+            
+            enemies.push({
+                element: enemy,
+                x: x,
+                y: y,
+                speed: baseSpeed + (Math.random() * speedVariation)
+            });
         }
 
-        function updateGame() {
-            movePlanes();
-            requestAnimationFrame(updateGame);
+        function updateProjectiles() {
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const p = projectiles[i];
+                const rad = p.angle * Math.PI / 180;
+                
+                p.x += Math.cos(rad) * p.speed;
+                p.y += Math.sin(rad) * p.speed;
+                p.distance += p.speed;
+                
+                p.element.style.left = `${p.x}px`;
+                p.element.style.top = `${p.y}px`;
+                
+                // Remove if off screen
+                if (p.x < 0 || p.x > gameWidth || p.y < 0 || p.y > gameHeight || p.distance > 300) {
+                    p.element.remove();
+                    projectiles.splice(i, 1);
+                    continue;
+                }
+                
+                // Check collision with enemies
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const e = enemies[j];
+                    const dx = p.x - e.x;
+                    const dy = p.y - e.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 20) { // Collision detected
+                        createExplosion(e.x, e.y);
+                        e.element.remove();
+                        enemies.splice(j, 1);
+                        p.element.remove();
+                        projectiles.splice(i, 1);
+                        score += 10;
+                        enemiesDestroyedThisWave++;
+                        scoreDisplay.textContent = `Score: ${score}`;
+                        break;
+                    }
+                }
+            }
         }
 
-        setInterval(() => {
-            const newPlane = createPlane();
-            newPlane.style.animationDuration = `${Math.random() * 2 + 1}s`; // Randomize plane speed
-        }, 2000); // Add a new plane every 2 seconds
+        function updateEnemies() {
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                
+                // Move toward core
+                const coreRect = core.getBoundingClientRect();
+                const coreX = coreRect.left + coreRect.width/2 - gameContainer.getBoundingClientRect().left;
+                const coreY = coreRect.top + coreRect.height/2 - gameContainer.getBoundingClientRect().top;
+                
+                const dx = coreX - e.x;
+                const dy = coreY - e.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const directionX = dx / distance;
+                const directionY = dy / distance;
+                
+                e.x += directionX * e.speed;
+                e.y += directionY * e.speed;
+                
+                e.element.style.left = `${e.x}px`;
+                e.element.style.top = `${e.y}px`;
+                
+                // Check collision with core
+                if (distance < coreRadius + 15) {
+                    createExplosion(e.x, e.y);
+                    e.element.remove();
+                    enemies.splice(i, 1);
+                    health--;
+                    healthDisplay.textContent = `Health: ${health}`;
+                    
+                    if (health <= 0) {
+                        alert(`Game Over! Your score: ${score}\nYou reached wave ${wave}`);
+                        resetGame();
+                    }
+                }
+            }
+        }
 
-        updateGame();
+        function createExplosion(x, y) {
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            explosion.style.left = `${x}px`;
+            explosion.style.top = `${y}px`;
+            gameContainer.appendChild(explosion);
+            
+            explosions.push({
+                element: explosion,
+                time: 0
+            });
+        }
+
+        function updateExplosions() {
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                explosions[i].time += 16; // ~60fps
+                if (explosions[i].time >= 500) {
+                    explosions[i].element.remove();
+                    explosions.splice(i, 1);
+                }
+            }
+        }
+
+        function nextWave() {
+            wave++;
+            enemiesPerWave = 5 + Math.floor(wave * 1.5);
+            enemiesDestroyedThisWave = 0;
+            waveDisplay.textContent = `Wave: ${wave}`;
+        }
+
+        function resetGame() {
+            // Clear all enemies and projectiles
+            enemies.forEach(e => e.element.remove());
+            projectiles.forEach(p => p.element.remove());
+            explosions.forEach(e => e.element.remove());
+            
+            enemies = [];
+            projectiles = [];
+            explosions = [];
+            
+            // Reset game state
+            score = 0;
+            health = 3;
+            wave = 1;
+            enemiesDestroyedThisWave = 0;
+            enemiesPerWave = 5;
+            
+            // Update displays
+            scoreDisplay.textContent = `Score: ${score}`;
+            healthDisplay.textContent = `Health: ${health}`;
+            waveDisplay.textContent = `Wave: ${wave}`;
+        }
+
+        // Start game
+        gameLoop(0);
     </script>
 </body>
 </html>

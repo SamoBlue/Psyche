@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dolores</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@300&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #e0e0e0;
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+            height: 100vh;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="%23ff0000" stroke-width="1"/></svg>'), auto;
+        }
+
+        #image-track {
+            display: flex;
+            gap: 4vmin;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(0%, -50%);
+            user-select: none;
+            padding: 0 10vw;
+        }
+
+        .image-container {
+            position: relative;
+            width: 40vmin;
+            height: 56vmin;
+            perspective: 1000px;
+            transition: transform 0.5s;
+        }
+
+        .image-container:hover {
+            transform: scale(1.03);
+        }
+
+        .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 100% center;
+            filter: sepia(0.3) contrast(1.1) brightness(0.8);
+            border-radius: 1vmin;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            transition: all 0.5s;
+        }
+
+        .image:hover {
+            filter: sepia(0) contrast(1.3) brightness(1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+        }
+
+        .text-box {
+            position: absolute;
+            bottom: -15%;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2vmin;
+            border-radius: 1vmin;
+            font-size: 1.8vmin;
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+            border-left: 3px solid #8b0000;
+        }
+
+        .image-container:hover .text-box {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .name-highlight {
+            color: #8b0000;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(139, 0, 0, 0.7);
+            font-family: 'Cinzel Decorative', cursive;
+        }
+
+        .name {
+            color: #8b0000;
+            font-style: italic;
+        }
+
+        .image2 {
+            filter: grayscale(100%) contrast(1.5) brightness(0.6);
+        }
+
+        .text-box2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10vmin;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .image-container:hover .text-box2 {
+            opacity: 1;
+        }
+
+        /* Glitch effect for the disturbing text */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch-effect 3s infinite;
+        }
+
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch-effect 2s infinite reverse;
+        }
+
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Blood drips */
+        .blood-drip {
+            position: fixed;
+            top: -50px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #8b0000);
+            animation: drip 5s linear infinite;
+            z-index: 100;
+        }
+
+        @keyframes drip {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Ambient sounds button */
+        #sound-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(139, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <!-- Blood drips -->
+    <div id="blood-drips"></div>
+
+    <!-- Sound toggle -->
+    <button id="sound-toggle">🔊</button>
+
+    <div id="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+        <div class="image-container">
+            <img class="image" src="https://safebooru.org//images/4173/76bb0d972a726a3e54dddceaca64931be28ffd23.jpg" draggable="false" />
+            <div class="text-box">There was a girl named <span class="name-highlight">Dolores</span>, who wanted to find a job, so she took a bus to the city.</div>
+        </div>
+        <div class="image-container">
+            <img class="image" src="https://i.postimg.cc/j2cY8mBN/ed872fc2838d8e17c72c3d4c69ef72cec26bf182.png" draggable="false" />
+            <div class="text-box">And that was <br> the last time, anyone had seen her.</div>
+        </div>
+        <div class="image-container">
+            <img class="image" src="https://safebooru.org//images/1044/4285e929d90a2d8ef8bd05ac205683123bb8d2e9.png" draggable="false" />
+            <div class="text-box">Her friends have searched everywhere for her, looked over every town, and asked every person.</div>
+        </div>
+        <div class="image-container">
+            <img class="image" src="https://safebooru.org//images/4086/955860ad885ae7d747100f31167a839e480387bd.jpg" draggable="false" />
+            <div class="text-box glitch" data-text="Did she lose her way? Was She kidnapped? Got into an accident? D̵̷̨̧̨̞̰͎͉̗͕̟̻͇͆͌͒̈́̄̀̍͗̽̃̿̂̑͑͒̈́̒͑̕͘͟͞r̷̵̨̧̧͙̙͖̱̟͇͇̝͚̻͚̳̘͔ͩ̂͛̂̇̍ͩ̃͋͘͟͢͜͠͞ͅȍ̵̡̧̗̠̤̘̤͋̌ͮ͆͟͠w̶͖̺̹̼̙̪̫͚̤̃̅ͯ̑͐ͪͩ̇̌̉̋͊̈́̀̂̊̇ͧ́ͧ͐͟ņ̨̝̖̻͔͌ę̴̤͓̰̼͖̱͎̲̻̯̖̎̐̋̔͊̉̓̔͊̔͋͐̾ͯ͝ͅd̸̸̢̛̘̳͚̣̹̟̮̮͇͕͇̱̳͚̃̊́̀̒̂̋͗͆̾ͣͨͨ͒͋͘̕͟͟͝͞ͅ?̸̭̥͔͇͛̈͋͆̿̅ S̵̸̝͍̯̝̼͇̭͉̘̜͇ͭ̀̀ͥͧͭ̂̔͛ͪͪ̽ͯ̏̆ͧ́́͘̕͠͠͠t̤̪͇̪̜͔̯̓͑̌͆̎̍̔̑ͧ͟_̵̡̧̛̮̘̟͇̟́̽̓̅̏͛̉̒̅̀ͤ̈́̑̆̔͘̚͜͝ͅa̛̛̯̝͚̜͎̪͕̞͔̓̎̎ͫ̓ͯ̂ͯ̍͊͊͊͜͢͞b̸̷̨̞̯̯̥͔͈͔̟̤͔ͣ́̂ͪͫ̂̊̋̓́̊̀ͫ̉̊̌̐̀̎̀ͫ̆̍͒͘̕͟͠ͅͅb̴̷̨̞̭̟̠̜̱̩͙̬̗̙̭̹̙̯̈̔͌̋͒͋̓ͪͫ͆̔̀̆͐̃ͮ̂̍̐̕̚͜͜͜͝͠ͅed̸̴̨̫̪͕̫̱̱̱͎͖̯̝̺̤̹̝͍͋ͨͧ̏ͪ̈̄̎ͦ̑͗ͨ̈̔̎ͬ͒̂͡͞?̸̧̦̝̱̘̦͇̺̲̯̻͖̠̦ͫ͆͛͌ͦ̓ͦ̚͘͞ Eạ̧̢̤̺̳͔̻̑ͦͩͣ̀ͪ͟͠ţ̶̠͈̣̽̏ͩ̃̑͐̌͊͋̀̀̉̔̽̊͆̈͘̚͝ȩ͓͔̦̞͈̥̩̪̠͕͍͊̏̿̿ͦ̊͒̽̃̿͗ͫ̾͌ͧ͠͠͞_̹̞̙̣̃ͬ̎͗͑͟n̸̨̫ͮ̓̎͠?̵̴̷̡̛̟͖̞͙͓̹̲̩̰͇̦̃́͆̒̓͊̇̚͜ͅͅ">Did she lose her way? Was She kidnapped? Got into an accident? D̵̷̨̧̨̞̰͎͉̗͕̟̻͇͆͌͒̈́̄̀̍͗̽̃̿̂̑͑͒̈́̒͑̕͘͟͞r̷̵̨̧̧͙̙͖̱̟͇͇̝͚̻͚̳̘͔ͩ̂͛̂̇̍ͩ̃͋͘͟͢͜͠͞ͅȍ̵̡̧̗̠̤̘̤͋̌ͮ͆͟͠w̶͖̺̹̼̙̪̫͚̤̃̅ͯ̑͐ͪͩ̇̌̉̋͊̈́̀̂̊̇ͧ́ͧ͐͟ņ̨̝̖̻͔͌ę̴̤͓̰̼͖̱͎̲̻̯̖̎̐̋̔͊̉̓̔͊̔͋͐̾ͯ͝ͅd̸̸̢̛̘̳͚̣̹̟̮̮͇͕͇̱̳͚̃̊́̀̒̂̋͗͆̾ͣͨͨ͒͋͘̕͟͟͝͞ͅ?̸̭̥͔͇͛̈͋͆̿̅ S̵̸̝͍̯̝̼͇̭͉̘̜͇ͭ̀̀ͥͧͭ̂̔͛ͪͪ̽ͯ̏̆ͧ́́͘̕͠͠͠t̤̪͇̪̜͔̯̓͑̌͆̎̍̔̑ͧ͟_̵̡̧̛̮̘̟͇̟́̽̓̅̏͛̉̒̅̀ͤ̈́̑̆̔͘̚͜͝ͅa̛̛̯̝͚̜͎̪͕̞͔̓̎̎ͫ̓ͯ̂ͯ̍͊͊͊͜͢͞b̸̷̨̞̯̯̥͔͈͔̟̤͔ͣ́̂ͪͫ̂̊̋̓́̊̀ͫ̉̊̌̐̀̎̀ͫ̆̍͒͘̕͟͠ͅͅb̴̷̨̞̭̟̠̜̱̩͙̬̗̙̭̹̙̯̈̔͌̋͒͋̓ͪͫ͆̔̀̆͐̃ͮ̂̍̐̕̚͜͜͜͝͠ͅed̸̴̨̫̪͕̫̱̱̱͎͖̯̝̺̤̹̝͍͋ͨͧ̏ͪ̈̄̎ͦ̑͗ͨ̈̔̎ͬ͒̂͡͞?̸̧̦̝̱̘̦͇̺̲̯̻͖̠̦ͫ͆͛͌ͦ̓ͦ̚͘͞ Eạ̧̢̤̺̳͔̻̑ͦͩͣ̀ͪ͟͠ţ̶̠͈̣̽̏ͩ̃̑͐̌͊͋̀̀̉̔̽̊͆̈͘̚͝ȩ͓͔̦̞͈̥̩̪̠͕͍͊̏̿̿ͦ̊͒̽̃̿͗ͫ̾͌ͧ͠͠͞_̹̞̙̣̃ͬ̎͗͑͟n̸̨̫ͮ̓̎͠?̵̴̷̡̛̟͖̞͙͓̹̲̩̰͇̦̃́͆̒̓͊̇̚͜ͅͅ</div>
+        </div>
+        <div class="image-container">
+            <img class="image" src="https://safebooru.org//images/4519/9e96c168874a77c9c4cbdad848ae85224b817162.jpg" draggable="false" />
+            <div class="text-box"><span class="name">I</span> remember when I sat down with <span class="name-highlight">Dolores</span> to watch the sunrise she told <span class="name">me</span> how she hated this boring old Farm.</div>
+        </div>
+        <div class="image-container">
+            <img class="image" src="https://safebooru.org//images/4152/106512b29250e987a187d149ea6d998de13bfbb0.jpg" draggable="false" />
+            <div class="text-box">So maybe just maybe she ran away to start a beautiful new life away from this rotten place .... or maybe ..... </div>
+        </div>
+        <div class="image-container">
+            <img class="image2" src="https://i.postimg.cc/3NYvW2wK/ebbf753b1e92ae68d9c1f2a49f6bb8c4761a36fc.jpg" draggable="false" />
+            <div class="text-box2">🗡</div>
+        </div>
+    </div>
+
+    <script>
+        // Create blood drips
+        function createBloodDrips() {
+            const container = document.getElementById('blood-drips');
+            for (let i = 0; i < 10; i++) {
+                const drip = document.createElement('div');
+                drip.className = 'blood-drip';
+                drip.style.left = `${Math.random() * 100}vw`;
+                drip.style.height = `${50 + Math.random() * 100}px`;
+                drip.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(drip);
+            }
+        }
+
+        // Ambient sound
+        let soundPlaying = false;
+        const ambientSound = new Audio('audio/MusicBox.mp3');
+        ambientSound.loop = true;
+
+        document.getElementById('sound-toggle').addEventListener('click', function() {
+            if (soundPlaying) {
+                ambientSound.pause();
+                this.textContent = '🔊';
+            } else {
+                ambientSound.play();
+                this.textContent = '🔇';
+            }
+            soundPlaying = !soundPlaying;
+        });
+
+        // Initialize effects
+        window.onload = function() {
+            createBloodDrips();
+            window.scrollTo(0, 0);
+        };
+
+        // Image track interaction
+        const track = document.getElementById("image-track");
+
+        const handleOnDown = e => track.dataset.mouseDownAt = e.clientX;
+
+        const handleOnUp = () => {
+            track.dataset.mouseDownAt = "0";  
+            track.dataset.prevPercentage = track.dataset.percentage;
+        }
+
+        const handleOnMove = e => {
+            if(track.dataset.mouseDownAt === "0") return;
+            
+            const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX,
+                maxDelta = window.innerWidth / 2;
+            
+            const percentage = (mouseDelta / maxDelta) * -100,
+                nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + percentage,
+                nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100);
+            
+            track.dataset.percentage = nextPercentage;
+            
+            track.animate({
+                transform: `translate(${nextPercentage}%, -50%)`
+            }, { duration: 1200, fill: "forwards" });
+            
+            for(const image of track.getElementsByClassName("image")) {
+                image.animate({
+                    objectPosition: `${100 + nextPercentage}% center`
+                }, { duration: 1200, fill: "forwards" });
+            }
+        }
+
+        // Event listeners
+        window.onmousedown = e => handleOnDown(e);
+        window.ontouchstart = e => handleOnDown(e.touches[0]);
+        window.onmouseup = e => handleOnUp(e);
+        window.ontouchend = e => handleOnUp(e.touches[0]);
+        window.onmousemove = e => handleOnMove(e);
+        window.ontouchmove = e => handleOnMove(e.touches[0]);
+
+        // Random glitch effect
+        setInterval(() => {
+            if (Math.random() > 0.9) {
+                document.body.style.filter = 'contrast(1.5) brightness(0.8)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 100);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        canvas {
+            border: 4px solid #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-controls {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Ping Pong Game</h1>
+    <canvas id="pingPongCanvas" width="800" height="400"></canvas>
+    
+    <div class="controls">
+        <div class="player-controls">
+            <h3>Player 1</h3>
+            <p>W - Up</p>
+            <p>S - Down</p>
+        </div>
+        <div class="player-controls">
+            <h3>Player 2</h3>
+            <p>↑ - Up</p>
+            <p>↓ - Down</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pingPongCanvas');
+        const context = canvas.getContext('2d');
+
+        // Game elements
+        const paddleWidth = 15;
+        const paddleHeight = 100;
+        const paddleSpeed = 3;
+        const ballSize = 12;
+        const initialBallSpeed = 3;
+
+        // Paddle positions
+        let paddle1Y = (canvas.height - paddleHeight) / 2;
+        let paddle2Y = (canvas.height - paddleHeight) / 2;
+        let paddle1DY = 0;
+        let paddle2DY = 0;
+
+        // Ball properties
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        let ballSpeedX = initialBallSpeed * (Math.random() > 0.5 ? 1 : -1);
+        let ballSpeedY = initialBallSpeed * (Math.random() * 2 - 1);
+
+        // Scores
+        let player1Score = 0;
+        let player2Score = 0;
+
+        function draw() {
+            // Draw gradient background
+            const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a2a6c');
+            gradient.addColorStop(0.5, '#b21f1f');
+            gradient.addColorStop(1, '#fdbb2d');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw center line
+            context.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            context.setLineDash([10, 10]);
+            context.beginPath();
+            context.moveTo(canvas.width / 2, 0);
+            context.lineTo(canvas.width / 2, canvas.height);
+            context.stroke();
+            context.setLineDash([]);
+
+            // Draw paddles with shadow effect
+            context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            context.shadowBlur = 10;
+            context.shadowOffsetX = 5;
+            context.shadowOffsetY = 5;
+            
+            // Player 1 paddle (left)
+            context.fillStyle = '#4CAF50';
+            context.fillRect(0, paddle1Y, paddleWidth, paddleHeight);
+            
+            // Player 2 paddle (right)
+            context.fillStyle = '#2196F3';
+            context.fillRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight);
+            
+            context.shadowColor = 'transparent';
+
+            // Draw ball with shine effect
+            const ballGradient = context.createRadialGradient(
+                ballX - 3, ballY - 3, 0,
+                ballX, ballY, ballSize
+            );
+            ballGradient.addColorStop(0, '#ffffff');
+            ballGradient.addColorStop(1, '#ff5722');
+            context.fillStyle = ballGradient;
+            context.beginPath();
+            context.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
+            context.fill();
+
+            // Draw scores
+            context.font = '48px Arial';
+            context.fillStyle = 'white';
+            context.textAlign = 'center';
+            context.fillText(player1Score.toString(), canvas.width / 4, 50);
+            context.fillText(player2Score.toString(), (canvas.width / 4) * 3, 50);
+        }
+
+        function update() {
+            // Update paddles with boundary check
+            paddle1Y = Math.max(0, Math.min(canvas.height - paddleHeight, paddle1Y + paddle1DY));
+            paddle2Y = Math.max(0, Math.min(canvas.height - paddleHeight, paddle2Y + paddle2DY));
+
+            // Update ball position
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Ball collision with top and bottom
+            if (ballY < ballSize || ballY > canvas.height - ballSize) {
+                ballSpeedY = -ballSpeedY;
+                // Add some sound effect here if you want
+            }
+
+            // Ball collision with paddles
+            if (ballX - ballSize < paddleWidth && ballY > paddle1Y && ballY < paddle1Y + paddleHeight) {
+                // Calculate angle based on where ball hits paddle
+                const hitPosition = (ballY - (paddle1Y + paddleHeight / 2)) / (paddleHeight / 2);
+                const angle = hitPosition * Math.PI / 4; // Max 45 degrees
+                
+                ballSpeedX = Math.cos(angle) * initialBallSpeed * 1.2;
+                ballSpeedY = Math.sin(angle) * initialBallSpeed * 1.2;
+                ballX = paddleWidth + ballSize; // Prevent sticking
+            }
+
+            if (ballX + ballSize > canvas.width - paddleWidth && ballY > paddle2Y && ballY < paddle2Y + paddleHeight) {
+                const hitPosition = (ballY - (paddle2Y + paddleHeight / 2)) / (paddleHeight / 2);
+                const angle = hitPosition * Math.PI / 4;
+                
+                ballSpeedX = -Math.cos(angle) * initialBallSpeed * 1.2;
+                ballSpeedY = Math.sin(angle) * initialBallSpeed * 1.2;
+                ballX = canvas.width - paddleWidth - ballSize;
+            }
+
+            // Score points and reset ball
+            if (ballX < 0) {
+                player2Score++;
+                resetBall();
+            } else if (ballX > canvas.width) {
+                player1Score++;
+                resetBall();
+            }
+        }
+
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            
+            // Random direction but favoring the player who just scored
+            if (ballSpeedX < 0) {
+                ballSpeedX = initialBallSpeed;
+            } else {
+                ballSpeedX = -initialBallSpeed;
+            }
+            
+            ballSpeedY = (Math.random() * 2 - 1) * initialBallSpeed;
+        }
+
+        function gameLoop() {
+            draw();
+            update();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function keyDownHandler(event) {
+            switch (event.key.toLowerCase()) {
+                case 'arrowup':
+                    paddle2DY = -paddleSpeed;
+                    break;
+                case 'arrowdown':
+                    paddle2DY = paddleSpeed;
+                    break;
+                case 'w':
+                    paddle1DY = -paddleSpeed;
+                    break;
+                case 's':
+                    paddle1DY = paddleSpeed;
+                    break;
+            }
+        }
+
+        function keyUpHandler(event) {
+            switch (event.key.toLowerCase()) {
+                case 'arrowup':
+                case 'arrowdown':
+                    paddle2DY = 0;
+                    break;
+                case 'w':
+                case 's':
+                    paddle1DY = 0;
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', keyDownHandler);
+        document.addEventListener('keyup', keyUpHandler);
+
+        gameLoop();
+    </script>
+</body>
+</html>
