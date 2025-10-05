@@ -1,0 +1,15 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.add_experimental_option("detach", True)  # keeps browser open
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+driver.get("https://www.aldi-nord.de/karriere/bewerbung.html?&jobId=Q91FK026203F3VBQB68V4V7GB-224650&langCode=de_DE&sourceBoard=stepstone360&cType=JobBoard&sType=stepstone360")
+
+driver.find_element("Name", "Vorname").send_keys("Alhasan")
+driver.find_element("name", "Nachname").send_keys("Hasan")
+driver.find_element("name", "email").send_keys("alhasanh085@gmail.com")
+driver.find_element("name", "Telefonnummer ").send_keys("50000")

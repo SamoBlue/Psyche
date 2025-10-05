@@ -1,0 +1,14 @@
+{
+  "name": "John Doe",
+  "address": "123 Main St, Berlin",
+  "email": "john.doe@email.com",
+  "phone": "+49 123 456789",
+  "desired_salary": "50,000 EUR",
+  "experience": [
+    {
+      "company": "Lieferando",
+      "role": "Courier",
+      "dates": "2022-2023"
+    }
+  ]
+}
