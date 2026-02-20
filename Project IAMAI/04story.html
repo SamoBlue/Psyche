@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Deep Story</title>
+<link rel="stylesheet" href="IAMAI.css" media="screen" />
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02characters.html">Characters</a></li>
+      <li><a href="03gameplay.html">Gameplay</a></li>
+      <li><a href="04story.html">Story</a></li>
+      <li><a href="05levels.html">Levels</a></li>
+      <li><a href="06endings.html">Horror</a></li>
+      <li><a href="07next-steps.html">Endings</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h1 class="section-title" data-number="4">Story</h1>
+you start the game in an abandoned Island with noone to talk to but your
+  <div class="media-placeholder">
+    <img src="https://via.placeholder.com/1200x400?text=Story+Cycles" alt="Story">
+  </div>
+  <div class="bubble">You wake up in a lighthouse...</div>
+  <div class="bubble">As you successfully scan two locations...</div>
+  <div class="bubble">The tension peaks in the final location...</div>
+  <div class="bubble">On floor 2, you encounter three starving animals...</div>
+  <div class="bubble">The elevator ascends to floor 5...</div>
+  <div class="story-cycle">...</div>
+  <!-- etc. -->
+</div>
+<footer>...</footer>
+<div class="back-to-top">↑</div>
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Section color animation (optional)
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>

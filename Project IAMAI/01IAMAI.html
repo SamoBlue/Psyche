@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="IAMAI.css" media="screen" />
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02characters.html">Characters</a></li>
+      <li><a href="03gameplay.html">Gameplay</a></li>
+      <li><a href="04story.html">Story</a></li>
+      <li><a href="05levels.html">Levels</a></li>
+      <li><a href="06horror.html">Horror</a></li>
+      <li><a href="07endings.html">Endings</a></li>
+      <li><a href="08next-steps.html">Next Steps</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>IAMAI</h1>
+    <p>A mysterious exploration where Geogeusser meets the Rusty Lake.</p>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- Game Overview -->
+  <section id="overview">
+    <h2 class="section-title" data-number="1">Game Overview</h2><br>
+
+    <h3>Hi, I’ve been working on a video game for the past year called IAMAI (or GeoBot — name still work in progress). 
+    It’s basically a mix between GeoGuessr and any horror game with “Crazy Girlfriend” vibes. <br>
+    <br>A Robot girl tells you that your objective is to help her figure out the name of the country you are in,
+    so you have to search around the level for clues and give her the right name of the country. <br> <br>
+    After 4 locations you arive at an abandoned hospital and the robot girl is nowhere to be seen and the horror part of the game starts, 
+    where you have to solve diffrent kind of puzzles and try to find the girl and escape.</h3>
+    
+    <!-- Multiple images on main page -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div class="media-placeholder">
+        <img src="Over2.png" alt="Screenshot 1">
+        <div class="caption">You start in some Island</div>
+      </div>
+      <div class="media-placeholder">
+        <img src="Over1.png" alt="Screenshot 2">
+        <div class="caption">With your trusty Robot Assisstant</div>
+      </div>
+      <div class="media-placeholder">
+        <img src="Over3.png" alt="Screenshot 3">
+        <div class="caption">To explore abandoned locations</div>
+      </div>
+    </div>
+
+
+
+    
+    <div class="cards">
+      <div class="card">
+        <h3>Genre</h3>
+        <ul>
+          <li>Exploration.</li>
+          <li>Puzzle.</li>
+          <li>Psychological horror.</li>
+          <li>Multiple Endings.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Core Mechanics</h3>
+        <ul>
+          <li>Scan glitchy Object to reveal them.</li>
+          <li>Guess real-world locations from environmental clues.</li>
+          <li>Interact with AI-RIS for hints.</li>
+          <li>Discover hidden horror twists.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Unique Selling Points</h3>
+        <ul>
+          <li>Map exploration meets subtle horror.</li>
+          <li>Authentic landmarks with surreal deviations.</li>
+          <li>Atmospheric horror.</li>
+          <li>Really mysterious Robot companion</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  &copy; 2025 IAMAI Game Project | Design Document v2.0
+</footer>
+
+<div class="back-to-top" id="backToTop">↑</div>
+
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  
+  // Assign section colors
+  document.querySelectorAll('section').forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>

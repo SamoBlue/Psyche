@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Next Steps</title>
+<link rel="stylesheet" href="IAMAI.css" media="screen" />
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02characters.html">Characters</a></li>
+      <li><a href="03gameplay.html">Gameplay</a></li>
+      <li><a href="04story.html">Story</a></li>
+      <li><a href="05levels.html">Levels</a></li>
+      <li><a href="06endings.html">Horror</a></li>
+      <li><a href="07next-steps.html">Endings</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h1 class="section-title" data-number="10">Next Steps</h1>
+  <div class="media-placeholder">
+    <img src="https://via.placeholder.com/1200x400?text=Development+Roadmap" alt="Roadmap">
+  </div>
+  <div class="card">
+    <ul>
+ <section id="help-wanted">
+    <h2 class="section-title" data-number="2">Current Development & Help Wanted</h2>
+    <p style="margin-bottom: 1.5rem;">After a year of development in Unreal Engine 5, the gameplay, levels, and story are complete. Now we need your help to bring the world to life with original art, audio, and polish. Below are the specific areas where contributions would make a huge difference — all unpaid for now, but with the goal of strengthening the project for funding pitches.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🎨 Character Designer (3D Model & Animations)</h3>
+        <p><strong>The Main Character:</strong> A robot girl, mostly human‑looking, styled similarly to Miss Pauling from <em>Team Fortress 2</em>. She’s a nerdy scientist who accidentally became a robot and now helps the player.</p>
+        <p><strong>Needed:</strong> Full 3D model, plus animations: walking, turning, standing/idle (waiting for player). Assistance with Unreal Engine 5 integration is a plus (I don’t use Blender).</p>
+      </div>
+
+      <div class="card">
+        <h3>🎙️ Voice Actor</h3>
+        <p><strong>Voice style:</strong> Normal girl speaking in a robotic, flat tone with almost no emotion — but occasionally sarcastic/funny, like GLaDOS from <em>Portal</em>. Should deliver scientific jargon naturally (e.g., “quantum particle simulation”).</p>
+        <p><strong>Lines:</strong> Dialogue for the AI‑RIS character (see the <a href="characters.html">Characters</a> page for examples).</p>
+      </div>
+
+      <div class="card">
+        <h3>🏗️ Environment / Object Designer</h3>
+        <p>Custom puzzle‑specific objects are needed — not generic assets. Examples:</p>
+        <ul>
+          <li>Dusted tea set</li>
+          <li>Chair with spots of blood</li>
+          <li>2D textures: graffiti, torn paper notes, warning signs (used as hints)</li>
+        </ul>
+        <p>All assets should fit the story’s evolving horror tone.</p>
+      </div>
+
+      <div class="card">
+        <h3>🎵 Music & Sound Effects</h3>
+        <p>Not urgent, but eventually needed:</p>
+        <ul>
+          <li>A few music tracks (atmospheric, tension‑building)</li>
+          <li>Basic SFX: doors, footsteps, scanning, ambient sounds</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bubble" style="margin-top: 2rem; border-left-color: #f2c79f;">
+      <p style="font-size: 1.2rem;"><strong>Project Status:</strong> This is currently an unpaid collaboration to build a strong pitch. If funding is secured, all contributors will be compensated fairly. I’m happy to discuss details over Discord — feel free to reach out!</p>
+      <p>❤️ Thank you for reading and for any help you can offer.</p>
+    </div>
+  </section>
+    </ul>
+  </div>
+</div>
+<footer>...</footer>
+<div class="back-to-top">↑</div>
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Section color animation (optional)
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>
