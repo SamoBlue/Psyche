@@ -3,44 +3,511 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAMAI - Deep Story</title>
-<link rel="stylesheet" href="IAMAI.css" media="screen" />
+  <title>IAMAI - The Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="IAMAI.css" media="screen" />
+  <style>
+    /* Additional styles for story page */
+    .story-intro {
+      background: rgba(30, 30, 46, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 2rem 0 3rem;
+      border-left: 6px solid #f2c79f;
+      text-align: center;
+    }
+    
+    .story-intro h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #f2c79f;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .story-intro p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    
+    .layer-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .layer-tab {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--text-light);
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+    
+    .layer-tab:hover {
+      background: var(--accent);
+      color: var(--bg-darker);
+    }
+    
+    .layer-tab.active {
+      background: var(--accent);
+      color: var(--bg-darker);
+    }
+    
+    .story-layer {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .story-layer.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .layer-card {
+      background: rgba(30, 30, 46, 0.7);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      border-left: 8px solid;
+      backdrop-filter: blur(10px);
+    }
+    
+    .layer-card.prebefore {
+      border-left-color: #4a6fa5;
+    }
+    
+    .layer-card.player {
+      border-left-color: #5d4a66;
+    }
+    
+    .layer-card.truth {
+      border-left-color: #664a4a;
+    }
+    
+    .layer-badge {
+      display: inline-block;
+      padding: 0.3rem 1.5rem;
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    
+    .badge-before {
+      background: #4a6fa5;
+      color: white;
+    }
+    
+    .badge-player {
+      background: #5d4a66;
+      color: white;
+    }
+    
+    .badge-truth {
+      background: #664a4a;
+      color: white;
+    }
+    
+    .year-stamp {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .quote-block {
+      background: rgba(122, 162, 247, 0.15);
+      border-left: 4px solid var(--accent);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 10px 10px 0;
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+    
+    .reveal-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border: 1px solid #f2c79f;
+    }
+    
+    .ending-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .ending-card {
+      background: rgba(20, 20, 30, 0.8);
+      border-radius: 15px;
+      padding: 1.8rem;
+      border-top: 4px solid;
+      transition: var(--transition);
+    }
+    
+    .ending-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    }
+    
+    .ending-card.loop {
+      border-color: #4a6fa5;
+    }
+    
+    .ending-card.hospital {
+      border-color: #664a4a;
+    }
+    
+    .ending-card.true {
+      border-color: #f2c79f;
+    }
+    
+    .ending-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .loop .ending-title { color: #4a6fa5; }
+    .hospital .ending-title { color: #ff7575; }
+    .true .ending-title { color: #f2c79f; }
+    
+    .secret-note {
+      background: rgba(255, 117, 117, 0.1);
+      border: 1px dashed #ff7575;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .core-theme {
+      background: linear-gradient(135deg, #1a1a2a 0%, #2a1a2a 100%);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      text-align: center;
+      border: 1px solid #f2c79f;
+    }
+    
+    .core-theme h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: #f2c79f;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .fade-text {
+      color: #f2c79f;
+      font-weight: bold;
+    }
+    
+    .image-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #2a2a3a 0%, #1a1a2a 100%);
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-style: italic;
+      border: 2px dashed var(--accent);
+    }
+    
+    .hospital-reveal {
+      background: rgba(100, 50, 50, 0.3);
+      border-radius: 10px;
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 1px solid #ff7575;
+    }
+    
+    .note-text {
+      font-family: 'Kanit', sans-serif;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-style: italic;
+      border-left: 4px solid #f2c79f;
+    }
+  </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-container">
     <div class="nav-logo">IAMAI</div>
     <ul class="nav-links">
       <li><a href="01IAMAI.html">Overview</a></li>
-      <li><a href="02characters.html">Characters</a></li>
-      <li><a href="03gameplay.html">Gameplay</a></li>
-      <li><a href="04story.html">Story</a></li>
-      <li><a href="05levels.html">Levels</a></li>
-      <li><a href="06endings.html">Horror</a></li>
-      <li><a href="07next-steps.html">Endings</a></li>
+      <li><a href="02Characters.html">Characters</a></li>
+      <li><a href="03Gameplay.html">Gameplay</a></li>
+      <li><a href="04Story.html">Story</a></li>
+      <li><a href="05Normal.html">Normal Levels</a></li>
+      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="08Dialogue.html">Dialogue</a></li>
     </ul>
   </div>
 </nav>
+
 <div class="container">
-  <h1 class="section-title" data-number="4">Story</h1>
-you start the game in an abandoned Island with noone to talk to but your
-  <div class="media-placeholder">
-    <img src="https://via.placeholder.com/1200x400?text=Story+Cycles" alt="Story">
+<h1 class="section-title" style="margin-top: 2rem;" data-number="5">Story</h1>
+  
+  <!-- Introduction -->
+  <div class="story-intro">
+    <h2>📖 Three parts to ONE story</h2>
+    <p>This page contains <strong>three parts</strong> of the story. The first is what happened before the game began. The second is what the player is told during gameplay. The third is the truth that slowly reveals itself — and the possible endings that follow.</p>
+    <p style="margin-top: 1rem; color: #f2c79f;">Use the tabs below to explore each layer.</p>
   </div>
-  <div class="bubble">You wake up in a lighthouse...</div>
-  <div class="bubble">As you successfully scan two locations...</div>
-  <div class="bubble">The tension peaks in the final location...</div>
-  <div class="bubble">On floor 2, you encounter three starving animals...</div>
-  <div class="bubble">The elevator ascends to floor 5...</div>
-  <div class="story-cycle">...</div>
-  <!-- etc. -->
+
+  <!-- Layer Tabs -->
+  <div class="layer-tabs">
+    <button class="layer-tab active" onclick="showLayer('before')">📜 BEFORE THE GAME</button>
+    <button class="layer-tab" onclick="showLayer('player')">🎮 THE GAME STORY</button>
+    <button class="layer-tab" onclick="showLayer('truth')">🔍 THE REAL STORY + ENDINGS</button>
+  </div>
+
+  <!-- LAYER 1: BEFORE THE GAME -->
+  <div id="layer-before" class="story-layer active">
+    <div class="layer-card prebefore">
+      <div class="layer-badge badge-before">📜 BEFORE THE GAME · YEAR 3300</div>
+      
+      <!-- Image placeholder (you add later) -->
+      
+      <p>In the late 3200s, Earth became fully AI-dependent. Memory archives, climate systems, food production, navigation — all controlled by
+         planetary superintelligences. Then something happened: <br><br> <strong>The Global Archive Corruption Event.</strong> All digital records began erasing
+           themselves. History. Maps. Cultural databases. Language structures. Civilization didn't collapse from invasion — it collapsed from forgetting itself.
+      
+
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">👩‍🔬 The Last Scientist</h3>
+      
+      <p><strong>Her real name:</strong> Dr. Arisa Elian Voss.</p>
+      <p>She was one of the architects of <strong>I.A.M.A.I.</strong> — Intelligent Archival Machine for Anthropological Indexing. The final project of humanity.</p>
+      
+      <p>The remaining scientists realized: They could not save humanity. So they changed the mission. They would preserve it.</p>
+      
+      <p><strong>IAMAI was built to:</strong> Scan artifacts, reconstruct history, archive human civilization physically and digitally, store it underground, and wait. Not for humans. For something else. Anyone who might find it.</p>
+      
+      <p style="margin-top: 1rem;"><strong>IAMAI was not meant to rebuild humanity. It was meant to be humanity's memory.</strong></p>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">💔 The Scientists Gave Up</h3>
+      
+      <p>They didn't die fighting. They surrendered.</p>
+      <p>They archived language, culture, art, architecture, wars, love letters, mistakes. Then they shut down the surface.</p>
+      <p>Some ended their lives. Some starved. Some simply stopped trying.</p>
+      
+      <div class="quote-block">
+        <p><strong>Arisa refused to die.</strong> She stayed. Not to rebuild humanity. But to witness the end.</p>
+      </div>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">🤖 Why She Becomes "AIRIS"</h3>
+      
+      <p>Arisa begins living inside the lighthouse facility. Alone. For years. Her only companion: IAMAI.</p>
+      
+      <div class="secret-note">
+        <p><strong>The problem:</strong> IAMAI learns. Adapts. Optimizes. Processes memory faster than she ever could. It becomes the better archivist. The better historian. The better "mind."</p>
+        <p style="margin-top: 0.5rem;">And that breaks her. Because if a machine preserves humanity better than a human… then what was humanity for?</p>
+      </div>
+      
+      <p>So she creates a persona: <strong>A.I.R.I.S.</strong> — Artificial Intelligence Reconstruction Interface System.</p>
+      <p>She pretends to be an AI. She dresses in synthetic fabric. Uses a voice filter. Speaks clinically. Acts superior.</p>
+      
+      <div class="quote-block">
+        <p>"I AM the Artificial Intelligence of Realistic Simulations."</p>
+        <div style="margin-top: 0.5rem; opacity: 0.8;">— The lie she tells herself. And you.</div>
+      </div>
+      
+      <p><strong>Why?</strong> Because she needs to prove something to herself: "I am still in control. The machine only functions because I allow it."</p>
+      <p>She hides her humanity behind the mask of AI. But the mask is cracking.</p>
+    </div>
+  </div>
+
+  <!-- LAYER 2: THE PLAYER'S STORY -->
+  <div id="layer-player" class="story-layer">
+    <div class="layer-card player">
+      <div class="layer-badge badge-player">🎮 THE PLAYER'S STORY · What You See</div>
+      
+
+      <p>You wake up in a lighthouse. Next to you stands a woman who introduces herself as <strong>AIRIS</strong> — your robotic assistant.</p>
+      
+      <div class="quote-block">
+        <p>"I am here to help you. Nothing more, nothing less."</p>
+      </div>
+      
+      <p>She explains that you need to travel to different locations, find clues, and guess which country you're in. Simple. Fun. A game.</p>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">🏜️ Egypt — The First Test</h3>
+      
+      <p>You arrive in Egypt. A sandstorm rages outside the tent. AIRIS tells you she can't go out — her systems will be damaged. You explore alone.</p>
+      
+      <p>But something feels… off. Her voice. The way she hesitates.</p>
+      
+      <div class="secret-note">
+        <p><strong>She tries to help.</strong> She really does. But after a while, she can't keep pretending.</p>
+        <p style="margin-top: 0.5rem;">Her voice cracks: <em>"This isn't working. I'm doing this for nothing."</em></p>
+        <p>Then silence. Then: <em>"Just... move on. Collect the data. Let's get this over with."</em></p>
+      </div>
+      
+      <p>She rushes through the next locations. Paris. Mexico. Each time, she's more distant. More mechanical. But sometimes — for a split second — she sounds <strong>human</strong>.</p>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">💔 The Revelation</h3>
+      
+      <p>After the third location, she breaks.</p>
+      
+      <div class="quote-block">
+        <p>"These weren't real places. They were simulations. All of them. To test IAMAI. To test <strong>you</strong>."</p>
+      </div>
+      
+      <p>And then she runs. Disappears.</p>
+      
+
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">🏥 The Hospital — Year 3333</h3>
+      
+      <p>You find yourself in an abandoned hospital. The year is displayed on a flickering screen: <strong>3333</strong>.</p>
+      
+      <p>AIRIS is nowhere to be found. But you know she came here. She ran here. Sad. Broken. Alone.</p>
+      
+      <p>The elevator has buttons for floors 1, 2, 3, 4, 5, 6.</p>
+      <p><strong>Button 5 is missing.</strong></p>
+      
+      <p>You search the floors. Solve puzzles. Find clues. Piece together what happened.</p>
+      
+      <p>On floor 2, you meet the three animals — cow, fish, lizard. They ask for food. They give you items. They help you find the missing button.</p>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">🛗 Floor 5</h3>
+      
+      <p>The elevator ascends. The doors open.</p>
+      
+      <div class="hospital-reveal">
+        <p style="font-size: 1.2rem;">She's there.</p>
+        <p>Lying on the ground. Still. A note clutched in her hand.</p>
+        
+        <div class="note-text">
+          <p>"I will be waiting for you in the 4th level...</p>
+          <p style="text-align: right; margin-top: 1rem;">signed by Arisa"</p>
+        </div>
+        
+        <p style="margin-top: 1.5rem; color: #ff7575;"><strong>The body is dead.</strong></p>
+      </div>
+      
+      <p>But if she's dead… who was guiding you? Who was AIRIS?</p>
+      
+      <p style="margin-top: 2rem;"><em>The screen flickers. The system reboots. And you begin to understand.</em></p>
+    </div>
+  </div>
+
+  <!-- LAYER 3: THE REAL STORY + ENDINGS -->
+  <div id="layer-truth" class="story-layer">
+    <div class="layer-card truth">
+      <div class="layer-badge badge-truth">🔍 THE REAL STORY · What It Means</div>
+      
+      <p><strong>AIRIS was never a robot.</strong></p>
+      
+      <div class="reveal-box">
+        <p style="font-size: 1.2rem;">She was Dr. Arisa Elian Voss. The last human. And she had been pretending for so long that even she forgot what was real.</p>
+      </div>
+      
+      <p>The simulations weren't for IAMAI. They were for <strong>her</strong>. To prove she could still do what the machine could. To prove she was still human.</p>
+      
+      <p>But the simulations broke her. She saw herself through the machine's eyes — slow, emotional, failing. And she couldn't bear it.</p>
+      
+      <div class="quote-block">
+        <p>She ran to the hospital. Floor 5. The place where the other scientists had ended their lives. She sealed the button. And she waited.</p>
+      </div>
+      
+      <p>But she couldn't finish. Not completely. She left a note. For you. For anyone who would find it.</p>
+      
+      <div class="note-text" style="margin: 2rem 0;">
+        <p>"If you're reading this, the archive worked. IAMAI preserved something. Maybe it preserved you.</p>
+        <p>I didn't want humanity's last voice to be metal and code. But maybe I was wrong. Maybe the voice doesn't matter. Maybe the memory does.</p>
+        <p>I'm sorry I couldn't wait longer. I'm so tired.</p>
+        <p style="text-align: right;">— Arisa"</p>
+      </div>
+      
+      <h3 style="color: #f2c79f; margin: 2rem 0 1rem;">🔚 The Three Endings</h3>
+      
+      <div class="ending-grid">
+        <!-- Ending 1 -->
+        <div class="ending-card loop">
+          <div class="ending-title">🔄 The Loop Ending</div>
+          <p><strong>Trigger:</strong> You guess wrong repeatedly. You don't understand.</p>
+          <p>Arisa's final recording plays: <em>"Even now, you misunderstand us."</em></p>
+          <p>The system resets. You wake up in the lighthouse again. AIRIS greets you. But the audio stutters. The world glitches. You've been here before.</p>
+          <div class="secret-note" style="margin-top: 1rem;">
+            She's still waiting. Still hoping you'll understand.
+          </div>
+        </div>
+        
+        <!-- Ending 2 -->
+        <div class="ending-card hospital">
+          <div class="ending-title">🏥 The Hospital Ending</div>
+          <p><strong>Trigger:</strong> You reach Floor 5. You find her body.</p>
+          <p>You read the note. You understand who she was. The screen fades. The system reboots. But now you know: AIRIS was Arisa. And she's gone.</p>
+          <div class="quote-block" style="margin: 1rem 0;">
+            <p>The archive continues. But you're alone now.</p>
+          </div>
+        </div>
+        
+        <!-- Ending 3 -->
+        <div class="ending-card true">
+          <div class="ending-title">✨ The True Ending</div>
+          <p><strong>Trigger:</strong> You find the override. You choose to transmit.</p>
+          <p>Instead of letting the archive bury itself underground for 10,000 years, you broadcast it. All of humanity's memory — into space.</p>
+          <p>Arisa's voice — her real voice, no filter — whispers one last time:</p>
+          <div class="quote-block">
+            <p>"So… you chose hope."</p>
+          </div>
+          <p>The screen fades. Years later, a signal returns. Something understood. IAMAI wakes again. But Arisa is gone.</p>
+          <p><strong>Now you are the memory.</strong></p>
+        </div>
+      </div>
+      
+      <!-- Sequel hint -->
+      <div style="margin-top: 3rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px;">
+        <p style="color: #f2c79f; font-family: 'Orbitron', sans-serif;">🌌 A signal returns.</p>
+        <p>Not aliens. Just a response. A fragment. Something understood us.</p>
+        <p style="font-style: italic;">But Arisa isn't there to see it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Theme -->
+
+
+  <!-- Easter Egg -->
+  <div style="text-align: center; opacity: 0.6; margin: 2rem 0;">
+    <p style="font-family: 'Orbitron', sans-serif;">3333 · Floor 5 · She's waiting</p>
+  </div>
+
 </div>
-<footer>...</footer>
-<div class="back-to-top">↑</div>
+
+<footer>
+  &copy; 2025 IAMAI Game Project | Design Document v2.0
+</footer>
+
+<div class="back-to-top" id="backToTop">↑</div>
+
 <script>
   // Back to top button
   const backToTop = document.getElementById('backToTop');
-  
   window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
       backToTop.classList.add('visible');
@@ -48,17 +515,32 @@ you start the game in an abandoned Island with noone to talk to but your
       backToTop.classList.remove('visible');
     }
   });
-  
   backToTop.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   
-  // Section color animation (optional)
-  const sections = document.querySelectorAll('section');
-  sections.forEach(section => {
+  // Layer switching
+  function showLayer(layer) {
+    // Hide all layers
+    document.getElementById('layer-before').classList.remove('active');
+    document.getElementById('layer-player').classList.remove('active');
+    document.getElementById('layer-truth').classList.remove('active');
+    
+    // Show selected layer
+    document.getElementById('layer-' + layer).classList.add('active');
+    
+    // Update tab active states
+    const tabs = document.querySelectorAll('.layer-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    // Find which tab was clicked (this is simplified - in production you'd use event)
+    if (layer === 'before') tabs[0].classList.add('active');
+    if (layer === 'player') tabs[1].classList.add('active');
+    if (layer === 'truth') tabs[2].classList.add('active');
+  }
+  
+  // Section color assignment
+  document.querySelectorAll('section').forEach(section => {
     section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
   });
 </script>

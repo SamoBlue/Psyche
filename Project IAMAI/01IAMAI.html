@@ -6,8 +6,99 @@
   <title>IAMAI - Overview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=play" rel="stylesheet">
   <link rel="stylesheet" href="IAMAI.css" media="screen" />
+  <style>
+    /* Additional styles for the overview page */
+    .game-structure {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .structure-card {
+      flex: 1;
+      min-width: 250px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent);
+      backdrop-filter: blur(5px);
+    }
+    
+    .structure-card h3 {
+      color: #f2c79f;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .number-highlight {
+      font-size: 2rem;
+      color: var(--accent);
+      font-family: 'Orbitron', sans-serif;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+    .highlight {
+      font-size: 1rem;
+      color: rgb(255, 227, 104);
+      font-family: 'Orbitron', sans-serif;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+        .number-light {
+      font-size: 1rem;
+      color: var(--accent);
+      font-family: 'Orbitron', sans-serif;
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+    
+    .trivia-section {
+      background: rgba(122, 162, 247, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 3rem 0;
+      border: 1px solid var(--accent);
+    }
+    
+    .trivia-title {
+      font-family: 'Orbitron', sans-serif;
+      color: #f2c79f;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .trivia-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .trivia-item {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+    }
+    
+    .trivia-number {
+      font-size: 2.5rem;
+      color: var(--accent);
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+    }
+    
+    .trivia-desc {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -16,20 +107,19 @@
     <div class="nav-logo">IAMAI</div>
     <ul class="nav-links">
       <li><a href="01IAMAI.html">Overview</a></li>
-      <li><a href="02characters.html">Characters</a></li>
-      <li><a href="03gameplay.html">Gameplay</a></li>
-      <li><a href="04story.html">Story</a></li>
-      <li><a href="05levels.html">Levels</a></li>
-      <li><a href="06horror.html">Horror</a></li>
-      <li><a href="07endings.html">Endings</a></li>
-      <li><a href="08next-steps.html">Next Steps</a></li>
+      <li><a href="02Characters.html">Characters</a></li>
+      <li><a href="03Gameplay.html">Gameplay</a></li>
+      <li><a href="04Story.html">Story</a></li>
+      <li><a href="05Normal.html">Normal Levels</a></li>
+      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="08Dialogue.html">Dialogue</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container">
-    <h1>IAMAI</h1>
+    <h1>IAMAI Design Document</h1>
     <p>A mysterious exploration where Geogeusser meets the Rusty Lake.</p>
   </div>
 </section>
@@ -40,12 +130,11 @@
   <section id="overview">
     <h2 class="section-title" data-number="1">Game Overview</h2><br>
 
-    <h3>Hi, I’ve been working on a video game for the past year called IAMAI (or GeoBot — name still work in progress). 
-    It’s basically a mix between GeoGuessr and any horror game with “Crazy Girlfriend” vibes. <br>
-    <br>A Robot girl tells you that your objective is to help her figure out the name of the country you are in,
-    so you have to search around the level for clues and give her the right name of the country. <br> <br>
-    After 4 locations you arive at an abandoned hospital and the robot girl is nowhere to be seen and the horror part of the game starts, 
-    where you have to solve diffrent kind of puzzles and try to find the girl and escape.</h3>
+    <h3>Hi, I've been working on a video game for the past year called <span class="highlight">IAMAI</span>(or <span class="highlight">GeoBot</span>— name still work in progress). 
+    It's basically a mix between <span class="highlight">GeoGuessr</span> and any horror game with "Questionable Crazy Girlfriend" vibes e.g. <span class="highlight">MiSide</span>,<span class="highlight">DDLC</span>,<span class="highlight">SOMA</span> <br>
+    <br>A Robot girl <span class="highlight">AI-RIS</span>tells you that your objective is to help her figure out the name of the country you are in,
+    so you have to search around the level for clues and give her the correct name of the country.<br><br>
+ 
     
     <!-- Multiple images on main page -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
@@ -55,7 +144,7 @@
       </div>
       <div class="media-placeholder">
         <img src="Over1.png" alt="Screenshot 2">
-        <div class="caption">With your trusty Robot Assisstant</div>
+        <div class="caption">With your trusty Robot Assistant</div>
       </div>
       <div class="media-placeholder">
         <img src="Over3.png" alt="Screenshot 3">
@@ -63,9 +152,71 @@
       </div>
     </div>
 
+    <h3>Basically the game is split into <span class="highlight">Two parts</span>: The First Part is "Guess the Country name", 
+    using the clues you find in the level you have to guess the correct location   between a list of countries, just like the website GeoGuessr. <br><br>
+    After <span class="number-light">3</span>levels you will be teleported to 4th weird level that looks like a real country but it's in fact the
+    2nd part of the video game, now you are playing a survival horror game where you have to navigate an abandoned hospital with 
+    <span class="number-light">3</span>floors. </h3>
 
+    <!-- Game Structure Section - NEW -->
+    <div class="game-structure">
+      <div class="structure-card">
+        <h3>Part 1: Exploration</h3>
+        <p><span class="number-highlight">3</span> normal levels across different countries. Search for clues, scan items, and guess the location name with your robot assistant's help.</p>
+        <ul style="margin-top: 1rem;">
+          <li>Level 1: Egypt</li>
+          <li>Level 2: France</li>
+          <li>Level 3: [Classified]</li>
+        </ul>
+      </div>
+      
+      <div class="structure-card">
+        <h3>Part 2: Horror</h3>
+        <p><span class="number-highlight">One</span> massive hospital level with <span class="number-highlight">3</span> creepy floors connected by an elevator.</p>
+        <ul style="margin-top: 1rem;">
+          <li>Floor 1: Garden</li>
+          <li>Floor 2: Patient Rooms & The Animals</li>
+          <li>Floor 3: Nurse Room</li>
+        </ul>
+      </div>
+    </div>
 
-    
+    <!-- The Power of Three - NEW Trivia Section -->
+    <div class="trivia-section">
+      <div class="trivia-title">3️⃣ The Power of Three</div>
+      <p style="font-size: 1.1rem; margin-bottom: 1rem;">Throughout IAMAI, the number 3 appears everywhere. It's not a coincidence.</p>
+      
+      <div class="trivia-grid">
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Main Characters<br>(Player, AI-RIS, The Animals*)</div>
+        </div>
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Normal Levels Countries <br> (Egypt, France, )</div>
+        </div>
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Floors in the Hospital Level</div>
+        </div>
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Animals in the Hospital<br>(Cow, Fish, Lizard)</div>
+        </div>
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Items Each Animal Requests</div>
+        </div>
+        <div class="trivia-item">
+          <div class="trivia-number">3</div>
+          <div class="trivia-desc">Endings (Planned)</div>
+        </div>
+      </div>
+      
+      <p style="margin-top: 1.5rem; font-style: italic; color: #aaa;">*The three animals count as one narrative unit — they share the same objective and appear together, forming a single "character group" that contrasts with the isolation of the player and AI-RIS.</p>
+    </div>
+
+    <!-- Cards -->
     <div class="cards">
       <div class="card">
         <h3>Genre</h3>
@@ -91,8 +242,20 @@
           <li>Map exploration meets subtle horror.</li>
           <li>Authentic landmarks with surreal deviations.</li>
           <li>Atmospheric horror.</li>
-          <li>Really mysterious Robot companion</li>
+          <li>Mysterious Robot companion</li>
         </ul>
+      </div>
+    </div>
+
+    <!-- Quick Facts - NEW Summary -->
+    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; margin-top: 2rem;">
+      <h3 style="color: #f2c79f; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">📊 Game Structure Summary</h3>
+      <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-around;">
+        <div><span style="color: var(--accent); font-weight: bold;">3</span> Safe Levels</div>
+        <div><span style="color: var(--accent); font-weight: bold;">1</span> Hospital (3 Floors)</div>
+        <div><span style="color: var(--accent); font-weight: bold;">3</span> Character Groups</div>
+        <div><span style="color: var(--accent); font-weight: bold;">3</span> Mysterious Animals</div>
+        <div><span style="color: var(--accent); font-weight: bold;">3+</span> Endings</div>
       </div>
     </div>
   </section>

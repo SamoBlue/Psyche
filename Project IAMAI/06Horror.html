@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Endings</title>
+<link rel="stylesheet" href="IAMAI.css" media="screen" />
+</head>
+<body>
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02Characters.html">Characters</a></li>
+      <li><a href="03Gameplay.html">Gameplay</a></li>
+      <li><a href="04Story.html">Story</a></li>
+      <li><a href="05Normal.html">Normal Levels</a></li>
+      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="08Dialogue.html">Dialogue</a></li>
+    </ul>
+  </div>
+</nav>
+
+  </div>
+  <div class="cards">
+
+  </div>
+  <div class="card">ًComing in March ...</div>
+</div>
+<footer>ًComing in March ......</footer>
+<div class="back-to-top">↑</div>
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Section color animation (optional)
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>

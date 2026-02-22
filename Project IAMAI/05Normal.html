@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Normal Levels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="IAMAI.css" media="screen" />
+  <style>
+    /* Additional styles for normal levels page */
+    .level-card {
+      margin: 3rem 0;
+      padding: 2rem;
+      background: rgba(30, 30, 46, 0.6);
+      border-radius: 15px;
+      border-left: 6px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .level-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 30%, rgba(122, 162, 247, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .level-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .level-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: #f2c79f;
+      opacity: 0.3;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+    
+    .level-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: #f2c79f;
+      margin-bottom: 0.5rem;
+    }
+    
+    .level-time {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg-darker);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .horror-level {
+      background: #ff7575;
+      color: #121218;
+    }
+    
+    .atmosphere-badge {
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+    
+    .safe-badge {
+      background: #4caf50;
+      color: white;
+    }
+    
+    .creepy-badge {
+      background: #ff9800;
+      color: black;
+    }
+    
+    .scary-badge {
+      background: #f44336;
+      color: white;
+    }
+    
+    .image-placeholder {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #2a2a3a 0%, #1a1a2a 100%);
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-style: italic;
+      border: 2px dashed var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .image-placeholder::after {
+      content: '🖼️ Image coming soon';
+      font-size: 1.2rem;
+    }
+    
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .feature-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 3px solid #f2c79f;
+    }
+    
+    .horror-note {
+      background: rgba(255, 117, 117, 0.1);
+      border-left: 4px solid #ff7575;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .timeline-item {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(122, 162, 247, 0.1);
+      border-radius: 8px;
+      position: relative;
+    }
+    
+    .timeline-item::after {
+      content: '→';
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+    
+    .timeline-item:last-child::after {
+      content: '';
+    }
+    
+    .timeline-item .level-name {
+      font-weight: bold;
+      color: #f2c79f;
+    }
+    
+    .timeline-item .level-time {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02Characters.html">Characters</a></li>
+      <li><a href="03Gameplay.html">Gameplay</a></li>
+      <li><a href="04Story.html">Story</a></li>
+      <li><a href="05Normal.html">Normal Levels</a></li>
+      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="08Dialogue.html">Dialogue</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<div class="container">
+    <h1 class="section-title" style="margin-top: 2rem;" data-number="5">Normal Levels</h1>
+
+
+  <!-- Timeline Overview -->
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="level-name">Level 1: Egypt</div>
+      <div class="level-time">Noon · Safe</div>
+      <span class="atmosphere-badge safe-badge">🌞 Calm</span>
+    </div>
+    <div class="timeline-item">
+      <div class="level-name">Level 2: Paris</div>
+      <div class="level-time">Sunset · Uneasy</div>
+      <span class="atmosphere-badge creepy-badge">🌆 Creepy</span>
+    </div>
+    <div class="timeline-item">
+      <div class="level-name">Level 3: Mexico</div>
+      <div class="level-time">Midnight · Terrifying</div>
+      <span class="atmosphere-badge scary-badge">🌑 Scary</span>
+    </div>
+  </div>
+
+  <!-- Level 1: Egypt -->
+  <div class="level-card">
+    <div class="level-number">01</div>
+    <div class="level-header">
+      <h2 class="level-title">Egypt — Noon</h2>
+      <span class="atmosphere-badge safe-badge">Safe · First hints of horror</span>
+    </div>
+    <div class="level-time">🌞 High Noon · Desert Location</div>
+    
+    <!-- Image placeholder -->
+    <div class="image-placeholder"></div>
+    
+    <div class="bubble">
+      <strong>Starting Point:</strong> You begin inside a traditional Bedouin tent with AI-RIS. A fierce sand storm rages outside.
+    </div>
+    
+    <div class="blue-bubble">
+      <strong>AI-RIS:</strong> "The atmospheric particles are interfering with my sensors. I cannot accompany you outside. You'll have to explore alone. Take the scanner — I'll be here when the storm settles."
+    </div>
+    
+    <div class="feature-list">
+      <div class="feature-item">
+        <h4>🏜️ Exploration</h4>
+        <p>Venture into the sand storm. Limited visibility. Scan artifacts half-buried in sand. Ancient pottery, hieroglyphic fragments, a weathered map.</p>
+      </div>
+      <div class="feature-item">
+        <h4>🌊 The Reveal</h4>
+        <p>After several minutes, the storm settles. The air clears. You see a massive river with a bridge leading to the other side. In the distance — pyramids.</p>
+      </div>
+      <div class="feature-item">
+        <h4>🎯 The Guess</h4>
+        <p>Cross the bridge. AI-RIS waits on the other side. "The storm has passed. Were you able to determine our location?"</p>
+      </div>
+    </div>
+    
+    <div class="horror-note">
+      <strong>🔮 Horror Foreshadowing:</strong> If you stare at the pyramids too long during the storm, they briefly glitch into impossible geometric shapes. The scanner emits a faint static sound. AI-RIS never mentions it.
+    </div>
+    
+
+  </div>
+
+  <!-- Level 2: Paris -->
+  <div class="level-card">
+    <div class="level-number">02</div>
+    <div class="level-header">
+      <h2 class="level-title">Paris — Sunset</h2>
+      <span class="atmosphere-badge creepy-badge">Creepy · Fog and unease</span>
+    </div>
+    <div class="level-time">🌆 Golden Hour · Foggy Streets</div>
+    
+    <!-- Image placeholder -->
+    <div class="image-placeholder"></div>
+    
+    <div class="bubble">
+      <strong>Starting Point:</strong> You arrive on a Parisian boulevard at sunset. Thick fog rolls through the streets. AI-RIS is nowhere to be found.
+    </div>
+
+    
+    <div class="feature-list">
+      <div class="feature-item">
+        <h4>🌫️ Alone in the Fog</h4>
+        <p>Walk through empty streets. Mannequins in shop windows seem to watch you. Flickering street lights. Your footsteps echo differently than before.</p>
+      </div>
+      <div class="feature-item">
+        <h4>🚗 Unsettling Details</h4>
+        <p>Abandoned Citroën cars with headlights that flicker in sequence. A newspaper kiosk with headlines about "The Disappearance." Shadows that move when you're not looking.</p>
+      </div>
+      <div class="feature-item">
+        <h4>⏱️ 10 Minutes of Searching</h4>
+        <p>After what feels like an eternity, you spot her. Standing outside a café, perfectly still, as if waiting.</p>
+      </div>
+    </div>
+    
+    <div class="blue-bubble">
+      <strong>AI-RIS:</strong> "Where have you been? I've been waiting. The fog disrupted my tracking systems. Never mind that now — we need to move. Guess the location quickly."
+    </div>
+    
+    <div class="horror-note">
+      <strong>👁️ Disturbing Detail:</strong> When you first find AI-RIS, she's standing completely motionless. No idle animation. No blinking. For exactly 3 seconds after you approach, she doesn't move at all. Then she "activates" and speaks.
+    </div>
+    
+    <div class="bubble" style="margin-top: 1rem;">
+      <strong>AI-RIS (impatient):</strong> "The Eiffel Tower is obscured by fog, but you've seen enough. What country are we in?"
+    </div>
+  </div>
+
+  <!-- Level 3: Mexico -->
+  <div class="level-card">
+    <div class="level-number">03</div>
+    <div class="level-header">
+      <h2 class="level-title">Mexico — Midnight</h2>
+      <span class="atmosphere-badge scary-badge">Terrifying · Complete darkness</span>
+    </div>
+    <div class="level-time">🌑 Midnight · Water Maze</div>
+    
+    <!-- Image placeholder -->
+    <div class="image-placeholder"></div>
+    
+    <div class="bubble">
+      <strong>Starting Point:</strong> You materialize in complete darkness. The sound of water lapping against structures. You're in a maze of floating houses on water — but you can barely see anything.
+    </div>
+    
+    <div class="feature-list">
+      <div class="feature-item">
+        <h4>🔦 Finding Light</h4>
+        <p>After stumbling through darkness, you find a flashlight on a wooden dock. You can finally see — narrow waterways, small bridges, colorful but decaying houses.</p>
+      </div>
+      <div class="feature-item">
+        <h4>🌊 The Maze</h4>
+        <p>Navigate through the floating village. The flashlight beam catches movement in the water. Probably just fish. Probably.</p>
+      </div>
+      <div class="feature-item">
+        <h4>⏱️ Long Search</h4>
+        <p>You search for what feels like hours. No sign of AI-RIS. The maze seems to shift. Pathways repeat. The water gets darker.</p>
+      </div>
+    </div>
+    
+    <div class="horror-note">
+      <strong>⚠️ The Confrontation:</strong> You turn a corner and she's there. Right behind you. So close you could touch her. She wasn't there a second ago.
+    </div>
+    
+    <div class="blue-bubble" style="background: rgba(255, 100, 100, 0.3);">
+      <strong>AI-RIS (angry):</strong> "You left me. Again. I've been searching for hours. Just guess the location. <br> Now, So we can leave."
+    </div>
+    
+    <div class="bubble" style="border-left-color: #ff2a6d;">
+      <p><strong>Her tone is different.</strong> The robotic cadence breaks. For a moment, she sounds genuinely hurt.</p>
+    </div>
+    
+    <div class="feature-item" style="margin-top: 1rem;">
+      <h4>🎯 Clues in Mexico:</h4>
+      <ul>
+        <li>Floating houses (Xochimilco)</li>
+        <li>Spanish language on faded signs</li>
+        <li>Traditional Mexican patterns on walls</li>
+        <li>Distant sound of mariachi music (glitching, repeating)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Horror Escalation Note -->
+  <div class="card" style="margin-top: 2rem; border-left-color: #ff2a6d;">
+    <h3>📈 The Escalation of Dread</h3>
+    <p><strong>Level 1 (Egypt):</strong> Everything feels normal. Safe. But the pyramid glitch plants a seed of doubt.</p>
+    <p><strong>Level 2 (Paris):</strong> AI-RIS is missing. The environment feels wrong. Mannequins move when you're not looking. The fog hides something.</p>
+    <p><strong>Level 3 (Mexico):</strong> Complete darkness. Isolation. AI-RIS appears behind you — angry. Her mask slips. The horror becomes personal.</p>
+    <p style="margin-top: 1rem; color: #f2c79f;">By the time you reach the hospital, you're ready to be terrified.</p>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2025 IAMAI Game Project | Design Document v2.0
+</footer>
+
+<div class="back-to-top" id="backToTop">↑</div>
+
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  
+  // Section color assignment
+  document.querySelectorAll('section').forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>

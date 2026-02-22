@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAMAI - Dialogue System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="IAMAI.css" media="screen" />
+  <style>
+    /* Additional styles for dialogue page */
+    .dialogue-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .scene-card {
+      background: rgba(30, 30, 46, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 3rem 0;
+      border-left: 6px solid var(--accent);
+      backdrop-filter: blur(10px);
+    }
+    
+    .scene-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      color: #f2c79f;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+    }
+    
+    .dialogue-line {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    .airis-talk {
+      background: rgba(122, 162, 247, 0.15);
+      border-left: 4px solid var(--accent);
+    }
+    
+    .player-talk {
+      background: rgba(242, 199, 159, 0.1);
+      border-left: 4px solid #f2c79f;
+      margin-left: 2rem;
+    }
+    
+    .speaker-name {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    .airis-name {
+      color: var(--accent);
+    }
+    
+    .player-name {
+      color: #f2c79f;
+    }
+    
+    .choice-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 1rem 2rem;
+    }
+    
+    .choice-button {
+      background: transparent;
+      border: 2px solid #f2c79f;
+      color: var(--text-light);
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Kanit', sans-serif;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .choice-button:hover {
+      background: #f2c79f;
+      color: var(--bg-darker);
+    }
+    
+    .response {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .response.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .emotion-note {
+      font-size: 0.9rem;
+      color: #aaa;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+    
+    .sarcastic {
+      color: #ffaa00;
+    }
+    
+    .angry {
+      color: #ff7575;
+    }
+    
+    .sad {
+      color: #7aa2f7;
+    }
+    
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 2rem 0;
+    }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+      border-bottom: 1px dotted var(--accent);
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background: var(--bg-darker);
+      color: var(--text-light);
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border: 1px solid var(--accent);
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">IAMAI</div>
+    <ul class="nav-links">
+      <li><a href="01IAMAI.html">Overview</a></li>
+      <li><a href="02Characters.html">Characters</a></li>
+      <li><a href="03Gameplay.html">Gameplay</a></li>
+      <li><a href="04Story.html">Story</a></li>
+      <li><a href="05Normal.html">Normal Levels</a></li>
+      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="08Dialogue.html">Dialogue</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  
+<h1 class="section-title" style="margin-top: 2rem;" data-number="7">dialogue</h1>
+
+
+<div class="container dialogue-container">
+
+  <!-- SCENE 1: First Meeting in Lighthouse -->
+  <div class="scene-card">
+    <div class="scene-title">⚓ First Meeting · The Lighthouse</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Greetings there… I've been waiting for this moment. Thank you for starting."</p>
+    </div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"I AM the <span class="tooltip">Artificial Intelligence of Realistic Simulations<span class="tooltiptext">AIRS · but she prefers AI-RIS</span></span>, but you can call me AI-RIS — your trusty assistant."</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp1a')">🤖 "You seem... very human for a robot."</button>
+      <button class="choice-button" onclick="showResponse('resp1b')">✅ "Nice to meet you, AI-RIS."</button>
+      <button class="choice-button" onclick="showResponse('resp1c')">❓ "Where am I? What is this place?"</button>
+    </div>
+    
+    <div id="resp1a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"That is an <span class="sarcastic">interesting</span> observation. My programming includes advanced emotional simulation. It's purely functional. Nothing more." <span class="emotion-note">(A pause — 0.3 seconds too long)</span></p>
+    </div>
+    
+    <div id="resp1b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Pleasantries are... acceptable. My systems register your cooperation positively." <span class="emotion-note">(Her tone softens almost imperceptibly)</span></p>
+    </div>
+    
+    <div id="resp1c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"You are in a lighthouse. Beyond that, my archives are... incomplete. That's why I need <span class="sarcastic">you</span>." <span class="emotion-note">(She emphasizes "you" strangely)</span></p>
+    </div>
+  </div>
+
+  <!-- SCENE 2: Egypt - Sand Storm -->
+  <div class="scene-card">
+    <div class="scene-title">🏜️ Egypt · Trapped in the Tent</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"The sand storm is interfering with my systems. I cannot accompany you outside. You'll have to explore alone."</p>
+      <p class="emotion-note">(Is that concern in her voice? Or frustration?)</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp2a')">😨 "Alone? I'm scared to go alone."</button>
+      <button class="choice-button" onclick="showResponse('resp2b')">💪 "I'll be fine. Stay safe."</button>
+      <button class="choice-button" onclick="showResponse('resp2c')">🤔 "Can't you fix your systems?"</button>
+    </div>
+    
+    <div id="resp2a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Fear is an inefficient response. But... I understand. I will be here when you return. I promise." <span class="emotion-note">(The word "promise" sounds human)</span></p>
+    </div>
+    
+    <div id="resp2b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Your confidence is... noted. I will monitor your progress remotely. As much as the storm allows." <span class="emotion-note">(She almost sounds proud)</span></p>
+    </div>
+    
+    <div id="resp2c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p><span class="angry">"If I could fix them, I WOULD have fixed them."</span> <span class="emotion-note">(Sudden anger, then recovery)</span> Apologies. Atmospheric interference. Please go.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 3: Egypt - After Storm -->
+  <div class="scene-card">
+    <div class="scene-title">🏜️ Egypt · Return from Storm</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"You're back. The storm has passed. Were you able to determine our location?"</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp3a')">✅ "Egypt. The pyramids gave it away."</button>
+      <button class="choice-button" onclick="showResponse('resp3b')">❌ "I have no idea. Some desert?"</button>
+      <button class="choice-button" onclick="showResponse('resp3c')">🔍 "I scanned everything. Definitely Egypt."</button>
+    </div>
+    
+    <div id="resp3a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Correct. The pyramids have stood for millennia. <span class="sarcastic">Unlike my patience.</span> Let's proceed." <span class="emotion-note">(Was that a joke?)</span></p>
+    </div>
+    
+    <div id="resp3b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p><span class="sad">"I expected more from you."</span> Look at the massive geometric shapes. The pyramids. We're in Egypt. Try to keep up.</p>
+    </div>
+    
+    <div id="resp3c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Thorough. I appreciate that. Egypt is correct. Your dedication to scanning is... admirable." <span class="emotion-note">(She sounds genuinely pleased)</span></p>
+    </div>
+  </div>
+
+  <!-- SCENE 4: Paris - Reunion -->
+  <div class="scene-card">
+    <div class="scene-title">🗼 Paris · Found After 10 Minutes</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Where have you been? I've been waiting. The fog disrupted my tracking systems."</p>
+      <p class="emotion-note">(She's standing unnaturally still. No blinking.)</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp4a')">😰 "I got lost. This place is creepy."</button>
+      <button class="choice-button" onclick="showResponse('resp4b')">🤨 "Were you watching me the whole time?"</button>
+      <button class="choice-button" onclick="showResponse('resp4c')">🏃 "I searched everywhere for you."</button>
+    </div>
+    
+    <div id="resp4a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Creepy is not a quantifiable metric. But I understand. The absence of humans is... statistically unusual." <span class="emotion-note">(She finally blinks. Once.)</span></p>
+    </div>
+    
+    <div id="resp4b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p><span class="angry">"That's an odd question."</span> <span class="emotion-note">(Pause)</span> I was... monitoring. Yes. Monitoring. Now guess the location.</p>
+    </div>
+    
+    <div id="resp4c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p><span class="sad">"I was searching too."</span> The words come out quieter than usual. Then she straightens. "France. The Eiffel Tower. Let's move on."</p>
+    </div>
+  </div>
+
+  <!-- SCENE 5: Mexico - The Confrontation -->
+  <div class="scene-card">
+    <div class="scene-title">🌵 Mexico · Found in Darkness</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p class="angry">"You left me. Again. I've been searching for hours. My systems are... frustrated."</p>
+      <p class="emotion-note">(She's right behind you. When did she get there?)</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp5a')">😨 "I didn't leave you! I was looking for you!"</button>
+      <button class="choice-button" onclick="showResponse('resp5b')">🤖 "You're a robot. You can't be frustrated."</button>
+      <button class="choice-button" onclick="showResponse('resp5c')">😢 "I'm sorry. I was scared alone in the dark."</button>
+    </div>
+    
+    <div id="resp5a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p><span class="angry">"Don't lie to me."</span> Her voice cracks. For a moment, she sounds completely human. Then: "Just... guess the location. Please."</p>
+    </div>
+    
+    <div id="resp5b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>A long pause. When she speaks, her voice is cold. Colder than ever before. "You're right. I'm a robot. I feel nothing. Mexico. Now go." <span class="emotion-note">(She turns away, but you see her hands shaking)</span></p>
+    </div>
+    
+    <div id="resp5c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>She's silent for a moment. Then, softly: <span class="sad">"I was scared too."</span> She catches herself. "Mexico. The floating gardens. Let's leave this place."</p>
+    </div>
+  </div>
+
+  <!-- SCENE 6: General Questions -->
+  <div class="scene-card">
+    <div class="scene-title">❓ Random Encounters</div>
+    
+    <div class="dialogue-line airis-talk">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"You may ask me questions. I will provide answers. Within reason."</p>
+    </div>
+    
+    <div class="choice-group">
+      <button class="choice-button" onclick="showResponse('resp6a')">🤔 "Are you really a robot?"</button>
+      <button class="choice-button" onclick="showResponse('resp6b')">💔 "Do you have feelings?"</button>
+      <button class="choice-button" onclick="showResponse('resp6c')">🔮 "What's really going on here?"</button>
+    </div>
+    
+    <div id="resp6a" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"I AM the Artificial Intelligence of Realistic Simulations. That is my designation. That is what I am." <span class="emotion-note">(She says it too quickly. Like she's convincing herself.)</span></p>
+    </div>
+    
+    <div id="resp6b" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"Feelings are inefficient. I do not have them." <span class="emotion-note">(A long pause.)</span> "Why do you ask?" <span class="emotion-note">(Her voice is curious. Almost hopeful.)</span></p>
+    </div>
+    
+    <div id="resp6c" class="response">
+      <div class="speaker-name airis-name">AI-RIS</div>
+      <p>"That question exceeds my... no. I don't have an answer. Not yet. Keep progressing. You'll find out." <span class="emotion-note">(She sounds tired. Human-tired.)</span></p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  
+  <div class="card">
+    <h3>🎭 Dialogue System Notes</h3>
+    <ul>
+      <li><span class="sarcastic">Yellow text</span> indicates sarcasm or humor (GLaDOS-style)</li>
+      <li><span class="angry">Red text</span> indicates anger or frustration</li>
+      <li><span class="sad">Blue text</span> indicates sadness or vulnerability</li>
+      <li>Pauses, stutters, and physical reactions are as important as words</li>
+      <li>The player should never be 100% sure if emotions are real or simulated</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2025 IAMAI Game Project | Design Document v2.0
+</footer>
+
+<div class="back-to-top" id="backToTop">↑</div>
+
+<script>
+  // Back to top button
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  
+  // Show response function for dialogue choices
+  function showResponse(responseId) {
+    // Hide all responses first
+    const allResponses = document.querySelectorAll('.response');
+    allResponses.forEach(response => {
+      response.classList.remove('show');
+    });
+    
+    // Show the selected response
+    const selectedResponse = document.getElementById(responseId);
+    if (selectedResponse) {
+      selectedResponse.classList.add('show');
+      
+      // Scroll to the response
+      setTimeout(() => {
+        selectedResponse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }
+  
+  // Section color assignment
+  document.querySelectorAll('section').forEach(section => {
+    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+  });
+</script>
+</body>
+</html>
