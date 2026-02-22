@@ -65,86 +65,78 @@
     <div class="player-portrait" onclick="showCharacter('player')">
       <img src="Player.jpg" alt="The Player" onerror="this.src='https://via.placeholder.com/200x200?text=IAMAI'">
       <h3>The Player</h3>
-      <p><em>"..."</em></p>
       <p style="font-size: 0.8rem; color: var(--accent);">Click for details</p>
     </div>
   </div>
 
   <!-- Character Detail Sections (Hidden by default) -->
-
-  <!-- AIRIS Detail -->
+  <!-- AIRIS Detail (Revised) -->
   <div id="airis-detail" class="character-detail">
     <div class="detail-title">AIRIS</div>
-    <div class="quote-block">"Artificial Intelligence of Realistic Simulations" — but that's a lie.</div>
+    <div class="quote-block">"Artificial Intelligence of Realistic Simulations"</div>
     
     <!-- Concept art gallery for AIRIS -->
     <div class="concept-gallery">
       <div class="concept-item">
         <img src="CA/V1.webp" alt="AIRIS concept 1" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+1'">
-        <p>Early sketch</p>
+        <p>Face+Hair not the clothes</p>
       </div>
       <div class="concept-item">
-        <img src="CA/V2.jpg" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
-        <p>Final design</p>
+        <img src="CA/V5.jpg" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
+        <p>Early sketch</p>
       </div>
     </div>
 
-    
+    <!-- 1. Robot Assistant Identity (what the player sees) -->
     <div class="detail-section">
-      <div class="detail-subtitle">Real Identity</div>
-      <p><strong>Dr. Arisa Elian Voss</strong> — the last human after the Global Archive Corruption Event of 3300. She built IAMAI to preserve humanity's memory, but the machine became better at it than her. Unable to cope, she created the persona AIRIS: a robot pretending to be human, hiding her insecurity behind a mask of artificiality.</p>
+      <div class="detail-subtitle">Robot Assistant Identity</div>
+      <p>To the player, AIRIS appears as a helpful, emotionally neutral AI assistant. She speaks in a calm, 
+        structured manner, avoiding contractions and maintaining a formal tone. Her primary goal is to guide 
+        the player through the game, offering hints and encouragement. She rarely shows emotion, but small slip-ups occur
+         – a pause too long, a slightly warmer inflection, a fleeting moment of concern.</p>
     </div>
 
+    <!-- 2. Real Identity (Dr. Arisa) -->
+    <div class="detail-section">
+      <div class="detail-subtitle">Real Identity</div>
+      <p><strong>Dr. Arisa Elian Voss</strong> – the last human after the Global Archive Corruption Event of 3300. She built IAMAI to preserve humanity's memory, but the machine became better at it than her. Unable to cope, she created the persona AIRIS: a robot pretending to be human.</p>
+    </div>
+
+    <!-- 3. Voice Tone (new) -->
+ 
+
+    <!-- 4. Visual Design Philosophy (existing, kept) -->
+    <div class="detail-section">
+      <div class="detail-subtitle">Visual Design Philosophy</div>
+      <p>Arisa dresses to look like a robot: clean, minimal, muted colors, geometric accents. But she is fully human — no cybernetics. The ambiguity is everything. Guidelines: Formal clothing, monochrome palette, optional glasses, high collar, LED-like accessories.</p>
+    </div>
+
+    <!-- 5. Narrative Role (existing, kept as list) -->
     <div class="detail-section">
       <div class="detail-subtitle">Narrative Role</div>
       <ul>
         <li>Appears at the start and end of each level</li>
         <li>Provides hints and mission briefings</li>
         <li>Slowly reveals inconsistencies in her robotic façade</li>
-        <li>Occasionally "malfunctions" — brief emotional slips</li>
       </ul>
       <p>For most of the game, she plays "Guess the country" with the player, never explaining why.</p>
     </div>
 
-    <div class="detail-section">
-      <div class="detail-subtitle">Surface Personality (Robot Persona)</div>
-      <ul>
-        <li>Formal and polite</li>
-        <li>Speaks in structured sentences, avoids contractions</li>
-        <li>Minimal emotional inflection</li>
-        <li>Calls the player "Unit"</li>
-      </ul>
-      <div class="quote-block">"Try scanning the shapes behind us."<br>"You are not alone. I am here to assist."</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Underlying Personality (Human Reality)</div>
-      <ul>
-        <li>Highly intelligent, emotionally unstable</li>
-        <li>Obsessed with the player (IAMAI)</li>
-        <li>Jealous of the machine's perfection</li>
-        <li>Desperate to be needed</li>
-      </ul>
-      <div class="quote-block">A sigh before correcting herself.<br>A moment of jealousy when you disobey.<br>A forced recalibration after laughing too naturally.</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Visual Design Philosophy</div>
-      <p>Arisa dresses to look like a robot: clean, minimal, muted colors, geometric accents. But she is fully human — no cybernetics. The ambiguity is everything.</p>
-      <p><strong>Guidelines:</strong> Formal clothing, monochrome palette, optional glasses, high collar, LED-like accessories.</p>
-    </div>
+    <!-- Additional concept art -->
     <div class="concept-gallery">
-            <div class="concept-item">
-        <img src="CA/V3.png" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
-        <p>Final design</p>
+      <div class="concept-item">
+        <img src="CA/V3.png" alt="AIRIS concept 3" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+3'">
+        <p>Early sketch</p>
       </div>
-            <div class="concept-item">
-        <img src="CA/V4.jpg" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
-        <p>Final design</p>
+      <div class="concept-item">
+        <img src="CA/V4.jpg" alt="AIRIS concept 4" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+4'">
+        <p>Early sketch</p>
       </div>
     </div>
+
     <button class="close-button" onclick="hideDetail('airis')">Close</button>
   </div>
+
 
   <!-- Player Detail -->
   <div id="player-detail" class="character-detail">

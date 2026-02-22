@@ -50,7 +50,7 @@
       margin-right: 0.5rem;
     }
 
-        .number-light {
+    .number-light {
       font-size: 1rem;
       color: var(--accent);
       font-family: 'Orbitron', sans-serif;
@@ -58,45 +58,67 @@
       margin-right: 0.5rem;
     }
     
-    .trivia-section {
-      background: rgba(122, 162, 247, 0.1);
-      border-radius: 15px;
+    /* New styles for website summary */
+    .site-summary {
+      background: rgba(30, 30, 46, 0.7);
+      border-radius: 20px;
       padding: 2rem;
       margin: 3rem 0;
-      border: 1px solid var(--accent);
+      border: 1px solid #f2c79f;
     }
     
-    .trivia-title {
+    .summary-title {
       font-family: 'Orbitron', sans-serif;
       color: #f2c79f;
       font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    
-    .trivia-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    
-    .trivia-item {
+      margin-bottom: 1.5rem;
       text-align: center;
-      padding: 1rem;
+    }
+    
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .summary-item {
       background: rgba(0, 0, 0, 0.3);
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--accent);
+      transition: var(--transition);
     }
     
-    .trivia-number {
-      font-size: 2.5rem;
-      color: var(--accent);
+    .summary-item:hover {
+      transform: translateY(-3px);
+      border-left-color: #f2c79f;
+    }
+    
+    .summary-item h4 {
+      color: #f2c79f;
       font-family: 'Orbitron', sans-serif;
-      font-weight: bold;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
     }
     
-    .trivia-desc {
-      color: var(--text-light);
-      font-size: 0.9rem;
+    .summary-item p {
+      color: #aaa;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .summary-item .page-link {
+      display: inline-block;
+      margin-top: 0.8rem;
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent);
+    }
+    
+    .summary-item .page-link:hover {
+      color: #f2c79f;
+      border-bottom-color: #f2c79f;
     }
   </style>
 </head>
@@ -120,7 +142,7 @@
 <section class="hero">
   <div class="container">
     <h1>IAMAI Design Document</h1>
-    <p>A mysterious exploration where Geogeusser meets the Rusty Lake.</p>
+    <p>A mysterious exploration where GeoGuessr meets the Rusty Lake.</p>
   </div>
 </section>
 
@@ -130,12 +152,11 @@
   <section id="overview">
     <h2 class="section-title" data-number="1">Game Overview</h2><br>
 
-    <h3>Hi, I've been working on a video game for the past year called <span class="highlight">IAMAI</span>(or <span class="highlight">GeoBot</span>— name still work in progress). 
-    It's basically a mix between <span class="highlight">GeoGuessr</span> and any horror game with "Questionable Crazy Girlfriend" vibes e.g. <span class="highlight">MiSide</span>,<span class="highlight">DDLC</span>,<span class="highlight">SOMA</span> <br>
-    <br>A Robot girl <span class="highlight">AI-RIS</span>tells you that your objective is to help her figure out the name of the country you are in,
+    <h3>Hi, I've been working on a video game for the past year called <span class="highlight">IAMAI</span> (or <span class="highlight">GeoBot</span> — name still work in progress). 
+    It's basically a mix between <span class="highlight">GeoGuessr</span> and any horror game with "Questionable Crazy Girlfriend" vibes e.g. <span class="highlight">MiSide</span>, <span class="highlight">DDLC</span>, <span class="highlight">SOMA</span>.<br>
+    <br>A robot girl <span class="highlight">AI-RIS</span> tells you that your objective is to help her figure out the name of the country you are in,
     so you have to search around the level for clues and give her the correct name of the country.<br><br>
  
-    
     <!-- Multiple images on main page -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
       <div class="media-placeholder">
@@ -153,12 +174,12 @@
     </div>
 
     <h3>Basically the game is split into <span class="highlight">Two parts</span>: The First Part is "Guess the Country name", 
-    using the clues you find in the level you have to guess the correct location   between a list of countries, just like the website GeoGuessr. <br><br>
-    After <span class="number-light">3</span>levels you will be teleported to 4th weird level that looks like a real country but it's in fact the
-    2nd part of the video game, now you are playing a survival horror game where you have to navigate an abandoned hospital with 
-    <span class="number-light">3</span>floors. </h3>
+    using the clues you find in the level you have to guess the correct location from a list of countries, just like the website GeoGuessr. <br><br>
+    After <span class="number-light">3</span> levels you will be teleported to a 4th weird level that looks like a real country but it's in fact the
+    2nd part of the video game. Now you are playing a survival horror game where you have to navigate an abandoned hospital with 
+    <span class="number-light">3</span> floors.</h3>
 
-    <!-- Game Structure Section - NEW -->
+    <!-- Game Structure Section -->
     <div class="game-structure">
       <div class="structure-card">
         <h3>Part 1: Exploration</h3>
@@ -172,7 +193,7 @@
       
       <div class="structure-card">
         <h3>Part 2: Horror</h3>
-        <p><span class="number-highlight">One</span> massive hospital level with <span class="number-highlight">3</span> creepy floors connected by an elevator.</p>
+        <p><span class="number-highlight">1</span> massive hospital level with <span class="number-highlight">3</span> creepy floors connected by an elevator.</p>
         <ul style="margin-top: 1rem;">
           <li>Floor 1: Garden</li>
           <li>Floor 2: Patient Rooms & The Animals</li>
@@ -181,84 +202,78 @@
       </div>
     </div>
 
-    <!-- The Power of Three - NEW Trivia Section -->
-    <div class="trivia-section">
-      <div class="trivia-title">3️⃣ The Power of Three</div>
-      <p style="font-size: 1.1rem; margin-bottom: 1rem;">Throughout IAMAI, the number 3 appears everywhere. It's not a coincidence.</p>
-      
-      <div class="trivia-grid">
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Main Characters<br>(Player, AI-RIS, The Animals*)</div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Normal Levels Countries <br> (Egypt, France, )</div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Floors in the Hospital Level</div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Animals in the Hospital<br>(Cow, Fish, Lizard)</div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Items Each Animal Requests</div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-number">3</div>
-          <div class="trivia-desc">Endings (Planned)</div>
-        </div>
-      </div>
-      
-      <p style="margin-top: 1.5rem; font-style: italic; color: #aaa;">*The three animals count as one narrative unit — they share the same objective and appear together, forming a single "character group" that contrasts with the isolation of the player and AI-RIS.</p>
-    </div>
-
-    <!-- Cards -->
+    <!-- Cards: Genre, Core Mechanics, Unique Selling Points -->
     <div class="cards">
       <div class="card">
         <h3>Genre</h3>
         <ul>
-          <li>Exploration.</li>
-          <li>Puzzle.</li>
-          <li>Psychological horror.</li>
-          <li>Multiple Endings.</li>
+          <li>Exploration</li>
+          <li>Puzzle</li>
+          <li>Psychological horror</li>
+          <li>Multiple Endings</li>
         </ul>
       </div>
       <div class="card">
         <h3>Core Mechanics</h3>
         <ul>
-          <li>Scan glitchy Object to reveal them.</li>
-          <li>Guess real-world locations from environmental clues.</li>
-          <li>Interact with AI-RIS for hints.</li>
-          <li>Discover hidden horror twists.</li>
+          <li>Scan glitchy objects to reveal them</li>
+          <li>Guess real-world locations from environmental clues</li>
+          <li>Interact with AI-RIS for hints</li>
+          <li>Discover hidden horror twists</li>
         </ul>
       </div>
       <div class="card">
         <h3>Unique Selling Points</h3>
         <ul>
-          <li>Map exploration meets subtle horror.</li>
-          <li>Authentic landmarks with surreal deviations.</li>
-          <li>Atmospheric horror.</li>
+          <li>Map exploration meets subtle horror</li>
+          <li>Authentic landmarks with surreal deviations</li>
+          <li>Atmospheric horror</li>
           <li>Mysterious Robot companion</li>
         </ul>
       </div>
     </div>
 
-    <!-- Quick Facts - NEW Summary -->
-    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 10px; margin-top: 2rem;">
-      <h3 style="color: #f2c79f; font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">📊 Game Structure Summary</h3>
-      <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-around;">
-        <div><span style="color: var(--accent); font-weight: bold;">3</span> Safe Levels</div>
-        <div><span style="color: var(--accent); font-weight: bold;">1</span> Hospital (3 Floors)</div>
-        <div><span style="color: var(--accent); font-weight: bold;">3</span> Character Groups</div>
-        <div><span style="color: var(--accent); font-weight: bold;">3</span> Mysterious Animals</div>
-        <div><span style="color: var(--accent); font-weight: bold;">3+</span> Endings</div>
+  <!-- NEW: Website Overview / Navigation Guide -->
+  <div class="site-summary">
+    <div class="summary-title">📚 What's Inside This Website</div>
+    <div class="summary-grid">
+
+      <div class="summary-item">
+        <h4>02 · Characters</h4>
+        <p>Meet AIRIS (the last human pretending to be a robot), the silent protagonist (IAMAI), and the three unsettling animals. Click portraits for deep dives.</p>
+        <a href="02Characters.html" class="page-link">Meet the Cast →</a>
+      </div>
+      <div class="summary-item">
+        <h4>03 · Gameplay</h4>
+        <p>Detailed explanation of the two gameplay phases: exploration (with scanner) and horror survival (with inventory). Includes player freedom and testing questions.</p>
+        <a href="03Gameplay.html" class="page-link">See How It Plays →</a>
+      </div>
+      <div class="summary-item">
+        <h4>04 · Story</h4>
+        <p>Three layers: before the game (data collapse, last human), the player's experience, and the true story with three possible endings.</p>
+        <a href="04Story.html" class="page-link">Unravel the Mystery →</a>
+      </div>
+      <div class="summary-item">
+        <h4>05 · Normal Levels</h4>
+        <p>Walkthrough of the three exploration levels: Egypt (noon), Paris (sunset), Mexico (midnight). Each with escalating horror foreshadowing.</p>
+        <a href="05Normal.html" class="page-link">Explore the Worlds →</a>
+      </div>
+      <div class="summary-item">
+        <h4>06 · Horror Levels</h4>
+        <p>Details of the hospital level: three floors, the animal encounter, the missing elevator button, and the final confrontation.</p>
+        <a href="06Horror.html" class="page-link">Face the Horror →</a>
+      </div>
+      <div class="summary-item">
+        <h4>08 · Dialogue</h4>
+        <p>Interactive dialogue samples from key moments. See how AIRIS reacts to player choices and how her mask slips.</p>
+        <a href="08Dialogue.html" class="page-link">Read the Conversations →</a>
       </div>
     </div>
+  </div>
+
   </section>
+
+
 </div>
 
 <footer>
