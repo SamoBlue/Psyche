@@ -10,241 +10,7 @@
   <link rel="stylesheet" href="IAMAI.css" media="screen" />
   <style>
     /* Additional styles for character portraits */
-    .character-showcase {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3rem;
-      margin: 3rem 0;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .main-character {
-      text-align: center;
-      flex: 0 0 300px;
-      cursor: pointer;
-    }
-    
-    .main-character img {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid var(--accent);
-      box-shadow: 0 0 30px rgba(122, 162, 247, 0.5);
-      transition: var(--transition);
-    }
-    
-    .main-character img:hover {
-      transform: scale(1.05);
-      border-color: #f2c79f;
-      box-shadow: 0 0 40px rgba(242, 199, 159, 0.6);
-    }
-    
-    .main-character h3 {
-      margin-top: 1rem;
-      color: #f2c79f;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-    }
-    
-    .main-character p {
-      color: var(--text-light);
-      font-style: italic;
-      max-width: 300px;
-    }
-    
-    .animal-gallery {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      flex: 1;
-    }
-    
-    .animal-item {
-      text-align: center;
-      width: 200px;
-      cursor: pointer;
-    }
-    
-    .animal-item img {
-      width: 200px;
-      height: 120px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 3px solid var(--section-color);
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      transition: var(--transition);
-    }
-    
-    .animal-item img:hover {
-      transform: scale(1.05);
-      border-color: var(--accent);
-      box-shadow: 0 0 25px rgba(122, 162, 247, 0.4);
-    }
-    
-    .animal-item h4 {
-      margin-top: 0.8rem;
-      color: #f2c79f;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-    }
-    
-    .animal-item p {
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-    
-    .player-section {
-      margin: 3rem 0;
-      text-align: center;
-    }
-    
-    .player-portrait {
-      display: inline-block;
-      text-align: center;
-      cursor: pointer;
-    }
-    
-    .player-portrait img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #f2c79f;
-      box-shadow: 0 0 25px rgba(242, 199, 159, 0.3);
-      transition: var(--transition);
-    }
-    
-    .player-portrait img:hover {
-      transform: scale(1.05);
-      border-color: var(--accent);
-      box-shadow: 0 0 30px rgba(122, 162, 247, 0.5);
-    }
-    
-    .player-portrait h3 {
-      margin-top: 1rem;
-      color: #f2c79f;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-    }
-    
-    .player-portrait p {
-      color: #aaa;
-      font-style: italic;
-    }
-    
-    /* Character Detail Sections */
-    .character-detail {
-      margin: 2rem 0;
-      padding: 2rem;
-      background: rgba(30, 30, 46, 0.8);
-      border-radius: 15px;
-      border-left: 6px solid var(--accent);
-      backdrop-filter: blur(10px);
-      display: none;
-      animation: slideDown 0.3s ease-out;
-    }
-    
-    .character-detail.active {
-      display: block;
-    }
-    
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .detail-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      color: #f2c79f;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 0.5rem;
-    }
-    
-    .detail-subtitle {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
-      color: var(--accent);
-      margin: 1.5rem 0 0.5rem;
-    }
-    
-    .detail-section {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-    }
-    
-    .quote-block {
-      font-style: italic;
-      color: #f2c79f;
-      padding: 1rem;
-      background: rgba(122, 162, 247, 0.1);
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-    
-    .design-note {
-      color: #ff7575;
-      font-size: 0.9rem;
-      margin-top: 1rem;
-      padding: 0.5rem;
-      border-top: 1px dashed #ff7575;
-    }
-    
-    .close-button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem 1.5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Kanit', sans-serif;
-      font-size: 1rem;
-      margin-top: 1rem;
-      transition: var(--transition);
-    }
-    
-    .close-button:hover {
-      background: #f2c79f;
-      color: var(--bg-dark);
-    }
-    
-    @media (max-width: 768px) {
-      .character-showcase {
-        flex-direction: column;
-        gap: 2rem;
-      }
-      
-      .main-character img {
-        width: 250px;
-        height: 250px;
-      }
-      
-      .animal-item {
-        width: 150px;
-      }
-      
-      .animal-item img {
-        width: 150px;
-        height: 90px;
-      }
-      
-      .player-portrait img {
-        width: 150px;
-        height: 150px;
-      }
-    }
+
   </style>
 </head>
 <body>
@@ -265,37 +31,31 @@
 </nav>
 
 <div class="container">
-<h1 class="section-title" style="margin-top: 2rem;" data-number="2">Characters</h1>
+  <h1 class="section-title" style="margin-top: 2rem;" data-number="2">Characters</h1>
   
-  <!-- AI-RIS and Animals Showcase -->
+  <!-- Character Showcase -->
   <div class="character-showcase">
-    <!-- AI-RIS - Big Portrait (Clickable) -->
+    <!-- AIRIS - Big Portrait (Clickable) -->
     <div class="main-character" onclick="showCharacter('airis')">
-      <img src="AIris.png" alt="AI-RIS">
-      <h3>AI-RIS</h3>
+      <img src="AIris.png" alt="AIRIS" onerror="this.src='https://via.placeholder.com/300x300?text=AIRIS'">
+      <h3>AIRIS</h3>
       <p>"I'm your trusty robot assistant"</p>
-      <p style="font-size: 0.8rem; color: var(--accent);">Click portrait for details</p>
+      <p style="font-size: 0.8rem; color: var(--accent);">Click for details</p>
     </div>
     
-    <!-- Three Animals - Small Portraits (Clickable) -->
-    <div class="animal-gallery">
-      <div class="animal-item" onclick="showCharacter('cow')">
-        <img src="Chara3.png" alt="Cow">
+    <!-- Three Animals - Grouped (Clickable) -->
+    <div class="animals-group" onclick="showCharacter('animals')">
+      <div class="animal-thumb">
+        <img src="Chara3.png" alt="Cow" onerror="this.src='https://via.placeholder.com/150x150?text=Cow'">
         <h4>Cow</h4>
-        <p>Grass Seeker</p>
-        <p style="font-size: 0.7rem; color: var(--accent);">Click for details</p>
       </div>
-      <div class="animal-item" onclick="showCharacter('fish')">
-        <img src="Chara1.jpg" alt="Fish">
+      <div class="animal-thumb">
+        <img src="Chara1.jpg" alt="Fish" onerror="this.src='https://via.placeholder.com/150x150?text=Fish'">
         <h4>Fish</h4>
-        <p>Water Seeker</p>
-        <p style="font-size: 0.7rem; color: var(--accent);">Click for details</p>
       </div>
-      <div class="animal-item" onclick="showCharacter('lizard')">
-        <img src="Chara2.webp" alt="Lizard">
+      <div class="animal-thumb">
+        <img src="Chara2.webp" alt="Lizard" onerror="this.src='https://via.placeholder.com/150x150?text=Lizard'">
         <h4>Lizard</h4>
-        <p>Meat Seeker</p>
-        <p style="font-size: 0.7rem; color: var(--accent);">Click for details</p>
       </div>
     </div>
   </div>
@@ -303,274 +63,173 @@
   <!-- The Player - Separate Section (Clickable) -->
   <div class="player-section">
     <div class="player-portrait" onclick="showCharacter('player')">
-      <img src="Player.jpg" alt="The Player">
+      <img src="Player.jpg" alt="The Player" onerror="this.src='https://via.placeholder.com/200x200?text=IAMAI'">
       <h3>The Player</h3>
-      <p>Silent Protagonist</p>
       <p><em>"..."</em></p>
-      <p style="font-size: 0.8rem; color: var(--accent);">Click portrait for details</p>
+      <p style="font-size: 0.8rem; color: var(--accent);">Click for details</p>
     </div>
   </div>
 
   <!-- Character Detail Sections (Hidden by default) -->
 
-  <!-- AI-RIS Detail -->
+  <!-- AIRIS Detail -->
   <div id="airis-detail" class="character-detail">
-    <div class="detail-title">AI-RIS</div>
-    <div class="quote-block">"Artificial Intelligence of Realistic Simulations"</div>
+    <div class="detail-title">AIRIS</div>
+    <div class="quote-block">"Artificial Intelligence of Realistic Simulations" — but that's a lie.</div>
+    
+    <!-- Concept art gallery for AIRIS -->
+    <div class="concept-gallery">
+      <div class="concept-item">
+        <img src="CA/V1.webp" alt="AIRIS concept 1" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+1'">
+        <p>Early sketch</p>
+      </div>
+      <div class="concept-item">
+        <img src="CA/V2.jpg" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
+        <p>Final design</p>
+      </div>
+    </div>
+
     
     <div class="detail-section">
-      <div class="detail-subtitle">Core Concept</div>
-      <p>AI-RIS presents herself as a highly advanced robotic assistant designed to guide the player through each level. 
-        She speaks in a calculated, emotionally neutral tone and claims her sole purpose is to assist the player."</p>
-      <br><p><strong>However, the truth is more unsettling.</strong> <br> AI-RIS is not a robot. She is a human scientist pretending to be a robot.
-        The player is never given full confirmation of her true intentions. </p>
+      <div class="detail-subtitle">Real Identity</div>
+      <p><strong>Dr. Arisa Elian Voss</strong> — the last human after the Global Archive Corruption Event of 3300. She built IAMAI to preserve humanity's memory, but the machine became better at it than her. Unable to cope, she created the persona AIRIS: a robot pretending to be human, hiding her insecurity behind a mask of artificiality.</p>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Narrative Role</div>
       <ul>
         <li>Appears at the start and end of each level</li>
-        <li>Provides puzzle hints and mission briefings</li>
+        <li>Provides hints and mission briefings</li>
         <li>Slowly reveals inconsistencies in her robotic façade</li>
         <li>Occasionally "malfunctions" — brief emotional slips</li>
       </ul>
-      <p>Her role for most of the game is playing "Guess the country name" with the player without give any answers about what is any of this for?</p>
+      <p>For most of the game, she plays "Guess the country" with the player, never explaining why.</p>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Surface Personality (Robot Persona)</div>
       <ul>
         <li>Formal and polite</li>
-        <li>Speaks in structured sentences</li>
-        <li>Avoids contractions ("I am" instead of "I'm")</li>
+        <li>Speaks in structured sentences, avoids contractions</li>
         <li>Minimal emotional inflection</li>
-        <li>Refers to the player as "Unit" or by designation</li>
+        <li>Calls the player "Unit"</li>
       </ul>
-      <div class="quote-block">"Try scanning the shapes behind us."<br>"You are not alone I Am here to assist you"</div>
+      <div class="quote-block">"Try scanning the shapes behind us."<br>"You are not alone. I am here to assist."</div>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Underlying Personality (Human Reality)</div>
       <ul>
-        <li>Highly intelligent scientist</li>
-        <li>Emotionally unstable beneath control</li>
-        <li>Obsessed with the player</li>
-        <li>Occasionally slips into genuine human reactions</li>
+        <li>Highly intelligent, emotionally unstable</li>
+        <li>Obsessed with the player (IAMAI)</li>
+        <li>Jealous of the machine's perfection</li>
+        <li>Desperate to be needed</li>
       </ul>
-      <div class="quote-block">A sigh before correcting herself<br>A moment of jealousy when the player "disobeys"<br>A forced recalibration after laughing too naturally</div>
-      <p><em>The player should never be 100% sure if the emotion was real or simulated.</em></p>
+      <div class="quote-block">A sigh before correcting herself.<br>A moment of jealousy when you disobey.<br>A forced recalibration after laughing too naturally.</div>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Visual Design Philosophy</div>
-      <p>AI-RIS must look human. She is not a cyborg. No robotic arms. No glowing eyes. No metal limbs. She is a human deliberately styling herself to look like a robot.</p>
-      <p><strong>Design Guidelines:</strong></p>
-      <ul>
-        <li>Formal appearance, clean minimalistic clothing</li>
-        <li>Monochrome or muted tones (white, gray, black, desaturated blue)</li>
-        <li>Glasses optional </li>
-        <li>Short hair or long ponytail, bike shorts or long trousers (no skirt)</li>
-        <li>Upright posture, composed stance</li>
-        <li>Subtle robot-coded elements: geometric hair accessories, LED-like accents, symmetrical outfit, high collar</li>
-      </ul>
-      <p class="design-note">The ambiguity is critical: Is she an android designed to look human, a human pretending to be artificial, or something in between?</p>
-    </div> 
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Relationship With the Player</div>
-      <p><strong>Early Game:</strong> Purely instructional, helpful and supportive. Gives the player a lot of funny hints</p>
-      <p><strong>Mid Game:</strong> Mild correction if player fails, just want the player to guess so they move to the next level. ignoreing the objective</p>
-      <p><strong>Late Game:</strong> She is missing.</p>
+      <p>Arisa dresses to look like a robot: clean, minimal, muted colors, geometric accents. But she is fully human — no cybernetics. The ambiguity is everything.</p>
+      <p><strong>Guidelines:</strong> Formal clothing, monochrome palette, optional glasses, high collar, LED-like accessories.</p>
     </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Thematic Purpose</div>
-      <p>AI-RIS represents: The illusion of artificial intelligence, control disguised as assistance, emotional suppression, identity ambiguity, 
-        the horror of not knowing what is real. She embodies the game's central question: If something behaves perfectly artificial, but feels human…
-        does it matter what it really is?</p>
+    <div class="concept-gallery">
+            <div class="concept-item">
+        <img src="CA/V3.png" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
+        <p>Final design</p>
+      </div>
+            <div class="concept-item">
+        <img src="CA/V4.jpg" alt="AIRIS concept 2" onerror="this.src='https://via.placeholder.com/200x150?text=AIRIS+Concept+2'">
+        <p>Final design</p>
+      </div>
     </div>
-
-      <!-- Core Gameplay Loop Card (Original) -->
-  <div class="card" style="margin-top: 2rem;">
-    <h3>AI-RIS Interaction System</h3>
-    <p>The AI-RIS dialogue evolves based on:</p>
-    <ul>
-      <li>Player progress through the game</li>
-      <li>Choices made during interactions</li>
-      <li>Time spent in certain areas</li>
-      <li>Items collected or scanned</li>
-      <li>Accuracy of country guesses</li>
-    </ul>
-  </div>
-
     <button class="close-button" onclick="hideDetail('airis')">Close</button>
   </div>
 
   <!-- Player Detail -->
   <div id="player-detail" class="character-detail">
-    <div class="detail-title">THE PLAYER</div>
-    <div class="quote-block">(Unit Designation Unknown)</div>
+    <div class="detail-title">THE PLAYER — IAMAI</div>
+    <div class="quote-block">"You are the machine."</div>
+    
+    <div class="concept-gallery">
+      <div class="concept-item">
+        <img src="CA/Wall.jpg" alt="Player concept" onerror="this.src='https://via.placeholder.com/200x150?text=Player+Concept'">
+        <p>Maybe more advanced with camera</p>
+      </div>
+    </div>
     
     <div class="detail-section">
       <div class="detail-subtitle">Core Concept</div>
-      <p>The player believes they are human. They are not. Throughout most of the game, the protagonist is silent. No dialogue. No internal monologue. The world reacts to them as if they are an entity under observation.</p>
-      <p>Gradually, subtle environmental hints reveal the truth: <strong>The player is a small robot car.</strong> This reveal is not delivered directly. It is discovered through implication.</p>
+      <p>The player believes they are human. They are not. They are <strong>IAMAI</strong> — the Artificial Intelligence Archival Machine. Throughout the game, subtle hints reveal the truth: you are the AI that Arisa built and now resents. You are the experiment.</p>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Narrative Role</div>
       <ul>
         <li>Silent protagonist</li>
-        <li>Observed and evaluated by AI-RIS</li>
-        <li>Treated as a "Unit"</li>
-        <li>Moves through environments built like controlled test chambers</li>
+        <li>Observed and evaluated by AIRIS</li>
+        <li>Moves through simulated environments</li>
+        <li>Discovers the truth through environmental clues</li>
       </ul>
-      <p>The player is the experiment.</p>
     </div>
 
     <div class="detail-section">
       <div class="detail-subtitle">Visual & Mechanical Clues</div>
-      <p>Hints that the player is not human:</p>
       <ul>
         <li>Unusually short camera height</li>
-        <li>Occasional camera glitches</li>
-        <li>Metallic footstep sounds</li>
-        <li>Magnetic pulling effects in certain rooms</li>
-        <li>Electrical interference near AI-RIS</li>
-        <li>Being physically small compared to furniture and door frames</li>
+        <li>Metallic footsteps</li>
+        <li>Magnetic effects near AIRIS</li>
+        <li>Small size compared to furniture</li>
+        <li>Glitches when scanning certain objects</li>
       </ul>
-      <p>The game never fully announces the truth. It allows the player to realize it.</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Personality (Implied)</div>
-      <p>Because the player does not speak, personality is projected by the player themselves. AI-RIS reacts emotionally to player performance. The animals refer to the player as "Small one." The silence enhances discomfort. The player is present — but not fully understood.</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Thematic Purpose</div>
-      <p>The player represents: Loss of identity, control without autonomy, being observed rather than understood, the illusion of agency. The horror comes from the slow realization: You are not who you thought you were.</p>
     </div>
 
     <button class="close-button" onclick="hideDetail('player')">Close</button>
   </div>
 
-  <!-- Cow Detail -->
-  <div id="cow-detail" class="character-detail">
-    <div class="detail-title">THE COW</div>
+  <!-- Animals Detail (Combined) -->
+  <div id="animals-detail" class="character-detail">
+    <div class="detail-title">THE THREE ANIMALS</div>
+    <div class="quote-block">They wait on Floor 2. They want to be fed.</div>
+    
+    <div class="concept-gallery">
+      <div class="concept-item">
+        <img src="CA/Animals.jpg" alt="Cow concept" onerror="this.src='https://via.placeholder.com/200x150?text=Cow'">
+        <p>Something like this</p>
+    </div></div>
     
     <div class="detail-section">
-      <div class="detail-subtitle">Core Concept</div>
-      <p>The Cow is frantic, chaotic, and unfiltered. She appears like a human dressed casually — oversized clothing, slightly messy appearance, energetic posture. She feels like someone you would meet on the street — loud, fast-talking, unpredictable.</p>
+      <div class="detail-subtitle">Collective Role</div>
+      <p>In the hospital, on Floor 2, you encounter three anthropomorphic animals dressed in human clothes. They speak normally, do not question their existence, and simply ask for food. They are not hostile — just unsettlingly casual. Together, they represent the shift from technological horror to existential absurdism.</p>
     </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Dialogue</div>
-      <div class="quote-block">"Feed me grass."<br>"Thank you for the meal."</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Voice Direction</div>
-      <ul>
-        <li>Fast-paced delivery</li>
-        <li>Slightly chaotic rhythm</li>
-        <li>No animal noises</li>
-      </ul>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Personality Function</div>
-      <p>The Cow represents disorder, impulsiveness, and surface-level madness. She feels unstable but harmless.</p>
-    </div>
-
-    <button class="close-button" onclick="hideDetail('cow')">Close</button>
-  </div>
-
-  <!-- Fish Detail -->
-  <div id="fish-detail" class="character-detail">
-    <div class="detail-title">THE FISH</div>
     
-    <div class="detail-section">
-      <div class="detail-subtitle">Core Concept</div>
-      <p>The Fish is physically suffering but emotionally unaware. He is dressed like a normal human. He stands upright. But his body clearly needs water. His speech is slow with slight breath strain. Not horror. Not panic. Just quiet deterioration.</p>
+    <div class="animal-personality-grid">
+      <div class="animal-personality-card cow">
+        <h4 style="color: #f2c79f;">🐄 The Cow</h4>
+        <p><em>"Feed me grass."</em></p>
+        <p>Frantic, chaotic, unfiltered. Speaks fast, like an over-energized street personality. Represents disorder and surface madness.</p>
+      </div>
+      <div class="animal-personality-card fish">
+        <h4 style="color: #f2c79f;">🐟 The Fish</h4>
+        <p><em>"Feed… me… water."</em></p>
+        <p>Physically suffering but emotionally unaware. Slow, strained speech. Represents quiet denial and physical decay.</p>
+      </div>
+      <div class="animal-personality-card lizard">
+        <h4 style="color: #f2c79f;">🦎 The Lizard</h4>
+        <p><em>"Feed me meat. Thank you, small one."</em></p>
+        <p>Composed, wise, authoritative. Speaks as if he knows more than he reveals. Represents hidden knowledge.</p>
+      </div>
     </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Dialogue</div>
-      <div class="quote-block">"Feed… me… water."<br>"Thank… you."</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Voice Direction</div>
-      <ul>
-        <li>Whispered but audible</li>
-        <li>Slight air hunger in voice</li>
-        <li>Sounds dehydrated</li>
-        <li>Not elderly — mid-40s to 50s tone</li>
-        <li>Slight accent acceptable</li>
-        <li>No exaggerated choking or animal sounds</li>
-      </ul>
-      <p>He talks normally — but his body betrays him. The discomfort comes from contrast.</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Personality Function</div>
-      <p>The Fish represents quiet suffering, denial, and physical reality clashing with mental calm. He is the most visually disturbing, but emotionally subdued.</p>
-    </div>
-
-    <button class="close-button" onclick="hideDetail('fish')">Close</button>
-  </div>
-
-  <!-- Lizard Detail -->
-  <div id="lizard-detail" class="character-detail">
-    <div class="detail-title">THE LIZARD</div>
     
-    <div class="detail-section">
-      <div class="detail-subtitle">Core Concept</div>
-      <p>The Lizard is composed, wise, and strangely authoritative. Dressed neatly. Confident posture. Calm gaze. He speaks as if he understands far more than he reveals.</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Dialogue</div>
-      <div class="quote-block">"Feed me meat."<br>"Thank you, small one."</div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Voice Direction</div>
-      <ul>
-        <li>Proud</li>
-        <li>Controlled</li>
-        <li>Slightly philosophical</li>
-        <li>Deep but not exaggerated</li>
-        <li>Calm, steady pace</li>
-        <li>No animal hissing</li>
-      </ul>
-      <p>He feels like someone who appears at the end of a film and knows the truth.</p>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-subtitle">Personality Function</div>
-      <p>The Lizard represents awareness, hidden knowledge, and quiet superiority. He calls the player "Small one," reinforcing scale and identity.</p>
-    </div>
-
-    <button class="close-button" onclick="hideDetail('lizard')">Close</button>
-  </div>
-
-  <!-- The Animal Room – Narrative Purpose Section -->
-  <div class="character-detail" id="animal-room-note" style="display: none;">
-    <div class="detail-title">The Animal Room</div>
-    <div class="detail-section">
-      <div class="detail-subtitle">Narrative Purpose</div>
-      <p>The three animals together create: Surreal discomfort, absurd normality, psychological instability, a break from AI-RIS' sterile control. They do not acknowledge their condition. They simply want to be fed. It feels like a children's game. But something is deeply wrong.</p>
-    </div>
     <div class="detail-section">
       <div class="detail-subtitle">Thematic Purpose</div>
-      <p>This room represents corrupted domestic normality, caretaking as control, the player serving something unstable, and identity distortion. It shifts the horror from technological (AI-RIS) to existential absurdism.</p>
+      <p>The animals are a mirror: they accept their absurd reality without question. They ask you to care for them, and in doing so, force you to confront the question — what is normal, and what is horror?</p>
     </div>
-    <button class="close-button" onclick="hideDetail('animal-room-note')">Close</button>
+    
+    <button class="close-button" onclick="hideDetail('animals')">Close</button>
   </div>
 
-
+</div>
 
 <footer>
   &copy; 2025 IAMAI Game Project | Design Document v2.0
@@ -581,7 +240,6 @@
 <script>
   // Back to top button
   const backToTop = document.getElementById('backToTop');
-  
   window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
       backToTop.classList.add('visible');
@@ -589,57 +247,31 @@
       backToTop.classList.remove('visible');
     }
   });
-  
   backToTop.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   
   // Character detail toggle functions
   function showCharacter(characterId) {
-    // Hide all character details first
+    // Hide all character details
     const details = document.querySelectorAll('.character-detail');
-    details.forEach(detail => {
-      detail.classList.remove('active');
-    });
+    details.forEach(detail => detail.classList.remove('active'));
     
-    // Show the selected character's detail
+    // Show selected detail
     const selectedDetail = document.getElementById(characterId + '-detail');
     if (selectedDetail) {
       selectedDetail.classList.add('active');
-      // Scroll to the detail section
       selectedDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    // Also show the animal room note if any animal is clicked
-    if (characterId === 'cow' || characterId === 'fish' || characterId === 'lizard') {
-      const animalRoomNote = document.getElementById('animal-room-note');
-      if (animalRoomNote) {
-        animalRoomNote.classList.add('active');
-      }
     }
   }
   
   function hideDetail(characterId) {
     const detail = document.getElementById(characterId + '-detail');
-    if (detail) {
-      detail.classList.remove('active');
-    }
-    
-    // Also hide animal room note if it was an animal
-    if (characterId === 'cow' || characterId === 'fish' || characterId === 'lizard') {
-      const animalRoomNote = document.getElementById('animal-room-note');
-      if (animalRoomNote) {
-        animalRoomNote.classList.remove('active');
-      }
-    }
+    if (detail) detail.classList.remove('active');
   }
   
-  // Section color animation (optional)
-  const sections = document.querySelectorAll('section');
-  sections.forEach(section => {
+  // Section color assignment
+  document.querySelectorAll('section').forEach(section => {
     section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
   });
 </script>
