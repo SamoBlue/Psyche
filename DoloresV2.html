@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dolores · memories</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Pacifico&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 30px;
+            color: #ffffff;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* ===== Masonry Grid Gallery ===== */
+        .gallery {
+            column-count: 3;
+            column-gap: 20px;
+            padding: 40px 10vw 80px;
+        }
+
+        @media (max-width: 1000px) {
+            .gallery { column-count: 2; }
+        }
+
+        @media (max-width: 600px) {
+            .gallery { column-count: 1; }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            margin: 0 0 20px;
+            display: inline-block;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            break-inside: avoid;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotate(-1deg);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+        }
+
+        .card img {
+            width: 100%;
+            display: block;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 10px;
+            color: #ff6f91;
+        }
+
+        .card-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== Modal Viewer ===== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            max-width: 900px;
+            width: 90%;
+            padding: 30px;
+            text-align: center;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            margin-top: 10px;
+            background: #ff6f91;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #ff3f6c;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Dolores</h1>
+    <p>A story told in memories ✨</p>
+</header>
+
+<section class="gallery">
+
+    <div class="card" data-text="Dolores wanted to find a job, so she took a bus to the city.">
+        <img src="https://safebooru.org//images/4173/76bb0d972a726a3e54dddceaca64931be28ffd23.jpg">
+        <div class="card-content">
+            <h3>The Beginning</h3>
+            <p>A new journey starts.</p>
+        </div>
+    </div>
+
+    <div class="card" data-text="That was the last time anyone had seen her.">
+        <img src="https://i.postimg.cc/j2cY8mBN/ed872fc2838d8e17c72c3d4c69ef72cec26bf182.png">
+        <div class="card-content">
+            <h3>Disappearance</h3>
+            <p>Silence followed.</p>
+        </div>
+    </div>
+
+    <div class="card" data-text="Her friends searched everywhere and asked every person.">
+        <img src="https://safebooru.org//images/1044/4285e929d90a2d8ef8bd05ac205683123bb8d2e9.png">
+        <div class="card-content">
+            <h3>The Search</h3>
+            <p>Hope still lingered.</p>
+        </div>
+    </div>
+
+    <div class="card" data-text="Did she lose her way? Was she kidnapped? Or did she simply choose another life?">
+        <img src="https://safebooru.org//images/4086/955860ad885ae7d747100f31167a839e480387bd.jpg">
+        <div class="card-content">
+            <h3>Questions</h3>
+            <p>Endless possibilities.</p>
+        </div>
+    </div>
+
+    <div class="card" data-text="She once said she hated the old farm and dreamed of something brighter.">
+        <img src="https://safebooru.org//images/4519/9e96c168874a77c9c4cbdad848ae85224b817162.jpg">
+        <div class="card-content">
+            <h3>Dreams</h3>
+            <p>A wish for change.</p>
+        </div>
+    </div>
+
+    <div class="card" data-text="Maybe she found exactly what she was looking for.">
+        <img src="https://i.postimg.cc/3NYvW2wK/ebbf753b1e92ae68d9c1f2a49f6bb8c4761a36fc.jpg">
+        <div class="card-content">
+            <h3>A New Chapter</h3>
+            <p>Some stories end softly.</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <img id="modal-img" src="">
+        <p id="modal-text"></p>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<footer>
+    Made with color instead of fear 🌈
+</footer>
+
+<script>
+    const cards = document.querySelectorAll('.card');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalText = document.getElementById('modal-text');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            modal.classList.add('active');
+            modalImg.src = card.querySelector('img').src;
+            modalText.textContent = card.dataset.text;
+        });
+    });
+
+    function closeModal() {
+        modal.classList.remove('active');
+    }
+
+    modal.addEventListener('click', e => {
+        if (e.target === modal) closeModal();
+    });
+</script>
+
+</body>
+</html>
