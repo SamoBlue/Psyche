@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Puzzle</title>
+
+<!-- CSS FILE -->
+<link rel="stylesheet" href="Style.css">
+
+</head>
+
+<body>
+
+<div id="container">
+    <div id="ui">
+        <div id="toggleUI">◀</div>
+        <h1 id="title">Puzzle</h1>
+        
+        <div class="controls">
+            <div>
+                <select id="difficulty">
+                    <option value="2">2x2</option>
+                    <option value="3">3x3</option>
+                    <option value="4" selected>4x4</option>
+                    <option value="5">5x5</option>
+                    <option value="6">6X6</option>
+                    <option value="7">7X7</option>
+                    <option value="8">8X8</option>
+                    <option value="9">9X9</option>
+                    <option value="10">10X10</option>
+                    <option value="15">15X15</option>
+                </select>
+            </div>
+<button id="newImageBtn">Random Image</button>
+<input type="file" id="uploadImage" accept="image/*">
+            <div class="mode-selector">
+                <button id="modeMove" class="mode-btn active">Déplacer</button>
+                <button id="modeRotate" class="mode-btn">Tourner</button>
+            </div>
+            
+            <button id="shuffleBtn">Mélanger</button>
+            <button id="solveBtn">Solution</button>
+            <button id="newImageBtn">Image aléatoire</button>
+            
+            <div class="language-selector">
+                <button id="languageBtn" class="language-btn">
+                    <span id="currentFlag">🇫🇷</span>
+                    <span id="currentLanguage">Français</span>
+                    <span class="language-chevron">▼</span>
+                </button>
+                
+                <div id="languageDropdown" class="language-dropdown">
+                    <div class="language-option" data-lang="fr">
+                        <span class="language-flag">🇫🇷</span>
+                        <span>Français</span>
+                    </div>
+                    <div class="language-option" data-lang="en">
+                        <span class="language-flag">🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" data-lang="es">
+                        <span class="language-flag">🇪🇸</span>
+                        <span>Español</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-credit" id="imageCredit">
+                Image Unsplash
+            </div>
+        </div>
+    </div>
+    
+    <div id="preview">
+        <img id="previewImage" src="" alt="Image du puzzle">
+    </div>
+    
+    <div id="hint">
+        Mode Déplacer ('+'): clic sur pièce puis autre pièce pour échanger<br>
+        Mode Tourner ('-'): clic-glisser pour rotation. Molette pour zoom
+    </div>
+    
+    <div id="message"></div>
+</div>
+
+
+<!-- JS FILE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="java.js"></script>
+
+</body>
+</html>
