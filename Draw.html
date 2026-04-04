@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Scattered Instax · Drag & Swim</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background: linear-gradient(145deg, #3a2a1c, #2a1e12);
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Segoe UI', 'Georgia', monospace;
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    body:active {
+      cursor: grabbing;
+    }
+
+    /* Wooden floor texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(90deg, rgba(80,55,30,0.2) 0px, rgba(80,55,30,0.2) 2px, transparent 2px, transparent 60px),
+        repeating-linear-gradient(0deg, rgba(60,40,20,0.15) 0px, rgba(60,40,20,0.15) 1px, transparent 1px, transparent 40px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Wood grain texture */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M20 20 L180 20 M30 40 L170 40 M25 60 L175 60 M35 80 L165 80 M30 100 L170 100 M40 120 L160 120 M35 140 L165 140 M45 160 L155 160 M40 180 L160 180" stroke="%23402010" stroke-width="1.5"/></svg>');
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main container */
+    .photo-floor {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Individual photo card */
+    .photo-card {
+      position: absolute;
+      cursor: pointer;
+      transition: filter 0.2s ease, transform 0.1s ease;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+      transform-origin: center center;
+      will-change: left, top;
+    }
+
+    .photo-card:active {
+      cursor: grabbing;
+    }
+
+    /* Instax-style photo */
+    .instax-photo {
+      background: white;
+      padding: 10px 10px 32px 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    /* Black Instax border */
+    .instax-photo::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      border: 2px solid #1a1a1a;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* White frame effect */
+    .instax-photo::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .photo-image {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 200px;
+      max-height: 240px;
+      min-width: 120px;
+      object-fit: contain;
+      border-radius: 2px;
+      background: #faf8f0;
+    }
+
+    /* Date stamp */
+    .photo-date {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.65rem;
+      color: #5a4a32;
+      background: rgba(255,255,245,0.95);
+      padding: 2px 6px;
+      border-radius: 20px;
+      text-align: center;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Hover effect */
+    .photo-card:hover {
+      filter: drop-shadow(0 12px 20px rgba(0,0,0,0.4));
+      z-index: 1000 !important;
+    }
+
+    .photo-card:hover .instax-photo {
+      transform: scale(1.02);
+    }
+
+    /* Always-on-top info panels */
+    .info-panel {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 40px;
+      color: #f0e2c5;
+      font-family: monospace;
+      font-size: 0.85rem;
+      z-index: 10000;
+      pointer-events: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,215,150,0.3);
+    }
+
+    .counter-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 40px;
+      color: #f0e2c5;
+      font-family: monospace;
+      font-size: 0.85rem;
+      z-index: 10000;
+      pointer-events: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,215,150,0.3);
+    }
+
+    /* Fullscreen viewer */
+    .viewer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(20px);
+      z-index: 20000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .viewer-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .viewer-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .viewer-instax {
+      background: white;
+      padding: 20px 20px 55px 20px;
+      border-radius: 8px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .viewer-instax::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: 6px;
+      bottom: 6px;
+      border: 2px solid #1a1a1a;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .viewer-image {
+      max-width: 80vw;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .viewer-date {
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #5a4a32;
+      font-family: monospace;
+      font-size: 1rem;
+      background: rgba(255,255,245,0.95);
+      width: fit-content;
+      margin: 0 auto;
+      padding: 6px 20px;
+      border-radius: 40px;
+    }
+
+    .close-viewer {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2.5rem;
+      color: white;
+      cursor: pointer;
+      background: rgba(0,0,0,0.6);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 20001;
+    }
+
+    .close-viewer:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+
+    .viewer-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 55px;
+      height: 55px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 2rem;
+      color: white;
+      transition: all 0.2s;
+      z-index: 20001;
+    }
+
+    .viewer-nav:hover {
+      background: rgba(232,207,156,0.9);
+      color: #2c1e14;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .viewer-prev {
+      left: 30px;
+    }
+
+    .viewer-next {
+      right: 30px;
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 30000;
+      transition: opacity 0.5s;
+    }
+
+    .loader {
+      text-align: center;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(232,207,156,0.3);
+      border-top-color: #e8cf9c;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader p {
+      color: #e8cf9c;
+      font-family: monospace;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .photo-image {
+        max-width: 140px;
+        max-height: 170px;
+        min-width: 100px;
+      }
+      .instax-photo {
+        padding: 7px 7px 28px 7px;
+      }
+      .photo-date {
+        font-size: 0.55rem;
+        bottom: 6px;
+      }
+      .viewer-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
+      .viewer-prev { left: 10px; }
+      .viewer-next { right: 10px; }
+      .close-viewer {
+        width: 40px;
+        height: 40px;
+        font-size: 1.8rem;
+        top: 10px;
+        right: 15px;
+      }
+      .info-panel, .counter-badge {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="photo-floor" id="photoFloor">
+  <!-- Photos will be scattered here -->
+</div>
+
+<div class="info-panel" id="infoPanel">📸 Instax photos scattered · drag to swim through them</div>
+<div class="counter-badge" id="counter">—</div>
+
+<div class="viewer-overlay" id="viewerOverlay">
+  <div class="close-viewer" id="closeViewer">✕</div>
+  <div class="viewer-nav viewer-prev" id="viewerPrev">◀</div>
+  <div class="viewer-nav viewer-next" id="viewerNext">▶</div>
+  <div class="viewer-content">
+    <div class="viewer-instax">
+      <img class="viewer-image" id="viewerImage" alt="Enlarged photo">
+      <div class="viewer-date" id="viewerDate"></div>
+    </div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader">
+    <div class="loader-spinner"></div>
+    <p>📸 scattering your instax photos...</p>
+  </div>
+</div>
+
+<script>
+  // Configuration
+  const IMAGE_FOLDER = './my_drawings/';
+  
+  // Global variables
+  let allImages = [];
+  let currentViewerIndex = 0;
+  let playSound = () => {};
+  let audioContext = null;
+  let dragTarget = null;
+  let dragOffsetX = 0, dragOffsetY = 0;
+  let isDragging = false;
+  
+  // Extract date from filename
+  function extractDateFromFilename(filename) {
+    const nameOnly = filename.replace(/\.[^/.]+$/, "");
+    const datePart = nameOnly.split('_')[0];
+    if (/^\d{8}$/.test(datePart)) {
+      const year = datePart.substring(0,4);
+      const month = datePart.substring(4,6);
+      const day = datePart.substring(6,8);
+      return `${year}-${month}-${day}`;
+    }
+    return null;
+  }
+  
+  // Get random position within viewport (with margins)
+  function getRandomPosition() {
+    const margin = 80;
+    const maxX = window.innerWidth - margin;
+    const maxY = window.innerHeight - margin;
+    const x = Math.random() * (maxX - margin) + margin;
+    const y = Math.random() * (maxY - margin) + margin;
+    return { x, y };
+  }
+  
+  // Get random rotation (-20deg to 20deg)
+  function getRandomRotation() {
+    return (Math.random() - 0.5) * 40;
+  }
+  
+  // Create Instax photo element
+  function createPhotoElement(imageData, index) {
+    const photoDiv = document.createElement('div');
+    photoDiv.className = 'photo-card';
+    
+    const pos = getRandomPosition();
+    const rotation = getRandomRotation();
+    const zIndex = Math.floor(Math.random() * 50) + 10;
+    
+    photoDiv.style.left = `${pos.x}px`;
+    photoDiv.style.top = `${pos.y}px`;
+    photoDiv.style.transform = `rotate(${rotation}deg)`;
+    photoDiv.style.zIndex = zIndex;
+    
+    const instax = document.createElement('div');
+    instax.className = 'instax-photo';
+    
+    const img = document.createElement('img');
+    img.className = 'photo-image';
+    img.src = imageData.src;
+    img.alt = `Drawing ${imageData.date || 'sketch'}`;
+    img.loading = 'lazy';
+    
+    const dateSpan = document.createElement('div');
+    dateSpan.className = 'photo-date';
+    const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
+    dateSpan.textContent = displayDate;
+    
+    instax.appendChild(img);
+    instax.appendChild(dateSpan);
+    photoDiv.appendChild(instax);
+    
+    // Click to open viewer (only if not dragging)
+    let clickTimer = null;
+    let hasMoved = false;
+    
+    photoDiv.addEventListener('mousedown', (e) => {
+      if (e.target === photoDiv || photoDiv.contains(e.target)) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        hasMoved = false;
+        clickTimer = setTimeout(() => {}, 100);
+        
+        // Start drag
+        isDragging = true;
+        dragTarget = photoDiv;
+        
+        const rect = photoDiv.getBoundingClientRect();
+        dragOffsetX = e.clientX - rect.left;
+        dragOffsetY = e.clientY - rect.top;
+        
+        photoDiv.style.cursor = 'grabbing';
+        photoDiv.style.zIndex = 1000;
+        document.body.style.userSelect = 'none';
+      }
+    });
+    
+    // Track movement
+    let startX = 0, startY = 0;
+    photoDiv.addEventListener('dragstart', (e) => e.preventDefault());
+    
+    // For detecting click vs drag
+    photoDiv.addEventListener('mousemove', (e) => {
+      if (isDragging && dragTarget === photoDiv) {
+        hasMoved = true;
+        if (clickTimer) clearTimeout(clickTimer);
+      }
+    });
+    
+    photoDiv.addEventListener('mouseup', (e) => {
+      if (isDragging && dragTarget === photoDiv) {
+        isDragging = false;
+        photoDiv.style.cursor = 'pointer';
+        document.body.style.userSelect = '';
+        
+        // If no significant movement, it's a click
+        if (!hasMoved) {
+          openViewer(index);
+        }
+        
+        dragTarget = null;
+      }
+    });
+    
+    return photoDiv;
+  }
+  
+  // Make element draggable (global drag handler)
+  function setupGlobalDrag() {
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging || !dragTarget) return;
+      
+      e.preventDefault();
+      
+      let newLeft = e.clientX - dragOffsetX;
+      let newTop = e.clientY - dragOffsetY;
+      
+      // Keep within bounds
+      const rect = dragTarget.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      
+      newLeft = Math.min(Math.max(newLeft, 10), maxX - 10);
+      newTop = Math.min(Math.max(newTop, 10), maxY - 10);
+      
+      dragTarget.style.left = `${newLeft}px`;
+      dragTarget.style.top = `${newTop}px`;
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        if (dragTarget) {
+          dragTarget.style.cursor = 'pointer';
+        }
+        dragTarget = null;
+        document.body.style.userSelect = '';
+      }
+    });
+  }
+  
+  // Open fullscreen viewer
+  function openViewer(index) {
+    currentViewerIndex = index;
+    const imageData = allImages[index];
+    const viewerImg = document.getElementById('viewerImage');
+    const viewerDate = document.getElementById('viewerDate');
+    const overlay = document.getElementById('viewerOverlay');
+    
+    viewerImg.src = imageData.src;
+    const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
+    viewerDate.textContent = displayDate;
+    
+    overlay.classList.add('active');
+    playSound();
+  }
+  
+  // Close viewer
+  function closeViewer() {
+    const overlay = document.getElementById('viewerOverlay');
+    overlay.classList.remove('active');
+  }
+  
+  // Navigate in viewer
+  function viewerNext() {
+    if (currentViewerIndex + 1 < allImages.length) {
+      currentViewerIndex++;
+      const imageData = allImages[currentViewerIndex];
+      const viewerImg = document.getElementById('viewerImage');
+      const viewerDate = document.getElementById('viewerDate');
+      
+      viewerImg.style.animation = 'none';
+      viewerImg.offsetHeight;
+      viewerImg.style.animation = 'zoomIn 0.2s ease';
+      
+      viewerImg.src = imageData.src;
+      const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
+      viewerDate.textContent = displayDate;
+      playSound();
+    }
+  }
+  
+  function viewerPrev() {
+    if (currentViewerIndex > 0) {
+      currentViewerIndex--;
+      const imageData = allImages[currentViewerIndex];
+      const viewerImg = document.getElementById('viewerImage');
+      const viewerDate = document.getElementById('viewerDate');
+      
+      viewerImg.style.animation = 'none';
+      viewerImg.offsetHeight;
+      viewerImg.style.animation = 'zoomIn 0.2s ease';
+      
+      viewerImg.src = imageData.src;
+      const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
+      viewerDate.textContent = displayDate;
+      playSound();
+    }
+  }
+  
+  // Play sound effect
+  function initAudio() {
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return () => {};
+      audioContext = new AudioContextClass();
+      return function play() {
+        if (audioContext.state === 'suspended') audioContext.resume();
+        const now = audioContext.currentTime;
+        const bufferSize = audioContext.sampleRate * 0.05;
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * 0.12 * Math.exp(-i / (bufferSize * 0.2));
+        }
+        const noise = audioContext.createBufferSource();
+        noise.buffer = buffer;
+        const gainNode = audioContext.createGain();
+        noise.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        gainNode.gain.setValueAtTime(0.08, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+        noise.start();
+      };
+    } catch(e) {
+      return () => {};
+    }
+  }
+  
+  // Load images from manifest
+  async function loadImages() {
+    try {
+      const response = await fetch('./my_drawings/manifest.json');
+      if (!response.ok) throw new Error('Manifest not found');
+      const fileList = await response.json();
+      
+      for (const filename of fileList) {
+        const ext = filename.split('.').pop().toLowerCase();
+        if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
+          const src = IMAGE_FOLDER + filename;
+          const dateStr = extractDateFromFilename(filename);
+          allImages.push({ src, date: dateStr, filename });
+        }
+      }
+    } catch(e) {
+      console.error(e);
+      const errorMsg = document.createElement('div');
+      errorMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.9); color:#e8cf9c; padding:2rem; border-radius:20px; text-align:center; z-index:30000;';
+      errorMsg.innerHTML = `<h3>📁 my_drawings folder</h3><p style="margin-top:1rem;">Place your images and manifest.json in the folder</p><p style="margin-top:0.5rem; font-size:0.8rem;">File format: 20241127_035006.jpg</p>`;
+      document.body.appendChild(errorMsg);
+      return;
+    }
+    
+    if (allImages.length === 0) return;
+    
+    // Sort by filename
+    allImages.sort((a, b) => a.filename.localeCompare(b.filename));
+    
+    // Create scattered photos
+    const floor = document.getElementById('photoFloor');
+    floor.innerHTML = '';
+    
+    // Use fragment for better performance
+    const fragment = document.createDocumentFragment();
+    
+    allImages.forEach((img, idx) => {
+      const photo = createPhotoElement(img, idx);
+      fragment.appendChild(photo);
+    });
+    
+    floor.appendChild(fragment);
+    
+    // Update counter
+    document.getElementById('counter').textContent = `${allImages.length} instax photos scattered`;
+    document.getElementById('infoPanel').innerHTML = '📸 drag photos to swim · click to enlarge';
+    
+    // Remove loading overlay
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 500);
+  }
+  
+  // Setup viewer navigation
+  function setupViewer() {
+    document.getElementById('closeViewer').addEventListener('click', closeViewer);
+    document.getElementById('viewerPrev').addEventListener('click', viewerPrev);
+    document.getElementById('viewerNext').addEventListener('click', viewerNext);
+    document.getElementById('viewerOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('viewerOverlay')) closeViewer();
+    });
+    document.addEventListener('keydown', (e) => {
+      const overlay = document.getElementById('viewerOverlay');
+      if (overlay.classList.contains('active')) {
+        if (e.key === 'ArrowLeft') viewerPrev();
+        if (e.key === 'ArrowRight') viewerNext();
+        if (e.key === 'Escape') closeViewer();
+      }
+    });
+  }
+  
+  // Initialize audio on first interaction
+  function initAudioOnInteraction() {
+    const initFn = () => {
+      playSound = initAudio();
+      document.removeEventListener('click', initFn);
+      document.removeEventListener('keydown', initFn);
+    };
+    document.addEventListener('click', initFn);
+    document.addEventListener('keydown', initFn);
+  }
+  
+  // Start everything
+  function init() {
+    setupViewer();
+    setupGlobalDrag();
+    initAudioOnInteraction();
+    playSound = () => {};
+    loadImages();
+  }
+  
+  init();
+</script>
+</body>
+</html>
