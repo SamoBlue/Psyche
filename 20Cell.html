@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>THE 12 CELL GAME | Zero Escape Simulacrum</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #030303;
+      font-family: 'Courier New', 'SF Mono', 'Segoe UI', 'Monaco', monospace;
+      color: #b3b3b3;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* sinister ambient background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, rgba(30, 0, 0, 0.5), #000000 95%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    /* subtle glitch overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.02) 0px, rgba(255, 0, 0, 0.02) 2px, transparent 2px, transparent 6px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* scrollbar horror */
+    ::-webkit-scrollbar {
+      width: 6px;
+      background: #0a0a0a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #8a0303;
+      border-radius: 3px;
+    }
+
+    /* ========= SLIDING MENU (HOVER INWARD) ========= */
+    .nav-menu {
+      position: fixed;
+      top: 20%;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: flex-start;
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      transform: translateX(-85%);
+    }
+
+    .nav-menu:hover {
+      transform: translateX(0);
+    }
+
+    .menu-tab {
+      background: #0a0202ee;
+      backdrop-filter: blur(12px);
+      border: 1px solid #a12222;
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 10px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-weight: bold;
+      letter-spacing: 4px;
+      font-size: 1.1rem;
+      color: #e6b3b3;
+      box-shadow: 4px 0 14px rgba(0,0,0,0.6);
+      cursor: default;
+      transition: all 0.2s;
+    }
+
+    .menu-tab span {
+      display: inline-block;
+      transform: rotate(180deg);
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 3px #a10000;
+    }
+
+    .menu-links {
+      background: #050101dd;
+      backdrop-filter: blur(14px);
+      border: 1px solid #882222;
+      border-left: none;
+      border-radius: 0 20px 20px 0;
+      padding: 20px 20px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 210px;
+      box-shadow: 5px 0 18px rgba(0,0,0,0.7);
+    }
+
+    .menu-links a {
+      color: #e0c8c8;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      padding: 8px 12px;
+      border-left: 2px solid transparent;
+      transition: all 0.25s ease;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-links a::before {
+      content: "⎯";
+      color: #b31f1f;
+      opacity: 0.7;
+      transition: 0.2s;
+    }
+
+    .menu-links a:hover {
+      color: #ffaaaa;
+      border-left: 2px solid #ff4444;
+      background: linear-gradient(90deg, #2a0808, transparent);
+      transform: translateX(6px);
+      letter-spacing: 1.5px;
+    }
+
+    /* container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* hero section remains but we refine */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-bottom: 2px solid #2a0000;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .static-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" opacity="0.08"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 20px;
+      backdrop-filter: blur(2px);
+    }
+
+    .hero h1 {
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #ff2a2a, #5a0000);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(180, 0, 0, 0.5);
+      margin-bottom: 20px;
+      word-break: break-word;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      color: #e0dcdc;
+      font-weight: 500;
+      border-left: 3px solid #a10000;
+      padding-left: 20px;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+    }
+
+    .hero-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      margin-top: 30px;
+    }
+
+    .hero-boxes div {
+      background: #0c0303cc;
+      backdrop-filter: blur(12px);
+      border: 1px solid #a12222;
+      padding: 14px 28px;
+      font-weight: bold;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      color: #ffbbbb;
+      box-shadow: 0 0 12px rgba(200, 0, 0, 0.2);
+      font-family: monospace;
+    }
+
+    /* sections */
+    .section {
+      padding: 70px 0;
+      border-bottom: 1px dashed #2c1a1a;
+      scroll-margin-top: 90px;
+    }
+
+    .dark {
+      background: #070707;
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #e60000;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 45px;
+      border-left: 5px solid #b91c1c;
+      padding-left: 20px;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 4px #3a0000;
+    }
+
+    .section p {
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+      color: #c0c0c0;
+      max-width: 800px;
+      font-family: 'Segoe UI', 'Courier New', monospace;
+      line-height: 1.6;
+      background: rgba(0,0,0,0.4);
+      padding: 12px 18px;
+      border-radius: 8px;
+    }
+
+    /* grid & cards (ominous) */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #0f0f0f;
+      border: 1px solid #2a1f1f;
+      border-radius: 24px;
+      padding: 28px 20px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #b00000;
+      transition: 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #b02c2c;
+      background: #120808;
+      box-shadow: 0 0 20px rgba(180, 0, 0, 0.3);
+    }
+
+    .card:hover::before {
+      width: 8px;
+      background: #ff3a3a;
+    }
+
+    .card h3 {
+      font-size: 1.6rem;
+      color: #f2e6e6;
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .card span {
+      display: inline-block;
+      background: #1e0606;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #ff7070;
+      margin-bottom: 16px;
+      border-radius: 30px;
+      border-left: 2px solid #ff4444;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #b4a7a7;
+      margin-bottom: 0;
+      text-align: left;
+      background: none;
+      padding: 0;
+    }
+
+    /* twist specific */
+    .dark .card {
+      background: #0a0303;
+      border-color: #2f1212;
+    }
+
+    footer {
+      padding: 110px 20px;
+      text-align: center;
+      background: radial-gradient(circle at 30% 10%, #1a0000, #000000);
+      margin-top: 20px;
+      border-top: 1px solid #880000;
+    }
+
+    footer h2 {
+      font-size: 2.2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      border-left: none;
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 1px;
+      color: #b34545;
+      font-family: 'Courier New', monospace;
+      font-weight: 400;
+      text-shadow: 2px 2px 0px #2a0000;
+      padding: 0 16px;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      h2 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+      }
+      .card h3 {
+        font-size: 1.3rem;
+      }
+      .hero-boxes div {
+        font-size: 0.9rem;
+        padding: 8px 20px;
+      }
+      .section p {
+        font-size: 0.95rem;
+      }
+      footer h2 {
+        font-size: 1.4rem;
+      }
+      .nav-menu {
+        transform: translateX(-88%);
+      }
+      .menu-links {
+        padding: 15px 12px 15px 20px;
+        min-width: 180px;
+      }
+    }
+
+    @keyframes subtlePulse {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    ::selection {
+      background: #5a0000;
+      color: #f0b3b3;
+    }
+    
+    /* extra glow for smooth anchors */
+    a {
+      cursor: pointer;
+    }
+    
+    /* faux slider visual / some inner interactions */
+    .blood-drip {
+      transition: 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="static-overlay"></div>
+
+<!-- SLIDING MENU (HOVER INWARD) WITH TABS FOR ALL SECTIONS -->
+<div class="nav-menu">
+  <div class="menu-tab"><span>☠ ACCESS ☠</span></div>
+  <div class="menu-links">
+    <a href="#mystery" data-nav="mystery">╳ THE MYSTERY</a>
+    <a href="#rules" data-nav="rules">╳ OFFICIAL RULES</a>
+    <a href="#students" data-nav="students">╳ THE 12 STUDENTS</a>
+    <a href="#twists" data-nav="twists">╳ MAJOR TWISTS</a>
+    <a href="#final" data-nav="final">╳ FINAL WORDS</a>
+  </div>
+</div>
+
+<main>
+  <div class="hero">
+    <div class="hero-content">
+      <h1>THE 12 CELL GAME</h1>
+      <p>
+        A psychological death-game mystery where twelve students are trapped<br>
+        inside a prison simulation — but the exit is a lie.
+      </p>
+      <div class="hero-boxes">
+        <div>20 Rounds</div>
+        <div>12 Students</div>
+        <div>1 Survivor</div>
+        <div>0 Escape</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <section id="mystery" class="section">
+      <h2>⎯ THE MYSTERY ⎯</h2>
+      <p>
+        The students believe they leave the simulation after each round.<br>
+        But the resting room they wake up in is <strong>also fake</strong>.
+      </p>
+      <p>
+        The entire world around them is layered simulations created by<br>
+        <span style="color:#c44">Yuni Miyafumi</span>. Every memory, every death, every scream — manufactured.
+      </p>
+      <p>
+        <span style="color:#ff4d4d">Hita Tane</span> plans to win the game, kill Yuni,<br>
+        and trap everyone inside forever. <em>No one will ever log out.</em>
+      </p>
+    </section>
+
+    <section id="rules" class="section dark">
+      <h2>⎯ OFFICIAL RULES ⎯</h2>
+      <div class="grid">
+        <div class="card"><h3>01</h3><p>This is the 12 Cell game.</p></div>
+        <div class="card"><h3>02</h3><p>All of the 12 xxx academy Students will take part in this game.</p></div>
+        <div class="card"><h3>03</h3><p>the winner of this game will get to kill one person of there choice.</p></div>
+        <div class="card"><h3>04</h3><p>Killing one person in game will get you one point.</p></div>
+        <div class="card"><h3>05</h3><p>The only way to kill a person is with a bullet  .</p></div>
+        <div class="card"><h3>06</h3><p>Each Round 2 guns will be randomly spread to the student with each having 2 bullets.</p></div>
+        <div class="card"><h3>07</h3><p>There is one traitor each round.</p></div>
+        <div class="card"><h3>08</h3><p>Killing the traitor will get you 2 points / if they lived they get 2.</p></div>
+        <div class="card"><h3>09</h3><p>Each round is 12 Hours from 12PM till 12AM.</p></div>
+        <div class="card"><h3>10</h3><p>If you die you can’t remember the last 30 mins of the sim.</p></div>
+        <div class="card"><h3>11</h3><p>The person who can figure out how the killings are done you will get 1 point.</p></div>
+        <div class="card"><h3>12</h3><p>The Score will be revaled each 3 rounds.</p></div>
+      </div>
+    </section>
+
+    <section id="students" class="section">
+      <h2>⎯ THE 12 STUDENTS ⎯</h2>
+      <div class="grid">
+        <div class="card"><h3>Rakukite Rina</h3><span>The Hero</span><p>Calm and empathetic leader trying to stop the game. But can she save anyone?</p></div>
+        <div class="card"><h3>Yanashi Kanedori</h3><span>The Loyal Friend</span><p>Friendly and comforting, but terrified of abandonment. Her loyalty hides cracks.</p></div>
+        <div class="card"><h3>Hagimida Marize</h3><span>The Observer</span><p>A mystery novelist obsessed with uncovering truth. But some truths consume.</p></div>
+        <div class="card"><h3>Hita Tane</h3><span>The Monster</span><p>A manipulative philosopher fascinated by corruption. He volunteered for this.</p></div>
+        <div class="card"><h3>Yuni Miyafumi</h3><span>The Scientist</span><p>The creator of the simulation and only escape route. But is she a savior or jailer?</p></div>
+        <div class="card"><h3>Kureha Shinomi</h3><span>The Idol</span><p>A famous performer hiding severe anxiety. Her mask is bleeding through.</p></div>
+        <div class="card"><h3>Daichi Reizan</h3><span>The Fighter</span><p>A boxer slowly consumed by anger. His fists remember what his mind forgets.</p></div>
+        <div class="card"><h3>Mikoto Fuyume</h3><span>The Liar</span><p>An actress who constantly changes personalities. Even she doesn't know the real self.</p></div>
+        <div class="card"><h3>Ren Amagiri</h3><span>The Hacker</span><p>A programmer discovering hidden code in the prison. He sees the strings.</p></div>
+        <div class="card"><h3>Sora Ichinose</h3><span>The Believer</span><p>A spiritual girl hearing mysterious voices. They whisper things beyond logic.</p></div>
+        <div class="card"><h3>Akuro Vance</h3><span>The Strategist</span><p>A cold chess champion treating life like a game. He will sacrifice anyone.</p></div>
+        <div class="card"><h3>Noa Kisaragi</h3><span>The Child</span><p>A shy memory prodigy hiding a terrifying secret. She remembers every death.</p></div>
+      </div>
+    </section>
+
+    <section id="twists" class="section dark">
+      <h2>⎯ MAJOR TWISTS ⎯</h2>
+      <div class="grid">
+        <div class="card"><p>◉ The resting room is also simulated — no exit, no break.</p></div>
+        <div class="card"><p>◉ Repeated deaths damage the brain. Fragments splinter.</p></div>
+        <div class="card"><p>◉ The traitor is not random — chosen by an unseen will.</p></div>
+        <div class="card"><p>◉ Hita joined willingly. He smiles at the suffering.</p></div>
+        <div class="card"><p>◉ The simulation becomes self-aware — and it's hungry.</p></div>
+        <div class="card"><p>◉ One student was already dead before the game began.</p></div>
+        <div class="card"><p>◉ Some murders never happened — false memories bleed.</p></div>
+        <div class="card"><p>◉ The final escape is fake. The door leads to another cell.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <footer id="final">
+    <h2>“If suffering created the real you... why would you ever want to leave?”</h2>
+    <div style="margin-top: 50px; font-size: 0.7rem; letter-spacing: 1px; color:#702222;">━━ NO ESCAPE. NO RESET. NO WITNESS ━━</div>
+  </footer>
+</main>
+
+<script>
+  (function() {
+    // improved menu smooth slide & section highlighting with animation
+    const navLinks = document.querySelectorAll('.menu-links a');
+    const sections = ['mystery', 'rules', 'students', 'twists', 'final'];
+    
+    // Smooth scroll for menu links with extra animation flourish
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          // tiny glitch effect on click
+          link.style.textShadow = '0 0 4px red';
+          setTimeout(() => { link.style.textShadow = ''; }, 200);
+          
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+          
+          // add a temporary pulse to the target section title for visual feedback
+          const heading = targetElement.querySelector('h2');
+          if (heading) {
+            heading.style.transition = '0.2s';
+            heading.style.textShadow = '0 0 8px #ff2a2a';
+            setTimeout(() => {
+              heading.style.textShadow = '';
+            }, 400);
+          }
+        }
+      });
+    });
+    
+    // floating glitch effect on hero and titles (enhanced immersive)
+    const glitchElements = document.querySelectorAll('h1, h2, .hero-boxes div, footer h2');
+    setInterval(() => {
+      if (Math.random() < 0.09) {
+        const elem = glitchElements[Math.floor(Math.random() * glitchElements.length)];
+        if (elem) {
+          elem.style.transition = '0.02s linear';
+          elem.style.textShadow = '2px 0 red, -2px 0 darkred';
+          setTimeout(() => {
+            elem.style.textShadow = '';
+          }, 70);
+        }
+      }
+    }, 2600);
+    
+    // card hover subtle "corruption" + motion
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        const randomBit = Math.floor(Math.random() * 4);
+        if (randomBit === 0) {
+          card.style.transform = 'translateY(-5px) skewX(0.5deg)';
+          setTimeout(() => { if(card) card.style.transform = ''; }, 120);
+        } else {
+          card.style.transform = 'translateY(-5px)';
+        }
+        card.style.borderLeftColor = '#ff5e5e';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.borderLeftColor = '';
+      });
+    });
+    
+    // console easter egg (Zero Escape vibe)
+    console.log("%c⚠ WARNING: SIMULATION LAYER DETECTED. TRUST NO ONE. ⚠", "color: #aa2222; font-size: 14px; font-family: monospace;");
+    console.log("%c> THE 12 CELL GAME // ROUND STATUS: ACTIVE // MENU: HOVER LEFT EDGE", "color: #7a2e2e;");
+    
+    // live dynamic menu indicator: adds visual "slide in reminder" on load (optional animation)
+    const menu = document.querySelector('.nav-menu');
+    setTimeout(() => {
+      menu.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1)';
+      // subtle wiggle to draw attention
+      menu.style.transform = 'translateX(-75%)';
+      setTimeout(() => {
+        menu.style.transform = 'translateX(-85%)';
+      }, 800);
+    }, 400);
+    
+    // improve footer eerie flicker
+    const footerText = document.querySelector('footer h2');
+    if(footerText) {
+      setInterval(() => {
+        if(Math.random() < 0.05 && document.hasFocus()) {
+          footerText.style.opacity = '0.6';
+          footerText.style.letterSpacing = '2px';
+          setTimeout(() => {
+            if(footerText) footerText.style.opacity = '';
+            if(footerText) footerText.style.letterSpacing = '';
+          }, 140);
+        }
+      }, 3800);
+    }
+    
+    // add an interactive "blood" drip statics: cursor distortion vibe (just visual)
+    const styleBlood = document.createElement('style');
+    styleBlood.textContent = `
+      .card p, .card h3 {
+        transition: all 0.2s;
+      }
+      .menu-links a::before {
+        content: "⎯";
+        transition: all 0.2s ease;
+      }
+      .menu-links a:hover::before {
+        content: "✹";
+        color: #ff6a6a;
+        margin-right: 5px;
+      }
+      /* interactive scroll snap indicator */
+      .section {
+        transition: box-shadow 0.2s;
+      }
+      .section:target {
+        box-shadow: 0 0 0 2px #a12222 inset, 0 0 20px rgba(180,0,0,0.4);
+        border-radius: 8px;
+      }
+    `;
+    document.head.appendChild(styleBlood);
+    
+    // mobile friendly: on touch devices menu expands on tap, but also hover works fine
+    if ('ontouchstart' in window) {
+      // For touch, make menu slightly more accessible: toggle on first tap? but we keep hover style functional.
+      // add tap to keep open for a while?
+      let menuTimeout;
+      const menuDiv = document.querySelector('.nav-menu');
+      menuDiv.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        if (menuDiv.style.transform === 'translateX(0px)') {
+          menuDiv.style.transform = 'translateX(-85%)';
+        } else {
+          menuDiv.style.transform = 'translateX(0)';
+          clearTimeout(menuTimeout);
+          menuTimeout = setTimeout(() => {
+            menuDiv.style.transform = 'translateX(-85%)';
+          }, 3000);
+        }
+      });
+      document.body.addEventListener('touchstart', (e) => {
+        if (!menuDiv.contains(e.target)) {
+          menuDiv.style.transform = 'translateX(-85%)';
+        }
+      });
+    }
+    
+    // optional: create a round indicator slider (as requested "sliders that let you access all the different parts" — we have menu, but add interactive "rotary" element as plus?
+    // add floating 'scroll progress' slider bar for dramatic effect
+    const progressBar = document.createElement('div');
+    progressBar.style.position = 'fixed';
+    progressBar.style.bottom = '0';
+    progressBar.style.left = '0';
+    progressBar.style.height = '3px';
+    progressBar.style.backgroundColor = '#b52e2e';
+    progressBar.style.width = '0%';
+    progressBar.style.zIndex = '999';
+    progressBar.style.boxShadow = '0 0 6px #ff0000';
+    progressBar.style.transition = 'width 0.1s linear';
+    document.body.appendChild(progressBar);
+    
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + '%';
+    });
+    
+    // also add directional hint: small text near menu for first time
+    const hint = document.createElement('div');
+    hint.innerText = '⌇ HOVER LEFT EDGE ⌇';
+    hint.style.position = 'fixed';
+    hint.style.bottom = '20px';
+    hint.style.left = '12px';
+    hint.style.fontSize = '10px';
+    hint.style.color = '#773333';
+    hint.style.fontFamily = 'monospace';
+    hint.style.background = '#0a0000aa';
+    hint.style.padding = '4px 8px';
+    hint.style.borderRadius = '20px';
+    hint.style.backdropFilter = 'blur(4px)';
+    hint.style.zIndex = '1001';
+    hint.style.pointerEvents = 'none';
+    hint.style.opacity = '0.7';
+    document.body.appendChild(hint);
+    setTimeout(() => {
+      hint.style.transition = 'opacity 2s';
+      hint.style.opacity = '0';
+      setTimeout(() => hint.remove(), 4000);
+    }, 5500);
+    
+    // additional animation: menu links appear with staggered effect (already visible but extra pop)
+    const linksItems = document.querySelectorAll('.menu-links a');
+    linksItems.forEach((item, idx) => {
+      item.style.transitionDelay = `${idx * 0.03}s`;
+      item.style.opacity = '1';
+    });
+    
+    // initialize some random flicker
+    setInterval(() => {
+      if (Math.random() < 0.03) {
+        const randCard = cards[Math.floor(Math.random() * cards.length)];
+        if (randCard) {
+          randCard.style.filter = 'brightness(1.2)';
+          setTimeout(() => {
+            if(randCard) randCard.style.filter = '';
+          }, 80);
+        }
+      }
+    }, 4200);
+  })();
+</script>
+</body>
+</html>

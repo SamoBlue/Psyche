@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Free Art Commissions · SamoBlue</title>
+  <style>
+    /* ========== RESET & BASE ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #eee7dc;
+      color: #2f2a25;
+      font-family: "Inter", "Segoe UI", system-ui, "Trebuchet MS", sans-serif;
+      line-height: 1.4;
+      padding: 22px;
+      transition: all 0.2s ease;
+    }
+
+    /* Arabic RTL support */
+    body.arabic {
+      direction: rtl;
+      font-family: "Cairo", "Inter", "Segoe UI", system-ui, sans-serif;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    /* ========== TYPOGRAPHY ========== */
+    h2 {
+      font-size: 1.45rem;
+      color: #3f3730;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .section-caption {
+      font-size: 0.86rem;
+      color: #7a6bc2;
+      margin-bottom: 1rem;
+    }
+
+    /* ========== HEADER ========== */
+    .top-intro {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .badge-free {
+      background: #d8c7b4;
+      color: #2f2a25;
+      font-weight: 800;
+      padding: 7px 18px;
+      border-radius: 80px;
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.4px;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Language Switcher */
+    .language-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .lang-btn {
+      background: #d8c7b4;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #2f2a25;
+      font-size: 0.85rem;
+    }
+
+    .lang-btn:hover {
+      background: #ff8c42;
+      color: white;
+    }
+
+    .lang-btn.active {
+      background: #ff8c42;
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 140, 66, 0.4);
+    }
+
+    /* ========== LAYOUT - SINGLE COLUMN ========== */
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ========== COMMISSION CARDS GRID ========== */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 980px) {
+      .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card styles */
+    .comm-card {
+      position: relative;
+      height: 280px;
+      border-radius: 28px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #cfc2b3;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .comm-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 28px rgba(0, 0, 0, 0.12);
+      border-color: #ff8c42;
+    }
+
+    .comm-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Overlay - ALWAYS VISIBLE */
+    .card-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px 12px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.2), transparent);
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* ========== DISCLAIMER ========== */
+    .disclaimer {
+      margin-top: 20px;
+      margin-bottom: 2rem;
+      background: #fff0e0;
+      border-radius: 22px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #8a5a2a;
+      border-left: 5px solid #ff8c42;
+      border-right: 1px solid #e2d5c8;
+      border-top: 1px solid #e2d5c8;
+      border-bottom: 1px solid #e2d5c8;
+    }
+
+    .disclaimer strong {
+      color: #c96f1e;
+    }
+
+    /* ========== CONTACT SECTION ========== */
+    .contact-modern {
+      margin-top: 0.5rem;
+      background: #f8f3ec;
+      border-radius: 34px;
+      padding: 1.6rem;
+      text-align: center;
+      border: 2px solid #b8a99a;
+    }
+
+    .contact-modern h2 {
+      color: #3f3730;
+      margin-bottom: 10px;
+    }
+
+    .contact-modern p {
+      color: #5d5147;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      align-items: center;
+      margin: 0.6rem 0;
+    }
+
+    .contact-card {
+      background: white;
+      padding: 0.75rem 1.3rem;
+      border-radius: 60px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #3c345f;
+      transition: 0.2s;
+      border: 1px solid #e2d5c8;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-3px);
+      background: #fffffff2;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      text-align: center;
+      padding: 1rem 0 0.4rem;
+      font-size: 0.75rem;
+      color: #8a7aa8;
+      margin-top: 1rem;
+    }
+
+    /* ========== LIGHTBOX ========== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      font-size: 45px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+      font-family: monospace;
+      z-index: 1001;
+    }
+
+    .close-lightbox:hover {
+      color: #ff8c42;
+      transform: scale(1.1);
+    }
+
+    /* Arabic adjust close button position */
+    body.arabic .close-lightbox {
+      right: auto;
+      left: 35px;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
+      .contact-card {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .comm-card {
+        height: 240px;
+      }
+
+      .card-overlay {
+        font-size: 1rem;
+        padding: 12px;
+      }
+
+      .disclaimer {
+        font-size: 0.75rem;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Lightbox modal for expanded image view -->
+  <div id="lightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img id="lightbox-img" src="" alt="Expanded view">
+  </div>
+
+  <main class="container">
+    <!-- ========== HERO SECTION ========== -->
+    <section class="top-intro">
+      <div class="badge-free" id="badge-text">🌸 100% FREE · practice slots 🌸</div>
+    </section>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+      <button class="lang-btn active" data-lang="en"> English</button>
+      <button class="lang-btn" data-lang="de"> Deutsch</button>
+      <button class="lang-btn" data-lang="ar"> العربية</button>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+      <h2 id="title-what">🌟 What You Can Get</h2>
+      <p class="section-caption" id="caption-text">
+        Free commissions to help me practice — all styles are completely free. Click any image to see it full size 💕
+      </p>
+
+      <div class="options-grid">
+        <!-- Card 1: Face / Portrait -->
+        <div class="comm-card" data-img-src="Images/Face.jpg">
+          <img src="Images/Face.jpg" alt="Face Portrait">
+          <div class="card-overlay" id="card-face">Face</div>
+        </div>
+
+        <!-- Card 2: Half Body -->
+        <div class="comm-card" data-img-src="Images/Halfbody.jpg">
+          <img src="Images/Halfbody.jpg" alt="Half body example">
+          <div class="card-overlay" id="card-half">Half Body</div>
+        </div>
+
+        <!-- Card 3: Full Body -->
+        <div class="comm-card" data-img-src="Images/Full.jpg">
+          <img src="Images/Full.jpg" alt="Full body example">
+          <div class="card-overlay" id="card-full">Full Body</div>
+        </div>
+
+        <!-- Card 4: Chibi Drawings -->
+        <div class="comm-card" data-img-src="Images/Chibi.jpg">
+          <img src="Images/Chibi.jpg" alt="Chibi example">
+          <div class="card-overlay" id="card-chibi">Chibi</div>
+        </div>
+      </div>
+
+      <!-- DISCLAIMER -->
+      <div class="disclaimer" id="disclaimer-text">
+        ⚠️ <strong>Honest disclaimer:</strong> I'm a new artist still learning! The results may not be perfect or exactly to your liking, but I will always try my best and share progress shots along the way. Thank you for understanding and helping me grow 💕
+      </div>
+
+      <!-- ========== CONTACT SECTION ========== -->
+      <section id="contact-now" class="contact-modern">
+        <h2 id="contact-title">💌 Contact Me</h2>
+        <p id="contact-desc">
+          Send me your character, references, pose ideas, or anything you'd like me to draw.
+        </p>
+
+        <div class="contact-flex">
+          <div class="contact-card">
+            <span>💬 Discord</span> SamoBlue
+          </div>
+          <div class="contact-card">
+            <span>📸 Instagram</span> @SamoBlue7
+          </div>
+          <div class="contact-card">
+            <span id="other-platforms-text">🌐 Other Platforms</span> 
+          </div>
+        </div>
+      </section>
+
+      <footer id="footer-text">© 2026 SamoBlue — free art while practicing & improving ✨</footer>
+    </div>
+  </main>
+
+  <script>
+    // Language translations
+    const translations = {
+      en: {
+        badge: "🌸 100% FREE · practice slots 🌸",
+        titleWhat: "🌟 What You Can Get",
+        caption: "Free commissions to help me practice — all styles are completely free. Click any image to see it full size 💕",
+        cardFace: "Face",
+        cardHalf: "Half Body",
+        cardFull: "Full Body",
+        cardChibi: "Chibi",
+        disclaimer: "⚠️ Honest disclaimer: I'm a new artist still learning! The results may not be perfect or exactly to your liking, but I will always try my best and share progress shots along the way. Thank you for understanding and helping me grow 💕",
+        contactTitle: "💌 Contact Me",
+        contactDesc: "Send me your character, references, pose ideas, or anything you'd like me to draw.",
+        otherPlatforms: "🌐 Other Platforms",
+        footer: "© 2026 SamoBlue — free art while practicing & improving ✨"
+      },
+      de: {
+        badge: "🌸 100% KOSTENLOS · Übungsslots 🌸",
+        titleWhat: "🌟 Was du bekommen kannst",
+        caption: "Kostenlose Aufträge zum Üben — alle Stile sind völlig kostenlos. Klicke auf ein Bild, um es in voller Größe zu sehen 💕",
+        cardFace: "Porträt",
+        cardHalf: "Halbkörper",
+        cardFull: "Ganzkörper",
+        cardChibi: "Chibi",
+        disclaimer: "⚠️ Ehrlicher Hinweis: Ich bin eine neue Künstlerin und lerne noch! Die Ergebnisse sind vielleicht nicht perfekt oder ganz nach deinem Geschmack, aber ich gebe immer mein Bestes und zeige Zwischenschritte. Danke für dein Verständnis und dass du mir hilfst zu wachsen 💕",
+        contactTitle: "💌 Kontaktiere mich",
+        contactDesc: "Schick mir deinen Charakter, Referenzen, Pose-Ideen oder alles, was du gerne gezeichnet haben möchtest.",
+        otherPlatforms: "🌐 Andere Plattformen",
+        footer: "© 2026 SamoBlue — kostenlose Kunst zum Üben & Verbessern ✨"
+      },
+      ar: {
+        badge: "🌸 100% مجانية · فتحت طلبات الرسم 🌸",
+        titleWhat: "🌟 ما يمكنك الحصول عليه",
+        caption: "طلبات رسم مجانية لمساعدتي على التمرين — جميع الأنماط مجانية تمامًا. اضغط على أي صورة لمشاهدتها بالحجم الكامل 💕",
+        cardFace: "الوجه",
+        cardHalf: "نصف الجسد",
+        cardFull: "الجسم الكامل",
+        cardChibi: "تشيبي",
+        disclaimer: "⚠️ إخلاء مسؤولية صادق: أنا فنانة جديدة وما زلت أتعلم! قد لا تكون النتائج مثالية أو تعجبك تمامًا، لكنني سأبذل قصارى جهدي دائمًا وسأشارك التقدم خطوة بخطوة. شكرًا لتفهمك ومساعدتي على النمو 💕",
+        contactTitle: "💌 تواصل معي",
+        contactDesc: "أرسل لي شخصيتك، المراجع، أفكار الوضعيات، أو أي شيء تريد مني أن أرسمه.",
+        otherPlatforms: "🌐 منصات أخرى",
+        footer: "© 2026 SamoBlue — فن مجاني للممارسة والتحسين ✨"
+      }
+    };
+
+    let currentLang = 'en';
+
+    // Function to update all text based on selected language
+    function updateLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      // Update badge
+      document.getElementById('badge-text').textContent = t.badge;
+
+      // Update title and caption
+      document.getElementById('title-what').textContent = t.titleWhat;
+      document.getElementById('caption-text').textContent = t.caption;
+
+      // Update card overlays
+      document.getElementById('card-face').textContent = t.cardFace;
+      document.getElementById('card-half').textContent = t.cardHalf;
+      document.getElementById('card-full').textContent = t.cardFull;
+      document.getElementById('card-chibi').textContent = t.cardChibi;
+
+      // Update disclaimer (preserve strong tag structure)
+      const disclaimerDiv = document.getElementById('disclaimer-text');
+      if (lang === 'ar') {
+        disclaimerDiv.innerHTML = `⚠️ <strong>${t.disclaimer.split('⚠️ <strong>')[1]?.split('</strong>')[0] || 'إخلاء مسؤولية صادق:'}</strong> ${t.disclaimer.replace('⚠️ ', '').replace(/<strong>.*?<\/strong>/, '')}`;
+        // Simpler approach: just set HTML with proper formatting
+        if (t.disclaimer.includes('Honest disclaimer')) {
+          disclaimerDiv.innerHTML = `⚠️ <strong>إخلاء مسؤولية صادق:</strong> أنا فنانة جديدة وما زلت أتعلم! قد لا تكون النتائج مثالية أو تعجبك تمامًا، لكنني سأبذل قصارى جهدي دائمًا وسأشارك التقدم خطوة بخطوة. شكرًا لتفهمك ومساعدتي على النمو 💕`;
+        } else if (t.disclaimer.includes('Ehrlicher Hinweis')) {
+          disclaimerDiv.innerHTML = `⚠️ <strong>Ehrlicher Hinweis:</strong> Ich bin eine neue Künstlerin und lerne noch! Die Ergebnisse sind vielleicht nicht perfekt oder ganz nach deinem Geschmack, aber ich gebe immer mein Bestes und zeige Zwischenschritte. Danke für dein Verständnis und dass du mir hilfst zu wachsen 💕`;
+        } else {
+          disclaimerDiv.innerHTML = t.disclaimer;
+        }
+      } else {
+        disclaimerDiv.innerHTML = t.disclaimer;
+      }
+
+      // Update contact section
+      document.getElementById('contact-title').textContent = t.contactTitle;
+      document.getElementById('contact-desc').textContent = t.contactDesc;
+      document.getElementById('other-platforms-text').textContent = t.otherPlatforms;
+      document.getElementById('footer-text').textContent = t.footer;
+
+      // Update body direction for Arabic (RTL)
+      if (lang === 'ar') {
+        document.body.classList.add('arabic');
+        document.body.style.direction = 'rtl';
+        // Adjust text alignment for specific elements
+        const caption = document.querySelector('.section-caption');
+        if (caption) caption.style.textAlign = 'center';
+        const disclaimer = document.querySelector('.disclaimer');
+        if (disclaimer) disclaimer.style.textAlign = 'center';
+      } else {
+        document.body.classList.remove('arabic');
+        document.body.style.direction = 'ltr';
+        const caption = document.querySelector('.section-caption');
+        if (caption) caption.style.textAlign = 'center';
+      }
+    }
+
+    // Language switcher buttons
+    const langBtns = document.querySelectorAll('.lang-btn');
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang');
+        
+        // Update active button styling
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Update language
+        updateLanguage(lang);
+      });
+    });
+
+    // LIGHTBOX FUNCTIONALITY
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close-lightbox');
+    const cards = document.querySelectorAll('.comm-card');
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const imgElement = card.querySelector('img');
+        if (imgElement) {
+          const fullSrc = imgElement.getAttribute('src');
+          if (fullSrc) {
+            lightboxImg.src = fullSrc;
+            lightbox.classList.add('active');
+          }
+        }
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      setTimeout(() => {
+        if (!lightbox.classList.contains('active')) {
+          lightboxImg.src = '';
+        }
+      }, 200);
+    }
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+
+    // Initialize with English
+    updateLanguage('en');
+  </script>
+</body>
+
+</html>

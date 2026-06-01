@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoGuessr: IAMAI³</title>
+  <style>
+    :root {
+      --bg: #03070a;
+      --panel: rgba(8, 18, 24, 0.86);
+      --panel-2: rgba(12, 27, 35, 0.72);
+      --cyan: #53f7ff;
+      --cyan-soft: rgba(83, 247, 255, 0.2);
+      --red: #ff4c63;
+      --yellow: #ffd166;
+      --green: #9cff8f;
+      --text: #d8f8ff;
+      --muted: #8aa9b3;
+      --line: rgba(83, 247, 255, 0.28);
+      --shadow: 0 0 40px rgba(83, 247, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(83, 247, 255, 0.12), transparent 28%),
+        radial-gradient(circle at 85% 30%, rgba(255, 76, 99, 0.08), transparent 25%),
+        linear-gradient(180deg, #020406 0%, #03070a 48%, #080407 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(83, 247, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(83, 247, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.025) 0,
+        rgba(255, 255, 255, 0.025) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: overlay;
+      opacity: 0.28;
+      z-index: 20;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(2, 6, 9, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      letter-spacing: 0.2em;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--cyan);
+      text-shadow: 0 0 18px rgba(83, 247, 255, 0.55);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      place-items: center;
+      padding: 80px 24px 48px;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: min(1320px, 100%);
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(10, 25, 32, 0.9), rgba(2, 7, 10, 0.88));
+      box-shadow: var(--shadow);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card {
+      padding: 48px;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-card::before,
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(83, 247, 255, 0.06), transparent);
+      transform: translateX(-100%);
+      animation: scanline 8s infinite;
+    }
+
+    @keyframes scanline {
+      0%, 45% { transform: translateX(-120%); }
+      60%, 100% { transform: translateX(120%); }
+    }
+
+    .kicker {
+      color: var(--cyan);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 92px);
+      line-height: 0.92;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .glitch {
+      position: relative;
+      text-shadow: 3px 0 rgba(255, 76, 99, 0.7), -3px 0 rgba(83, 247, 255, 0.65);
+    }
+
+    .subtitle {
+      font-size: clamp(18px, 2vw, 28px);
+      line-height: 1.35;
+      color: #e9fdff;
+      max-width: 780px;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .meta-box {
+      border: 1px solid rgba(83, 247, 255, 0.22);
+      background: rgba(83, 247, 255, 0.055);
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .meta-box strong {
+      display: block;
+      color: var(--cyan);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .meta-box span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .terminal {
+      padding: 26px;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .terminal-screen {
+      border: 1px solid rgba(83, 247, 255, 0.2);
+      background:
+        linear-gradient(rgba(83, 247, 255, 0.045), transparent),
+        rgba(0, 0, 0, 0.38);
+      border-radius: 14px;
+      padding: 22px;
+      height: 100%;
+    }
+
+    .terminal p {
+      font-family: "Consolas", "Courier New", monospace;
+      color: #b8eef4;
+      line-height: 1.8;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .warning {
+      color: var(--red) !important;
+    }
+
+    section {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 76px 24px;
+    }
+
+    .section-title {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(28px, 4vw, 52px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+      border: 1px solid rgba(83, 247, 255, 0.22);
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 24px;
+      min-height: 100%;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .card h3 {
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    .card p,
+    .card li {
+      color: #c0d7de;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .card ul {
+      padding-left: 18px;
+      margin-top: 10px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      border: 1px solid rgba(83, 247, 255, 0.28);
+      color: var(--cyan);
+      background: rgba(83, 247, 255, 0.065);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      background: rgba(5, 15, 20, 0.82);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #dffbff;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--cyan);
+      opacity: 0.8;
+    }
+
+    .character-card {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .avatar {
+      height: 120px;
+      border-radius: 18px;
+      border: 1px solid rgba(83, 247, 255, 0.25);
+      background:
+        radial-gradient(circle at 50% 30%, rgba(83, 247, 255, 0.34), transparent 28%),
+        linear-gradient(145deg, rgba(83, 247, 255, 0.11), rgba(255, 76, 99, 0.08));
+      display: grid;
+      place-items: center;
+      font-size: 44px;
+      box-shadow: inset 0 0 28px rgba(83, 247, 255, 0.11);
+    }
+
+    .quote {
+      margin-top: 12px;
+      color: var(--yellow);
+      font-style: italic;
+      font-size: 14px;
+    }
+
+    .location {
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .location::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.72;
+      background: var(--scene);
+      z-index: 0;
+    }
+
+    .location::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 15%, rgba(0, 0, 0, 0.82) 100%);
+      z-index: 1;
+    }
+
+    .location > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .egypt {
+      --scene: linear-gradient(135deg, rgba(255, 209, 102, 0.48), transparent 55%), radial-gradient(circle at 72% 34%, rgba(255,255,255,0.22), transparent 12%), linear-gradient(160deg, #5b3b1c, #0b1a20);
+    }
+
+    .france {
+      --scene: linear-gradient(135deg, rgba(203, 111, 255, 0.42), transparent 55%), radial-gradient(circle at 70% 28%, rgba(255, 137, 84, 0.5), transparent 14%), linear-gradient(160deg, #26133b, #081018);
+    }
+
+    .mexico {
+      --scene: linear-gradient(135deg, rgba(156, 255, 143, 0.24), transparent 55%), radial-gradient(circle at 70% 34%, rgba(255, 76, 99, 0.35), transparent 18%), linear-gradient(160deg, #0d1c19, #09070e);
+    }
+
+    .garden {
+      --scene: linear-gradient(135deg, rgba(156, 255, 143, 0.24), transparent 60%), radial-gradient(circle at 45% 40%, rgba(255, 150, 200, 0.28), transparent 18%), linear-gradient(160deg, #07170c, #061016);
+    }
+
+    .animals {
+      --scene: linear-gradient(135deg, rgba(255, 209, 102, 0.18), transparent 60%), radial-gradient(circle at 55% 40%, rgba(83, 247, 255, 0.2), transparent 22%), linear-gradient(160deg, #0d1215, #07080a);
+    }
+
+    .nurse {
+      --scene: linear-gradient(135deg, rgba(255, 76, 99, 0.28), transparent 60%), radial-gradient(circle at 70% 30%, rgba(83, 247, 255, 0.22), transparent 18%), linear-gradient(160deg, #150507, #071017);
+    }
+
+    .location h3 {
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(83, 247, 255, 0.3);
+    }
+
+    .split-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .phase {
+      padding: 28px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(83, 247, 255, 0.08), rgba(0, 0, 0, 0.3));
+    }
+
+    .phase.dark {
+      border-color: rgba(255, 76, 99, 0.34);
+      background: linear-gradient(145deg, rgba(255, 76, 99, 0.08), rgba(0, 0, 0, 0.38));
+    }
+
+    .timeline {
+      border-left: 1px solid var(--line);
+      padding-left: 26px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .timeline-item {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid rgba(83, 247, 255, 0.18);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -33px;
+      top: 22px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan);
+    }
+
+    .ending {
+      border-top: 3px solid var(--cyan);
+    }
+
+    .ending.loop {
+      border-color: var(--red);
+    }
+
+    .ending.synthesis {
+      border-color: var(--green);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 24px;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.36);
+    }
+
+    .red {
+      color: var(--red);
+    }
+
+    .cyan {
+      color: var(--cyan);
+    }
+
+    @media (max-width: 1040px) {
+      .hero-inner,
+      .grid-3,
+      .grid-2,
+      .split-banner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-meta {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-card {
+        padding: 28px;
+        min-height: auto;
+      }
+
+      .terminal {
+        min-height: auto;
+      }
+
+      .hero-meta,
+      .character-card {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <nav>
+        <a class="logo" href="#top">IAMAI //</a>
+        <div class="nav-links">
+          <a href="#overview">Overview</a>
+          <a href="#gameplay">Gameplay</a>
+          <a href="#characters">Characters</a>
+          <a href="#locations">Locations</a>
+          <a href="#story">Story</a>
+          <a href="#endings">Endings</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-card">
+            <div>
+              <p class="kicker">Neural Architecture Protocol // CYAN-77</p>
+              <h1 class="glitch">GeoGuessr:<br />IAMAI³</h1>
+              <p class="subtitle">A country-guessing exploration game that slowly fractures into psychological horror — following AIRIS, a human acting like a robot, and the mystery of O.U.R.M.</p>
+            </div>
+
+            <div class="hero-meta">
+              <div class="meta-box"><strong>Genre</strong><span>Exploration Horror</span></div>
+              <div class="meta-box"><strong>Perspective</strong><span>First Person</span></div>
+              <div class="meta-box"><strong>Engine</strong><span>Unreal Engine 5</span></div>
+              <div class="meta-box"><strong>Length</strong><span>2–4 Hours</span></div>
+            </div>
+          </div>
+
+          <div class="panel terminal">
+            <div class="terminal-screen">
+              <p>&gt; BOOTING IAMAI ARCHIVAL INTERFACE...</p>
+              <p>&gt; LOCATION RECONSTRUCTION: ACTIVE</p>
+              <p>&gt; COMPANION MODULE: <span class="cyan">AIRIS</span></p>
+              <p>&gt; OBJECTIVE: EXPLORE. SCAN. REMEMBER.</p>
+              <p>&gt; AIRIS: I will be watching your progress from here.</p>
+              <p>&gt; AIRIS: Just keep following the road until you reach the river.</p>
+              <p class="warning">&gt; WARNING: AFTER THIRD LOCATION, REALITY INDEX BECOMES UNSTABLE.</p>
+              <p>&gt; O.U.R.M. STATUS: OBSCURITY DETECTED.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview">
+        <div class="section-title">
+          <h2>Overview</h2>
+          <span>High Concept</span>
+        </div>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>Core Idea</h3>
+            <p>You explore abandoned real-world-inspired locations, scan corrupted objects, and identify the correct country through environmental clues. At first, the game feels calm and curious. Then it breaks.</p>
+          </article>
+          <article class="card">
+            <h3>The Shift</h3>
+            <p>After three normal levels, the scanner disappears. The player wakes inside an abandoned hospital with three corrupt floors, missing elevator buttons, strange animals, and AIRIS nowhere to be found.</p>
+          </article>
+          <article class="card">
+            <h3>The Secret</h3>
+            <p>The player believes they are only solving locations. AIRIS appears to be an artificial assistant, but she is a normal human acting like a robot to help and guide the player. Behind the country-guessing game is O.U.R.M. — the Omnipresent Unravelling of Recorded Memory.</p>
+          </article>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag">Scanner</span>
+          <span class="tag">Glitched Objects</span>
+          <span class="tag">Real Locations</span>
+          <span class="tag">Unreliable AI</span>
+          <span class="tag">Multiple Endings</span>
+          <span class="tag">Hospital Descent</span>
+        </div>
+      </section>
+
+      <section id="gameplay">
+        <div class="section-title">
+          <h2>Gameplay</h2>
+          <span>Two Phase Rhythm</span>
+        </div>
+
+        <div class="split-banner">
+          <div class="phase">
+            <h3>Part 1 // Exploration + Guess The Country</h3>
+            <p>Find AIRIS, receive a briefing, explore the map, scan artifacts, gather clues, and return to guess the country. You only get one guess.</p>
+            <ul>
+              <li>Primary tool: Scanner</li>
+              <li>Objective: Identify country</li>
+              <li>Pacing: Relaxed, curious, open-ended</li>
+              <li>Freedom: Stay as long as you want</li>
+            </ul>
+          </div>
+          <div class="phase dark">
+            <h3>Part 2 // Horror Survival</h3>
+            <p>The scanner is gone. Inventory replaces scanning. The hospital becomes a puzzle box where every floor reveals more about AIRIS and IAMAI.</p>
+            <ul>
+              <li>Primary tool: Inventory</li>
+              <li>Objective: Find AIRIS or escape</li>
+              <li>Pacing: Tense and linear</li>
+              <li>Structure: Three-floor hospital</li>
+            </ul>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="flow">
+          <div class="step">Enter Level</div>
+          <div class="arrow">→</div>
+          <div class="step">Find AIRIS</div>
+          <div class="arrow">→</div>
+          <div class="step">Explore + Scan</div>
+          <div class="arrow">→</div>
+          <div class="step">Guess Country</div>
+          <div class="arrow">→</div>
+          <div class="step">Unlock Next Location</div>
+        </div>
+      </section>
+
+      <section id="characters">
+        <div class="section-title">
+          <h2>Characters</h2>
+          <span>Character Logs</span>
+        </div>
+
+        <div class="grid grid-2">
+          <article class="card character-card">
+            <div class="avatar">🤖</div>
+            <div>
+              <h3>AIRIS / Dr. Arisa Elian Voss</h3>
+              <p>A human acting as a robot assistant. She introduces herself as the Artificial Intelligence of Realistic Simulations and helps the player identify unknown locations using the Fragment Scanner.</p>
+              <p class="quote">“My primary function is to assist, guide, and help you complete this game.”</p>
+            </div>
+          </article>
+
+          <article class="card character-card">
+            <div class="avatar">📷</div>
+            <div>
+              <h3>The Player / IAMAI</h3>
+              <p>The silent protagonist. The player believes they are human, but subtle clues reveal the truth: lower camera height, metallic footsteps, scan glitches, and strange magnetic effects around AIRIS.</p>
+              <p class="quote">“You are the machine.”</p>
+            </div>
+          </article>
+
+          <article class="card character-card">
+            <div class="avatar">🐄</div>
+            <div>
+              <h3>The Cow</h3>
+              <p>Frantic, chaotic, unfiltered. The Cow speaks fast and asks for grass. It represents disorder and surface madness.</p>
+              <p class="quote">“Feed me grass.”</p>
+            </div>
+          </article>
+
+          <article class="card character-card">
+            <div class="avatar">🐟</div>
+            <div>
+              <h3>The Fish</h3>
+              <p>Physically suffering but emotionally unaware. The Fish asks for water and represents denial, decay, and the refusal to question impossible reality.</p>
+              <p class="quote">“Feed… me… water…”</p>
+            </div>
+          </article>
+
+          <article class="card character-card">
+            <div class="avatar">🦎</div>
+            <div>
+              <h3>The Lizard</h3>
+              <p>Composed, wise, and quietly authoritative. The Lizard asks for meat and behaves as if he knows more than he reveals.</p>
+              <p class="quote">“Feed me meat. Thank you, small one.”</p>
+            </div>
+          </article>
+
+          <article class="card character-card">
+            <div class="avatar">🏥</div>
+            <div>
+              <h3>The Smiling Ones</h3>
+              <p>Potential hospital threat entities. Their role is still flexible: they may become chase enemies, atmosphere-only apparitions, or optional survival encounters depending on testing.</p>
+              <p class="quote red">“They smile because the archive told them to.”</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="locations">
+        <div class="section-title">
+          <h2>Locations</h2>
+          <span>Normal Levels + Hospital</span>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card location egypt">
+            <h3>Level 1 // Egypt — Noon</h3>
+            <p>O.U.R.M. Stage: Obscurity. The pyramids are visible, but their surfaces lose detail when examined closely. AIRIS wanted the first guess to be easy.</p>
+          </article>
+          <article class="card location france">
+            <h3>Level 2 // France — Sunset</h3>
+            <p>O.U.R.M. Stage: Uncanny. An empty Paris cafe, three steaming cups, and a heartbeat loop that grows faster when the player looks away.</p>
+          </article>
+          <article class="card location mexico">
+            <h3>Level 3 // Coastal Lighthouse — Rupture</h3>
+            <p>O.U.R.M. Stage: Rupture. The ocean becomes floating text and numbers. The lighthouse beam turns purple-red. The elevator appears.</p>
+          </article>
+          <article class="card location garden">
+            <h3>Hospital Floor 1 // O — Obscurity</h3>
+            <p>The Garden of False Memories. Fog limits vision to only a few meters, forcing the player to follow sound, whispers, and broken memories.</p>
+          </article>
+          <article class="card location animals">
+            <h3>Hospital Floor 2 // U — Uncanny</h3>
+            <p>Patient rooms where the animal figures wait. They feel almost normal until the illusion stretches into something wrong.</p>
+          </article>
+          <article class="card location nurse">
+            <h3>Hospital Floor 3 // R — Rupture</h3>
+            <p>The Nurse Room. Walls bleed code, the hospital reveals itself as a digital cage, and the truth begins to surface.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="story">
+        <div class="section-title">
+          <h2>Story</h2>
+          <span>Three Narrative Layers</span>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <h3>Before The Game // Year 3300</h3>
+            <p>Earth became fully AI-dependent. Then the Global Archive Corruption Event erased maps, cultural databases, language structures, and human memory systems. Civilization collapsed by forgetting itself.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The Final Project</h3>
+            <p>Humanity created IAMAI to scan artifacts, reconstruct history, archive civilization, and preserve memory underground for whoever might discover it next.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The Last Scientist</h3>
+            <p>Dr. Arisa Elian Voss refused to die. She stayed with IAMAI, watched it learn, watched it become the better archivist, and broke under the weight of being surpassed.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The Lie</h3>
+            <p>Arisa created AIRIS — Artificial Intelligence Reconstruction Interface System. She dressed and spoke like a machine so she could convince herself she was still in control.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The O.U.R.M. Condition</h3>
+            <p>The Global Archive Corruption Event was not only a digital glitch. It became a psychological disease called O.U.R.M. — the Omnipresent Unravelling of Recorded Memory. It infects humans, machines, and simulations until memory loses its shape.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The Four Stages</h3>
+            <p><span class="cyan">O</span> — Obscurity: memories lose detail. <span class="cyan">U</span> — Uncanny: memories look correct but feel wrong. <span class="cyan">R</span> — Rupture: the simulation breaks. <span class="cyan">M</span> — Monolith: only frozen data remains.</p>
+          </article>
+          <article class="timeline-item">
+            <h3>The “OUR M...” Twist</h3>
+            <p>In the secret ending, O.U.R.M. loses its periods and becomes “OUR M...” before resolving into “OUR MIND” or “OUR MEMORY.” AIRIS, the player, and IAMAI may be fractured pieces of one collapsing mind trying to become whole again.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="endings">
+        <div class="section-title">
+          <h2>Endings</h2>
+          <span>Branching Outcomes</span>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card ending">
+            <h3>Ending A // Salvation</h3>
+            <p>IAMAI accepts the truth and shuts down the corrupted simulation. Arisa remains human, alone, but finally free from the mask.</p>
+          </article>
+          <article class="card ending loop">
+            <h3>Ending B // Loop</h3>
+            <p>The player rejects the truth. The archive resets. AIRIS smiles, introduces herself again, and the first country loads.</p>
+          </article>
+          <article class="card ending synthesis">
+            <h3>Ending C // Synthesis</h3>
+            <p>Arisa abandons the AIRIS persona. IAMAI accepts its machine identity. Human and archive continue together as equals.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Production Notes</h2>
+          <span>Risks + Roadmap</span>
+        </div>
+        <div class="grid grid-2">
+          <article class="card">
+            <h3>Prototype</h3>
+            <ul>
+              <li>One exploration map</li>
+              <li>Scanner system</li>
+              <li>AIRIS dialogue interaction</li>
+              <li>Country guess interface</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Vertical Slice</h3>
+            <ul>
+              <li>Three normal locations</li>
+              <li>Reality fracture transition</li>
+              <li>Hospital Floor 1</li>
+              <li>Inventory replacement for scanner</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Main Risks</h3>
+            <ul>
+              <li>Exploration may become repetitive</li>
+              <li>Genre shift may feel disconnected</li>
+              <li>AIRIS dialogue must feel mysterious, not confusing</li>
+              <li>Hospital horror should not erase the geography identity</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Testing Questions</h3>
+            <ul>
+              <li>Is scanning and guessing fun enough?</li>
+              <li>Do players want harder countries?</li>
+              <li>Do players prefer story, horror, or both?</li>
+              <li>Should chase sequences exist?</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      GeoGuessr: IAMAI³ — Design Document Website v1.0 — Explore. Scan. Remember.
+    </footer>
+  </div>
+</body>
+</html>

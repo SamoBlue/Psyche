@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Scattered Instax · Drag & Swim</title>
+  <title>Spiral Instax · Infinite Drift Gallery</title>
   <style>
     * {
       margin: 0;
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: linear-gradient(145deg, #3a2a1c, #2a1e12);
+      background: linear-gradient(145deg, #1a0f08, #0d0704);
       background-attachment: fixed;
       min-height: 100vh;
       font-family: 'Segoe UI', 'Georgia', monospace;
@@ -21,14 +21,10 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      cursor: grab;
+      cursor: crosshair;
     }
 
-    body:active {
-      cursor: grabbing;
-    }
-
-    /* Wooden floor texture */
+    /* Deep dark atmosphere + subtle grain */
     body::before {
       content: "";
       position: fixed;
@@ -37,13 +33,13 @@
       width: 100%;
       height: 100%;
       background-image: 
-        repeating-linear-gradient(90deg, rgba(80,55,30,0.2) 0px, rgba(80,55,30,0.2) 2px, transparent 2px, transparent 60px),
-        repeating-linear-gradient(0deg, rgba(60,40,20,0.15) 0px, rgba(60,40,20,0.15) 1px, transparent 1px, transparent 40px);
+        radial-gradient(circle at 25% 40%, rgba(30,15,5,0.4) 0%, rgba(0,0,0,0.85) 100%),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 8px);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Wood grain texture */
+    /* Vignette effect */
     body::after {
       content: "";
       position: fixed;
@@ -51,59 +47,69 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path d="M20 20 L180 20 M30 40 L170 40 M25 60 L175 60 M35 80 L165 80 M30 100 L170 100 M40 120 L160 120 M35 140 L165 140 M45 160 L155 160 M40 180 L160 180" stroke="%23402010" stroke-width="1.5"/></svg>');
-      background-repeat: repeat;
+      box-shadow: inset 0 0 120px 40px rgba(0,0,0,0.7);
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
-    /* Main container */
-    .photo-floor {
+    /* Main container — infinite spiral playground */
+    .spiral-universe {
       position: relative;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      z-index: 1;
+      z-index: 2;
     }
 
-    /* Individual photo card */
+    /* Photo card container */
     .photo-card {
       position: absolute;
       cursor: pointer;
-      transition: filter 0.2s ease, transform 0.1s ease;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.5));
       transform-origin: center center;
-      will-change: left, top;
+      will-change: transform, left, top;
+      transition: filter 0.3s ease, z-index 0s;
+      transition-timing-function: cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      z-index: 10;
     }
 
-    .photo-card:active {
-      cursor: grabbing;
+    /* Hover effect: dramatic scale + lift + glow */
+    .photo-card:hover {
+      filter: drop-shadow(0 20px 35px rgba(0,0,0,0.7));
+      z-index: 1000 !important;
+      transition: filter 0.2s;
     }
 
-    /* Instax-style photo */
+    .photo-card:hover .instax-photo {
+      transform: scale(1.18);
+      transition: transform 0.25s cubic-bezier(0.2, 0.95, 0.4, 1.2);
+    }
+
+    /* Instax-style photo frame */
     .instax-photo {
-      background: white;
-      padding: 10px 10px 32px 10px;
-      border-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      background: #fef7e8;
+      padding: 12px 12px 36px 12px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       position: relative;
       transition: transform 0.2s ease;
+      transform: scale(1);
     }
 
-    /* Black Instax border */
+    /* Black border inside */
     .instax-photo::before {
       content: "";
       position: absolute;
-      top: 3px;
-      left: 3px;
-      right: 3px;
-      bottom: 3px;
-      border: 2px solid #1a1a1a;
-      border-radius: 2px;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border: 2px solid #2c2c2a;
+      border-radius: 3px;
       pointer-events: none;
     }
 
-    /* White frame effect */
+    /* subtle aging */
     .instax-photo::after {
       content: "";
       position: absolute;
@@ -111,8 +117,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 4px;
+      background: linear-gradient(145deg, rgba(255,245,225,0.3), rgba(200,170,120,0.05));
+      border-radius: 6px;
       pointer-events: none;
     }
 
@@ -120,87 +126,79 @@
       display: block;
       width: auto;
       height: auto;
-      max-width: 200px;
-      max-height: 240px;
-      min-width: 120px;
+      max-width: 180px;
+      max-height: 210px;
+      min-width: 110px;
       object-fit: contain;
-      border-radius: 2px;
-      background: #faf8f0;
+      border-radius: 3px;
+      background: #f3ecd9;
+      transition: 0.2s;
     }
 
-    /* Date stamp */
+    /* Date stamp at bottom */
     .photo-date {
       position: absolute;
-      bottom: 8px;
-      left: 10px;
-      right: 10px;
+      bottom: 10px;
+      left: 12px;
+      right: 12px;
       font-family: 'Courier New', monospace;
-      font-size: 0.65rem;
-      color: #5a4a32;
-      background: rgba(255,255,245,0.95);
-      padding: 2px 6px;
-      border-radius: 20px;
+      font-size: 0.62rem;
+      color: #5e4b34;
+      background: rgba(254, 247, 232, 0.95);
+      padding: 3px 8px;
+      border-radius: 40px;
       text-align: center;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      backdrop-filter: blur(2px);
+      font-weight: 500;
     }
 
-    /* Hover effect */
-    .photo-card:hover {
-      filter: drop-shadow(0 12px 20px rgba(0,0,0,0.4));
-      z-index: 1000 !important;
-    }
-
-    .photo-card:hover .instax-photo {
-      transform: scale(1.02);
-    }
-
-    /* Always-on-top info panels */
+    /* Info panels — ethereal */
     .info-panel {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0,0,0,0.8);
+      bottom: 22px;
+      left: 22px;
+      background: rgba(0,0,0,0.7);
       backdrop-filter: blur(12px);
-      padding: 10px 20px;
+      padding: 8px 20px;
       border-radius: 40px;
-      color: #f0e2c5;
+      color: #eedbbc;
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       z-index: 10000;
       pointer-events: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,215,150,0.3);
+      border: 1px solid rgba(230, 190, 120, 0.4);
+      letter-spacing: 0.5px;
     }
 
     .counter-badge {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.8);
+      bottom: 22px;
+      right: 22px;
+      background: rgba(0,0,0,0.7);
       backdrop-filter: blur(12px);
-      padding: 10px 20px;
+      padding: 8px 20px;
       border-radius: 40px;
-      color: #f0e2c5;
+      color: #eedbbc;
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       z-index: 10000;
       pointer-events: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,215,150,0.3);
+      border: 1px solid rgba(230, 190, 120, 0.4);
     }
 
-    /* Fullscreen viewer */
+    /* Fullscreen viewer — same as before but enhanced */
     .viewer-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(20px);
+      background: rgba(0,0,0,0.94);
+      backdrop-filter: blur(25px);
       z-index: 20000;
       display: flex;
       justify-content: center;
@@ -220,37 +218,31 @@
       max-width: 90vw;
       max-height: 90vh;
       position: relative;
-      animation: zoomIn 0.3s ease;
+      animation: zoomFade 0.3s ease;
     }
 
-    @keyframes zoomIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    @keyframes zoomFade {
+      from { opacity: 0; transform: scale(0.92);}
+      to { opacity: 1; transform: scale(1);}
     }
 
     .viewer-instax {
-      background: white;
-      padding: 20px 20px 55px 20px;
-      border-radius: 8px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+      background: #fef7e8;
+      padding: 24px 24px 60px 24px;
+      border-radius: 12px;
+      box-shadow: 0 30px 55px rgba(0,0,0,0.6);
       position: relative;
     }
 
     .viewer-instax::before {
       content: "";
       position: absolute;
-      top: 6px;
-      left: 6px;
-      right: 6px;
-      bottom: 6px;
-      border: 2px solid #1a1a1a;
-      border-radius: 4px;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 2px solid #2c2c2a;
+      border-radius: 6px;
       pointer-events: none;
     }
 
@@ -258,45 +250,48 @@
       max-width: 80vw;
       max-height: 75vh;
       object-fit: contain;
-      border-radius: 4px;
+      border-radius: 6px;
     }
 
     .viewer-date {
       position: absolute;
-      bottom: 18px;
+      bottom: 20px;
       left: 0;
       right: 0;
       text-align: center;
-      color: #5a4a32;
+      color: #5e4b34;
       font-family: monospace;
       font-size: 1rem;
-      background: rgba(255,255,245,0.95);
+      background: rgba(254,247,232,0.96);
       width: fit-content;
       margin: 0 auto;
-      padding: 6px 20px;
+      padding: 6px 22px;
       border-radius: 40px;
+      font-weight: 500;
     }
 
     .close-viewer {
       position: absolute;
       top: 20px;
       right: 30px;
-      font-size: 2.5rem;
-      color: white;
+      font-size: 2.2rem;
+      color: #eedbbc;
       cursor: pointer;
-      background: rgba(0,0,0,0.6);
-      width: 50px;
-      height: 50px;
+      background: rgba(0,0,0,0.5);
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
       z-index: 20001;
+      backdrop-filter: blur(4px);
     }
 
     .close-viewer:hover {
-      background: rgba(255,255,255,0.2);
+      background: #b87c4f;
+      color: black;
       transform: scale(1.1);
     }
 
@@ -304,48 +299,44 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 55px;
-      height: 55px;
-      background: rgba(0,0,0,0.6);
+      width: 52px;
+      height: 52px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 2rem;
-      color: white;
+      color: #eedbbc;
       transition: all 0.2s;
       z-index: 20001;
     }
 
     .viewer-nav:hover {
-      background: rgba(232,207,156,0.9);
-      color: #2c1e14;
-      transform: translateY(-50%) scale(1.1);
+      background: #d9a066;
+      color: #1f140c;
+      transform: translateY(-50%) scale(1.08);
     }
 
-    .viewer-prev {
-      left: 30px;
-    }
+    .viewer-prev { left: 30px; }
+    .viewer-next { right: 30px; }
 
-    .viewer-next {
-      right: 30px;
-    }
-
-    /* Loading overlay */
+    /* Loading */
     .loading-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.9);
-      backdrop-filter: blur(10px);
+      background: #0a0502;
+      backdrop-filter: blur(14px);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 30000;
-      transition: opacity 0.5s;
+      transition: opacity 0.8s;
     }
 
     .loader {
@@ -353,66 +344,40 @@
     }
 
     .loader-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(232,207,156,0.3);
-      border-top-color: #e8cf9c;
+      width: 52px;
+      height: 52px;
+      border: 3px solid rgba(220, 170, 100, 0.3);
+      border-top-color: #e8bc7c;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 1s infinite linear;
       margin: 0 auto 20px;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .loader p {
-      color: #e8cf9c;
+      color: #e8bc7c;
       font-family: monospace;
+      letter-spacing: 2px;
     }
 
-    /* Responsive */
     @media (max-width: 700px) {
-      .photo-image {
-        max-width: 140px;
-        max-height: 170px;
-        min-width: 100px;
-      }
-      .instax-photo {
-        padding: 7px 7px 28px 7px;
-      }
-      .photo-date {
-        font-size: 0.55rem;
-        bottom: 6px;
-      }
-      .viewer-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-      }
-      .viewer-prev { left: 10px; }
-      .viewer-next { right: 10px; }
-      .close-viewer {
-        width: 40px;
-        height: 40px;
-        font-size: 1.8rem;
-        top: 10px;
-        right: 15px;
-      }
-      .info-panel, .counter-badge {
-        font-size: 0.7rem;
-        padding: 6px 14px;
-      }
+      .photo-image { max-width: 130px; max-height: 160px; min-width: 90px; }
+      .instax-photo { padding: 8px 8px 30px 8px; }
+      .photo-date { font-size: 0.55rem; bottom: 7px; white-space: normal; line-height: 1.2; }
+      .viewer-nav { width: 42px; height: 42px; font-size: 1.5rem; }
+      .viewer-prev { left: 12px; }
+      .viewer-next { right: 12px; }
+      .close-viewer { width: 38px; height: 38px; font-size: 1.6rem; top: 12px; right: 16px; }
+      .info-panel, .counter-badge { font-size: 0.65rem; padding: 5px 14px; }
     }
   </style>
 </head>
 <body>
-<div class="photo-floor" id="photoFloor">
-  <!-- Photos will be scattered here -->
-</div>
+<div class="spiral-universe" id="spiralUniverse"></div>
 
-<div class="info-panel" id="infoPanel">📸 Instax photos scattered · drag to swim through them</div>
-<div class="counter-badge" id="counter">—</div>
+<div class="info-panel">🌀 INFINITE SPIRAL · hover to enlarge · click to inspect</div>
+<div class="counter-badge" id="counter">— photos drifting</div>
 
 <div class="viewer-overlay" id="viewerOverlay">
   <div class="close-viewer" id="closeViewer">✕</div>
@@ -420,7 +385,7 @@
   <div class="viewer-nav viewer-next" id="viewerNext">▶</div>
   <div class="viewer-content">
     <div class="viewer-instax">
-      <img class="viewer-image" id="viewerImage" alt="Enlarged photo">
+      <img class="viewer-image" id="viewerImage" alt="polaroid">
       <div class="viewer-date" id="viewerDate"></div>
     </div>
   </div>
@@ -429,210 +394,193 @@
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loader">
     <div class="loader-spinner"></div>
-    <p>📸 scattering your instax photos...</p>
+    <p>📸 manifesting the infinite spiral...</p>
   </div>
 </div>
 
 <script>
-  // Configuration
+  // ========== CONFIG ==========
   const IMAGE_FOLDER = './my_drawings/';
   
-  // Global variables
-  let allImages = [];
+  // Spiral parameters
+  const SPIRAL_TURNS = 2.6;        // number of rotations
+  const SPIRAL_RADIUS_MAX = 840;    // max radius from center
+  const SPIRAL_START_RADIUS = 45;   
+  const ITEMS_PER_TURN = 14;        // density
+  let allPhotos = [];
+  let photoElements = [];
   let currentViewerIndex = 0;
-  let playSound = () => {};
+  let animationFrameId = null;
+  let lastTimestamp = 0;
+  let spiralAngleOffset = 0;
   let audioContext = null;
-  let dragTarget = null;
-  let dragOffsetX = 0, dragOffsetY = 0;
-  let isDragging = false;
-  
-  // Extract date from filename
+  let playSound = () => {};
+
+  // Helper: extract date from filename (YYYYMMDD)
   function extractDateFromFilename(filename) {
     const nameOnly = filename.replace(/\.[^/.]+$/, "");
-    const datePart = nameOnly.split('_')[0];
-    if (/^\d{8}$/.test(datePart)) {
-      const year = datePart.substring(0,4);
-      const month = datePart.substring(4,6);
-      const day = datePart.substring(6,8);
-      return `${year}-${month}-${day}`;
+    const match = nameOnly.match(/^(\d{8})/);
+    if (match) {
+      const y = match[1].substring(0,4);
+      const m = match[1].substring(4,6);
+      const d = match[1].substring(6,8);
+      return `${y}-${m}-${d}`;
     }
     return null;
   }
-  
-  // Get random position within viewport (with margins)
-  function getRandomPosition() {
-    const margin = 80;
-    const maxX = window.innerWidth - margin;
-    const maxY = window.innerHeight - margin;
-    const x = Math.random() * (maxX - margin) + margin;
-    const y = Math.random() * (maxY - margin) + margin;
-    return { x, y };
+
+  // Precompute spiral positions based on total count
+  function computeSpiralPositions(totalCount, centerX, centerY) {
+    const positions = [];
+    const maxIndex = totalCount - 1;
+    for (let i = 0; i < totalCount; i++) {
+      // t from 0 to 1
+      const t = i / Math.max(1, maxIndex);
+      // angle = full spiral turns * 2pi * t
+      const angle = SPIRAL_TURNS * Math.PI * 2 * t;
+      // radius: exponential easing feels more infinite
+      const radius = SPIRAL_START_RADIUS + (SPIRAL_RADIUS_MAX - SPIRAL_START_RADIUS) * Math.pow(t, 1.2);
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      // natural rotation: each card rotates tangent to the spiral + slight random
+      const rotation = angle * (180 / Math.PI) + (i % 2 === 0 ? 8 : -5);
+      positions.push({ x, y, rotation: rotation % 360, baseAngle: angle, radius });
+    }
+    return positions;
   }
-  
-  // Get random rotation (-20deg to 20deg)
-  function getRandomRotation() {
-    return (Math.random() - 0.5) * 40;
+
+  // Update all cards positions (dynamic rotation + breathing animation)
+  function updateSpiralPositions(offsetAngleRad = 0) {
+    if (!photoElements.length || !allPhotos.length) return;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const total = photoElements.length;
+    if (total === 0) return;
+    
+    // recompute positions based on dynamic offset (makes the spiral rotate over time)
+    for (let idx = 0; idx < total; idx++) {
+      const t = idx / Math.max(1, total - 1);
+      const baseAngle = SPIRAL_TURNS * Math.PI * 2 * t;
+      const dynamicAngle = baseAngle + offsetAngleRad;
+      const radius = SPIRAL_START_RADIUS + (SPIRAL_RADIUS_MAX - SPIRAL_START_RADIUS) * Math.pow(t, 1.18);
+      
+      const x = centerX + Math.cos(dynamicAngle) * radius;
+      const y = centerY + Math.sin(dynamicAngle) * radius;
+      // card rotation: tangent angle + slight individual offset
+      let tangentRotation = (dynamicAngle * 180 / Math.PI) + 90;
+      // make them slightly varied but cohesive
+      const uniqueOffset = (idx * 7) % 360;
+      let finalRotation = tangentRotation + uniqueOffset * 0.35;
+      
+      const card = photoElements[idx];
+      if (card) {
+        card.style.left = `${x - card.offsetWidth/2}px`;
+        card.style.top = `${y - card.offsetHeight/2}px`;
+        card.style.transform = `rotate(${finalRotation}deg)`;
+        // subtle z-index based on radius: outer cards slightly lower? but hover handles priority
+        const zIndexBase = Math.floor(20 + (radius / SPIRAL_RADIUS_MAX) * 40);
+        if (!card.matches(':hover')) {
+          card.style.zIndex = zIndexBase;
+        }
+      }
+    }
   }
+
+  // Animation loop — infinite rotation of the spiral
+  let spiralRotationSpeed = 0.0002; // rad per ms ~ smooth drift
+  let lastFrameTime = 0;
+  let accumulatedOffset = 0;
   
-  // Create Instax photo element
-  function createPhotoElement(imageData, index) {
-    const photoDiv = document.createElement('div');
-    photoDiv.className = 'photo-card';
+  function animateSpiral(now) {
+    if (!lastFrameTime) lastFrameTime = now;
+    const delta = Math.min(100, now - lastFrameTime);
+    if (delta > 0) {
+      accumulatedOffset += spiralRotationSpeed * delta;
+      // keep within range
+      if (accumulatedOffset > Math.PI * 2) accumulatedOffset -= Math.PI * 2;
+      updateSpiralPositions(accumulatedOffset);
+    }
+    lastFrameTime = now;
+    animationFrameId = requestAnimationFrame(animateSpiral);
+  }
+
+  // Create DOM elements for each photo
+  function createPhotoElement(photoData, index) {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'photo-card';
     
-    const pos = getRandomPosition();
-    const rotation = getRandomRotation();
-    const zIndex = Math.floor(Math.random() * 50) + 10;
-    
-    photoDiv.style.left = `${pos.x}px`;
-    photoDiv.style.top = `${pos.y}px`;
-    photoDiv.style.transform = `rotate(${rotation}deg)`;
-    photoDiv.style.zIndex = zIndex;
-    
-    const instax = document.createElement('div');
-    instax.className = 'instax-photo';
+    const instaxInner = document.createElement('div');
+    instaxInner.className = 'instax-photo';
     
     const img = document.createElement('img');
     img.className = 'photo-image';
-    img.src = imageData.src;
-    img.alt = `Drawing ${imageData.date || 'sketch'}`;
+    img.src = photoData.src;
+    img.alt = `instax ${photoData.date || 'memory'}`;
     img.loading = 'lazy';
     
     const dateSpan = document.createElement('div');
     dateSpan.className = 'photo-date';
-    const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
-    dateSpan.textContent = displayDate;
+    const displayText = photoData.date ? `📅 ${photoData.date}` : '✧ fleeting moment ✧';
+    dateSpan.textContent = displayText;
     
-    instax.appendChild(img);
-    instax.appendChild(dateSpan);
-    photoDiv.appendChild(instax);
+    instaxInner.appendChild(img);
+    instaxInner.appendChild(dateSpan);
+    cardDiv.appendChild(instaxInner);
     
-    // Click to open viewer (only if not dragging)
+    // Click handler (open viewer)
     let clickTimer = null;
-    let hasMoved = false;
+    let hasDragged = false;
+    let startPos = { x: 0, y: 0 };
     
-    photoDiv.addEventListener('mousedown', (e) => {
-      if (e.target === photoDiv || photoDiv.contains(e.target)) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        hasMoved = false;
-        clickTimer = setTimeout(() => {}, 100);
-        
-        // Start drag
-        isDragging = true;
-        dragTarget = photoDiv;
-        
-        const rect = photoDiv.getBoundingClientRect();
-        dragOffsetX = e.clientX - rect.left;
-        dragOffsetY = e.clientY - rect.top;
-        
-        photoDiv.style.cursor = 'grabbing';
-        photoDiv.style.zIndex = 1000;
-        document.body.style.userSelect = 'none';
-      }
+    cardDiv.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      startPos = { x: e.clientX, y: e.clientY };
+      hasDragged = false;
+      clickTimer = setTimeout(() => {}, 80);
     });
     
-    // Track movement
-    let startX = 0, startY = 0;
-    photoDiv.addEventListener('dragstart', (e) => e.preventDefault());
-    
-    // For detecting click vs drag
-    photoDiv.addEventListener('mousemove', (e) => {
-      if (isDragging && dragTarget === photoDiv) {
-        hasMoved = true;
+    cardDiv.addEventListener('mousemove', (e) => {
+      if (Math.hypot(e.clientX - startPos.x, e.clientY - startPos.y) > 5) {
+        hasDragged = true;
         if (clickTimer) clearTimeout(clickTimer);
       }
     });
     
-    photoDiv.addEventListener('mouseup', (e) => {
-      if (isDragging && dragTarget === photoDiv) {
-        isDragging = false;
-        photoDiv.style.cursor = 'pointer';
-        document.body.style.userSelect = '';
-        
-        // If no significant movement, it's a click
-        if (!hasMoved) {
-          openViewer(index);
-        }
-        
-        dragTarget = null;
+    cardDiv.addEventListener('mouseup', (e) => {
+      if (!hasDragged) {
+        openViewer(index);
+        playSound();
       }
+      hasDragged = false;
     });
     
-    return photoDiv;
-  }
-  
-  // Make element draggable (global drag handler)
-  function setupGlobalDrag() {
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging || !dragTarget) return;
-      
-      e.preventDefault();
-      
-      let newLeft = e.clientX - dragOffsetX;
-      let newTop = e.clientY - dragOffsetY;
-      
-      // Keep within bounds
-      const rect = dragTarget.getBoundingClientRect();
-      const maxX = window.innerWidth - rect.width;
-      const maxY = window.innerHeight - rect.height;
-      
-      newLeft = Math.min(Math.max(newLeft, 10), maxX - 10);
-      newTop = Math.min(Math.max(newTop, 10), maxY - 10);
-      
-      dragTarget.style.left = `${newLeft}px`;
-      dragTarget.style.top = `${newTop}px`;
-    });
+    // prevent drag from moving absolute positions (interaction stops spiral temporarily but no manual drag per request)
+    cardDiv.addEventListener('dragstart', (e) => e.preventDefault());
     
-    document.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        if (dragTarget) {
-          dragTarget.style.cursor = 'pointer';
-        }
-        dragTarget = null;
-        document.body.style.userSelect = '';
-      }
-    });
+    return cardDiv;
   }
   
-  // Open fullscreen viewer
+  // open fullscreen viewer
   function openViewer(index) {
     currentViewerIndex = index;
-    const imageData = allImages[index];
+    const data = allPhotos[index];
     const viewerImg = document.getElementById('viewerImage');
-    const viewerDate = document.getElementById('viewerDate');
-    const overlay = document.getElementById('viewerOverlay');
-    
-    viewerImg.src = imageData.src;
-    const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
-    viewerDate.textContent = displayDate;
-    
-    overlay.classList.add('active');
-    playSound();
+    const viewerDateSpan = document.getElementById('viewerDate');
+    viewerImg.src = data.src;
+    viewerDateSpan.textContent = data.date ? `📅 ${data.date}` : '✧ undated memory';
+    document.getElementById('viewerOverlay').classList.add('active');
   }
   
-  // Close viewer
   function closeViewer() {
-    const overlay = document.getElementById('viewerOverlay');
-    overlay.classList.remove('active');
+    document.getElementById('viewerOverlay').classList.remove('active');
   }
   
-  // Navigate in viewer
   function viewerNext() {
-    if (currentViewerIndex + 1 < allImages.length) {
+    if (currentViewerIndex + 1 < allPhotos.length) {
       currentViewerIndex++;
-      const imageData = allImages[currentViewerIndex];
-      const viewerImg = document.getElementById('viewerImage');
-      const viewerDate = document.getElementById('viewerDate');
-      
-      viewerImg.style.animation = 'none';
-      viewerImg.offsetHeight;
-      viewerImg.style.animation = 'zoomIn 0.2s ease';
-      
-      viewerImg.src = imageData.src;
-      const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
-      viewerDate.textContent = displayDate;
+      const data = allPhotos[currentViewerIndex];
+      document.getElementById('viewerImage').src = data.src;
+      document.getElementById('viewerDate').textContent = data.date ? `📅 ${data.date}` : '✧ undated memory';
       playSound();
     }
   }
@@ -640,139 +588,161 @@
   function viewerPrev() {
     if (currentViewerIndex > 0) {
       currentViewerIndex--;
-      const imageData = allImages[currentViewerIndex];
-      const viewerImg = document.getElementById('viewerImage');
-      const viewerDate = document.getElementById('viewerDate');
-      
-      viewerImg.style.animation = 'none';
-      viewerImg.offsetHeight;
-      viewerImg.style.animation = 'zoomIn 0.2s ease';
-      
-      viewerImg.src = imageData.src;
-      const displayDate = imageData.date ? `📅 ${imageData.date}` : '✏️ sketch';
-      viewerDate.textContent = displayDate;
+      const data = allPhotos[currentViewerIndex];
+      document.getElementById('viewerImage').src = data.src;
+      document.getElementById('viewerDate').textContent = data.date ? `📅 ${data.date}` : '✧ undated memory';
       playSound();
     }
   }
   
-  // Play sound effect
+  // Audio init (whispery polaroid sound)
   function initAudio() {
     try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return () => {};
-      audioContext = new AudioContextClass();
-      return function play() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return () => {};
+      audioContext = new AudioCtx();
+      return function playPolaroidSound() {
         if (audioContext.state === 'suspended') audioContext.resume();
         const now = audioContext.currentTime;
-        const bufferSize = audioContext.sampleRate * 0.05;
-        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const duration = 0.08;
+        const sampleRate = audioContext.sampleRate;
+        const bufferSize = sampleRate * duration;
+        const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * 0.12 * Math.exp(-i / (bufferSize * 0.2));
+          const env = Math.exp(-i / (bufferSize * 0.12));
+          data[i] = (Math.random() - 0.5) * 0.2 * env;
         }
-        const noise = audioContext.createBufferSource();
-        noise.buffer = buffer;
-        const gainNode = audioContext.createGain();
-        noise.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        gainNode.gain.setValueAtTime(0.08, now);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-        noise.start();
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        const gain = audioContext.createGain();
+        source.connect(gain);
+        gain.connect(audioContext.destination);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+        source.start();
       };
-    } catch(e) {
-      return () => {};
-    }
+    } catch(e) { return () => {}; }
   }
   
-  // Load images from manifest
-  async function loadImages() {
+  function initAudioOnFirstInteraction() {
+    const handler = () => {
+      playSound = initAudio();
+      document.removeEventListener('click', handler);
+      document.removeEventListener('keydown', handler);
+    };
+    document.addEventListener('click', handler);
+    document.addEventListener('keydown', handler);
+  }
+  
+  // Load images from manifest.json
+  async function loadImagesAndStartSpiral() {
     try {
-      const response = await fetch('./my_drawings/manifest.json');
-      if (!response.ok) throw new Error('Manifest not found');
-      const fileList = await response.json();
-      
-      for (const filename of fileList) {
-        const ext = filename.split('.').pop().toLowerCase();
-        if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
-          const src = IMAGE_FOLDER + filename;
-          const dateStr = extractDateFromFilename(filename);
-          allImages.push({ src, date: dateStr, filename });
+      const manifestRes = await fetch(`${IMAGE_FOLDER}manifest.json`);
+      if (!manifestRes.ok) throw new Error('manifest missing');
+      const fileList = await manifestRes.json();
+      const loaded = [];
+      for (const file of fileList) {
+        const ext = file.split('.').pop().toLowerCase();
+        if (['jpg','jpeg','png','webp','gif'].includes(ext)) {
+          const src = IMAGE_FOLDER + file;
+          const date = extractDateFromFilename(file);
+          loaded.push({ src, date, filename: file });
         }
       }
-    } catch(e) {
-      console.error(e);
-      const errorMsg = document.createElement('div');
-      errorMsg.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.9); color:#e8cf9c; padding:2rem; border-radius:20px; text-align:center; z-index:30000;';
-      errorMsg.innerHTML = `<h3>📁 my_drawings folder</h3><p style="margin-top:1rem;">Place your images and manifest.json in the folder</p><p style="margin-top:0.5rem; font-size:0.8rem;">File format: 20241127_035006.jpg</p>`;
-      document.body.appendChild(errorMsg);
-      return;
+      if (loaded.length === 0) throw new Error('no valid images');
+      allPhotos = loaded;
+      allPhotos.sort((a,b) => (a.filename || '').localeCompare(b.filename || ''));
+      
+      // Create elements and attach to DOM
+      const universe = document.getElementById('spiralUniverse');
+      universe.innerHTML = '';
+      photoElements = [];
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < allPhotos.length; i++) {
+        const card = createPhotoElement(allPhotos[i], i);
+        photoElements.push(card);
+        fragment.appendChild(card);
+      }
+      universe.appendChild(fragment);
+      
+      // initial position call after layout
+      setTimeout(() => {
+        // set initial positions before animation starts
+        updateSpiralPositions(0);
+        // Start infinite spiral rotation
+        lastFrameTime = 0;
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(animateSpiral);
+      }, 60);
+      
+      // counter update
+      document.getElementById('counter').innerHTML = `🌀 ${allPhotos.length} memories in spiral`;
+      // remove loading
+      const loadingEl = document.getElementById('loadingOverlay');
+      loadingEl.style.opacity = '0';
+      setTimeout(() => loadingEl.remove(), 800);
+      
+    } catch (err) {
+      console.warn(err);
+      const errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#0f0a05; border:1px solid #b87c4f; color:#e8bc7c; padding:2rem; border-radius:24px; text-align:center; z-index:40000; backdrop-filter:blur(12px); max-width:80vw;';
+      errorDiv.innerHTML = `<h3>⚠️ spiral needs images</h3><p style="margin-top:12px;">Place your Instax photos in <strong style="color:#e8bc7c;">/my_drawings/</strong> folder</p><p style="font-size:0.8rem;">Include manifest.json listing filenames.</p><p style="margin-top:8px;">Format: YYYYMMDD_filename.jpg</p>`;
+      document.body.appendChild(errorDiv);
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      if(loadingOverlay) loadingOverlay.remove();
     }
-    
-    if (allImages.length === 0) return;
-    
-    // Sort by filename
-    allImages.sort((a, b) => a.filename.localeCompare(b.filename));
-    
-    // Create scattered photos
-    const floor = document.getElementById('photoFloor');
-    floor.innerHTML = '';
-    
-    // Use fragment for better performance
-    const fragment = document.createDocumentFragment();
-    
-    allImages.forEach((img, idx) => {
-      const photo = createPhotoElement(img, idx);
-      fragment.appendChild(photo);
-    });
-    
-    floor.appendChild(fragment);
-    
-    // Update counter
-    document.getElementById('counter').textContent = `${allImages.length} instax photos scattered`;
-    document.getElementById('infoPanel').innerHTML = '📸 drag photos to swim · click to enlarge';
-    
-    // Remove loading overlay
-    const overlay = document.getElementById('loadingOverlay');
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 500);
   }
   
-  // Setup viewer navigation
-  function setupViewer() {
+  // Viewer events & resize handling
+  function setupViewerControls() {
     document.getElementById('closeViewer').addEventListener('click', closeViewer);
     document.getElementById('viewerPrev').addEventListener('click', viewerPrev);
     document.getElementById('viewerNext').addEventListener('click', viewerNext);
-    document.getElementById('viewerOverlay').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('viewerOverlay')) closeViewer();
+    const overlay = document.getElementById('viewerOverlay');
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeViewer();
     });
     document.addEventListener('keydown', (e) => {
-      const overlay = document.getElementById('viewerOverlay');
       if (overlay.classList.contains('active')) {
         if (e.key === 'ArrowLeft') viewerPrev();
         if (e.key === 'ArrowRight') viewerNext();
         if (e.key === 'Escape') closeViewer();
       }
     });
+    window.addEventListener('resize', () => {
+      if (animationFrameId) {
+        // just refresh positions with current offset
+        updateSpiralPositions(accumulatedOffset);
+      }
+    });
   }
   
-  // Initialize audio on first interaction
-  function initAudioOnInteraction() {
-    const initFn = () => {
-      playSound = initAudio();
-      document.removeEventListener('click', initFn);
-      document.removeEventListener('keydown', initFn);
-    };
-    document.addEventListener('click', initFn);
-    document.addEventListener('keydown', initFn);
+  // Add hover priority: when hovering a card, ensure high zIndex + pause breathing a bit? not needed but works
+  function enhanceHoverZindex() {
+    // already handled via CSS, but also assure JS zindex on hover
+    document.addEventListener('mouseover', (e) => {
+      const card = e.target.closest('.photo-card');
+      if (card) {
+        card.style.zIndex = '2000';
+        card.style.transition = 'filter 0.2s, transform 0.2s';
+        const siblings = document.querySelectorAll('.photo-card');
+        siblings.forEach(sib => {
+          if (sib !== card && !sib.matches(':hover')) {
+            if (sib.style.zIndex === '2000') sib.style.zIndex = '';
+          }
+        });
+      }
+    });
   }
   
   // Start everything
   function init() {
-    setupViewer();
-    setupGlobalDrag();
-    initAudioOnInteraction();
+    setupViewerControls();
+    initAudioOnFirstInteraction();
     playSound = () => {};
-    loadImages();
+    enhanceHoverZindex();
+    loadImagesAndStartSpiral();
   }
   
   init();
