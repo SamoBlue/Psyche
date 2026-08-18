@@ -8,249 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="IAMAI.css" media="screen" />
-  <style>
-    /* Additional styles for normal levels page */
-    .level-card {
-      margin: 3rem 0;
-      padding: 2rem;
-      background: rgba(30, 30, 46, 0.6);
-      border-radius: 15px;
-      border-left: 6px solid var(--accent);
-      position: relative;
-      overflow: hidden;
-      scroll-margin-top: 100px;
-    }
-    
-    .level-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 20% 30%, rgba(122, 162, 247, 0.1) 0%, transparent 50%);
-      pointer-events: none;
-    }
-    
-    .level-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    
-    .level-number {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      color: #f2c79f;
-      opacity: 0.3;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-    }
-    
-    .level-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      color: #f2c79f;
-      margin-bottom: 0.5rem;
-    }
-    
-    .level-time {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--bg-darker);
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-    
-    .atmosphere-badge {
-      display: inline-block;
-      padding: 0.2rem 1rem;
-      border-radius: 15px;
-      font-size: 0.9rem;
-      margin-left: 1rem;
-    }
-    
-    .safe-badge {
-      background: #4caf50;
-      color: white;
-    }
-    
-    .creepy-badge {
-      background: #ff9800;
-      color: black;
-    }
-    
-    .scary-badge {
-      background: #f44336;
-      color: white;
-    }
-    
-    /* Image Gallery Styles */
-    .image-gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    
-    .gallery-item {
-      position: relative;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    
-    .gallery-item:hover {
-      transform: scale(1.02);
-    }
-    
-    .gallery-item img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid var(--accent);
-    }
-    
-    .gallery-caption {
-      text-align: center;
-      padding: 0.3rem;
-      font-size: 0.9rem;
-      color: #aaa;
-      background: rgba(0,0,0,0.3);
-      border-radius: 0 0 8px 8px;
-    }
-    
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      overflow: auto;
-    }
-    
-    .modal-content {
-      margin: auto;
-      display: block;
-      max-width: 90%;
-      max-height: 90vh;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
-    .modal-content img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      border: 3px solid var(--accent);
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: var(--transition);
-      z-index: 1001;
-    }
-    
-    .close-modal:hover {
-      color: var(--accent);
-    }
-    
-    .modal-caption {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-      text-align: center;
-      color: #ccc;
-      padding: 10px 0;
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      border-radius: 8px;
-    }
-    
-    /* Level Navigation Buttons */
-    .level-nav {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0;
-      flex-wrap: wrap;
-    }
-    
-    .nav-button {
-      background: transparent;
-      border: 2px solid var(--accent);
-      color: var(--text-light);
-      padding: 1rem 2.5rem;
-      border-radius: 50px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: var(--transition);
-      min-width: 200px;
-    }
-    
-    .nav-button:hover {
-      background: var(--accent);
-      color: var(--bg-darker);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(122, 162, 247, 0.3);
-    }
-    
-    .nav-button.egypt:hover { border-color: #4a6fa5; }
-    .nav-button.paris:hover { border-color: #5d4a66; }
-    .nav-button.mexico:hover { border-color: #664a4a; }
-    
-    .feature-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    
-    .feature-item {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 1.5rem;
-      border-radius: 8px;
-      border-left: 3px solid #f2c79f;
-    }
-    
-    .horror-note {
-      background: rgba(255, 117, 117, 0.1);
-      border-left: 4px solid #ff7575;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 0 8px 8px 0;
-    }
-  </style>
+
 </head>
 <body>
 
 <!-- Modal for image expansion -->
 <div id="imageModal" class="modal">
   <span class="close-modal">&times;</span>
-  <img class="modal-content" id="expandedImage">
+  <div class="modal-content"><img id="expandedImage" src="" alt="expanded"></div>
   <div class="modal-caption" id="imageCaption"></div>
 </div>
 
@@ -262,179 +27,133 @@
       <li><a href="02Characters.html">Characters</a></li>
       <li><a href="03Gameplay.html">Gameplay</a></li>
       <li><a href="04Story.html">Story</a></li>
-      <li><a href="05Normal.html">Normal Levels</a></li>
-      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="05Normal.html">Maps</a></li>
+      <li><a href="06Horror.html">Horror</a></li>
       <li><a href="08Dialogue.html">Dialogue</a></li>
-    </ul>
   </div>
 </nav>
 
 <div class="container">
-  <h1 class="section-title" style="margin-top: 2rem;" data-number="5">Normal Levels</h1>
+  <h1 class="section-title"><span class="number">#</span> Normal Levels</h1>
 
   <!-- Level Navigation Buttons -->
   <div class="level-nav">
     <button class="nav-button egypt" onclick="scrollToLevel('egypt')">🏜️ Egypt</button>
     <button class="nav-button paris" onclick="scrollToLevel('paris')">🗼 Paris</button>
-    <button class="nav-button mexico" onclick="scrollToLevel('mexico')">🌵 Mexico</button>
   </div>
 
-  <!-- Level 1: Egypt -->
-  <div id="level-egypt" class="level-card">
-    <div class="level-number">01</div>
-    <div class="level-header">
-      <h2 class="level-title">Egypt — Noon</h2>
-      <span class="atmosphere-badge safe-badge">Safe · First hints of horror</span>
+  <!-- ========================================================== -->
+  <!--  LEVEL 1: EGYPT                                            -->
+  <!-- ========================================================== -->
+  <div class="scene-card" id="level-egypt">
+    <div class="scene-header" onclick="toggleSection(this)">
+      <div class="scene-title">🏜️ Egypt · Noon <span class="badge safe-badge" style="margin-left:0.6rem;">Safe</span></div>
+      <span class="toggle-icon">▼</span>
     </div>
-    <div class="level-time">🌞 High Noon · Desert Location</div>
-    
-    <!-- Two images side by side -->
-    <div class="image-gallery">
-      <div class="gallery-item" onclick="expandImage('images/Map01.png', 'Egypt - Tent interior during sandstorm')">
-        <img src="images/Map01.png" alt="Egypt Tent" onerror="this.src='https://via.placeholder.com/400x200?text=Egypt+Tent'">
-        <div class="gallery-caption">Inside the tent · Sandstorm rages</div>
-      </div>
-      <div class="gallery-item" onclick="expandImage('images/Map011.png', 'Egypt - Pyramids after storm')">
-        <img src="images/Map011.png" alt="Egypt Pyramids" onerror="this.src='https://via.placeholder.com/400x200?text=Egypt+Pyramids'">
-        <div class="gallery-caption">After the storm · Pyramids revealed</div>
-      </div>
-    </div>
-    
-    <div class="bubble">
-      <strong>Starting Point:</strong> You begin inside a traditional Bedouin tent. A fierce sandstorm rages outside. AIRIS cannot accompany you — her systems would be damaged.
-    </div>
-    
-    <div class="feature-list">
-      <div class="feature-item">
-        <h4>🏜️ Exploration</h4>
-        <p>Venture into the sandstorm. Limited visibility forces you to rely on the scanner. Find artifacts half-buried in sand — ancient pottery, hieroglyphic fragments, a weathered map.</p>
-      </div>
-      <div class="feature-item">
-        <h4>🌊 The Reveal</h4>
-        <p>After several minutes, the storm settles. The air clears. A massive river stretches before you with a bridge leading to the other side. In the distance — the pyramids.</p>
-      </div>
-      <div class="feature-item">
-        <h4>🎯 The Guess</h4>
-        <p>Cross the bridge. AIRIS waits on the other side. The clues point to Egypt — the Nile, the pyramids, the desert landscape. One guess. Make it count.</p>
-      </div>
-    </div>
-    
-    <div class="horror-note">
-      <strong>🔮 Horror Foreshadowing:</strong> If you stare at the pyramids too long during the storm, they briefly glitch into impossible geometric shapes. The scanner emits static. AIRIS never mentions it.
-    </div>
-  </div>
+    <div class="scene-body open">
+      <div class="bubble"><strong>Starting Point:</strong> Inside a Bedouin tent during a sandstorm. AIRIS cannot accompany you — her systems would be damaged.</div>
 
-  <!-- Level 2: Paris -->
-  <div id="level-paris" class="level-card">
-    <div class="level-number">02</div>
-    <div class="level-header">
-      <h2 class="level-title">Paris — Sunset</h2>
-      <span class="atmosphere-badge creepy-badge">Creepy · Fog and unease</span>
-    </div>
-    <div class="level-time">🌆 Golden Hour · Foggy Streets</div>
-    
-    <!-- Two images side by side -->
-    <div class="image-gallery">
-      <div class="gallery-item" onclick="expandImage('images/Map02.png', 'Paris - Foggy boulevard')">
-        <img src="images/Map02.png" alt="Paris Fog" onerror="this.src='https://via.placeholder.com/400x200?text=Paris+Fog'">
-        <div class="gallery-caption">Foggy boulevard · Empty streets</div>
+      <div class="image-gallery">
+        <div class="gallery-item" onclick="expandImage('images/Map01.png', 'Egypt - Tent interior during sandstorm')">
+          <img src="images/Map01.png" alt="Egypt Tent" onerror="this.src='https://via.placeholder.com/400x180/0a2f44/7aa2f7?text=Egypt+Tent'">
+          <div class="gallery-caption">Inside the tent · Sandstorm rages</div>
+        </div>
+        <div class="gallery-item" onclick="expandImage('images/Map011.png', 'Egypt - Pyramids after storm')">
+          <img src="images/Map011.png" alt="Egypt Pyramids" onerror="this.src='https://via.placeholder.com/400x180/0a2f44/7aa2f7?text=Egypt+Pyramids'">
+          <div class="gallery-caption">After the storm · Pyramids revealed</div>
+        </div>
       </div>
-      <div class="gallery-item" onclick="expandImage('images/Map022.png', 'Paris - Eiffel Tower obscured')">
-        <img src="images/Map022.png" alt="Paris Eiffel" onerror="this.src='https://via.placeholder.com/400x200?text=Eiffel+Tower'">
-        <div class="gallery-caption">-------------</div>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>🏜️ Exploration</h4>
+          <p>Venture into the sandstorm. Limited visibility. Find artifacts half-buried — pottery, hieroglyphs, a weathered map.</p>
+        </div>
+        <div class="feature-item">
+          <h4>🌊 The Reveal</h4>
+          <p>The storm settles. The Nile stretches before you with a bridge. In the distance — the pyramids.</p>
+        </div>
+        <div class="feature-item">
+          <h4>🎯 The Guess</h4>
+          <p>Cross the bridge. AIRIS waits. Clues point to Egypt. One guess. Make it count.</p>
+        </div>
       </div>
-    </div>
-    
-    <div class="bubble">
-      <strong>Starting Point:</strong> You arrive on a Parisian boulevard at sunset. Thick fog rolls through the streets. AIRIS is nowhere to be found.
-    </div>
-    
-    <div class="feature-list">
-      <div class="feature-item">
-        <h4>🌫️ Alone in the Fog</h4>
-        <p>Walk through empty streets. Mannequins in shop windows seem to watch you. Flickering street lights. Your footsteps echo differently — metallic, hollow.</p>
+
+
+
+      <div style="margin-top:0.4rem;">
+        <strong style="font-size:0.8rem; color:var(--accent-2);">🎯 Clues:</strong>
+        <ul class="clue-list">
+          <li>Nile River</li>
+          <li>Pyramids of Giza</li>
+          <li>Desert landscape</li>
+          <li>Hieroglyphic fragments</li>
+        </ul>
       </div>
-      <div class="feature-item">
-        <h4>🚗 Unsettling Details</h4>
-        <p>Abandoned Citroën cars with headlights that flicker in sequence. A newspaper kiosk displays headlines about "The Disappearance." Shadows move when you're not looking.</p>
-      </div>
-      <div class="feature-item">
-        <h4>⏱️ 10 Minutes of Searching</h4>
-        <p>After what feels like an eternity, you spot her. Standing outside a café, perfectly still, as if waiting. She doesn't acknowledge you until you're close.</p>
-      </div>
-    </div>
-    
-    <div class="horror-note">
-      <strong>👁️ Disturbing Detail:</strong> When you first find AIRIS, she's completely motionless. No idle animation. No blinking. For exactly 3 seconds after you approach, she doesn't move at all. Then she "activates."
-    </div>
-    
-    <div class="feature-item" style="margin-top: 1rem;">
-      <h4>🎯 Clues in Paris:</h4>
-      <ul>
-        <li>Eiffel Tower visible through fog</li>
-        <li>French language on signs</li>
-        <li>Wide boulevards (Haussmann architecture)</li>
-        <li>Baguettes in abandoned bakeries</li>
-      </ul>
     </div>
   </div>
 
-  <!-- Level 3: Mexico -->
-  <div id="level-mexico" class="level-card">
-    <div class="level-number">03</div>
-    <div class="level-header">
-      <h2 class="level-title">Mexico — Midnight ------------- WIP</h2>
-      <span class="atmosphere-badge scary-badge">WIP</span>
+  <!-- ========================================================== -->
+  <!--  LEVEL 2: PARIS                                             -->
+  <!-- ========================================================== -->
+  <div class="scene-card" id="level-paris">
+    <div class="scene-header" onclick="toggleSection(this)" style="border-left-color: #5d4a66;">
+      <div class="scene-title">🗼 Paris · Sunset <span class="badge creepy-badge" style="margin-left:0.6rem;">Creepy</span></div>
+      <span class="toggle-icon">▶</span>
     </div>
-    <div class="level-time">🌑 Midnight · Water Maze</div>
-    
-    <!-- Two images side by side -->
-    <div class="image-gallery">
-      <div class="gallery-item" onclick="expandImage('images/Map03.png', 'Mexico - Floating houses at night')">
-        <img src="images/Map03.png" alt="Mexico Floating Houses" onerror="this.src='https://via.placeholder.com/400x200?text=Mexico+Floating+Houses'">
-        <div class="gallery-caption">Floating houses · Complete darkness</div>
+    <div class="scene-body">
+      <div class="bubble"><strong>Starting Point:</strong> You arrive on a Parisian boulevard at sunset. Thick fog rolls through the streets. AIRIS is nowhere to be found.</div>
+
+      <div class="image-gallery">
+        <div class="gallery-item" onclick="expandImage('images/Map02.png', 'Paris - Foggy boulevard')">
+          <img src="images/Map02.png" alt="Paris Fog" onerror="this.src='https://via.placeholder.com/400x180/0a2f44/7aa2f7?text=Paris+Fog'">
+          <div class="gallery-caption">Foggy boulevard · Empty streets</div>
+        </div>
+        <div class="gallery-item" onclick="expandImage('images/Map022.png', 'Paris - Eiffel Tower obscured')">
+          <img src="images/Map022.png" alt="Paris Eiffel" onerror="this.src='https://via.placeholder.com/400x180/0a2f44/7aa2f7?text=Eiffel+Tower'">
+          <div class="gallery-caption">Eiffel Tower · Obscured by fog</div>
+        </div>
       </div>
-      <div class="gallery-item" onclick="expandImage('images/Map033.png', 'Mexico - Flashlight beam on water')">
-        <img src="images/Map033.png" alt="Mexico Flashlight" onerror="this.src='https://via.placeholder.com/400x200?text=Mexico+Flashlight'">
-        <div class="gallery-caption">Flashlight beam · Movement in water</div>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>🌫️ Alone in the Fog</h4>
+          <p>Empty streets. Mannequins in shop windows seem to watch you. Flickering street lights. Hollow footsteps.</p>
+        </div>
+        <div class="feature-item">
+          <h4>🚗 Unsettling Details</h4>
+          <p>Abandoned Citroën cars. A newspaper kiosk with headlines about "The Disappearance." Shadows move when you're not looking.</p>
+        </div>
+        <div class="feature-item">
+          <h4>⏱️ The Search</h4>
+          <p>After 10 minutes, you find her. Standing outside a café, perfectly still, as if waiting. She doesn't acknowledge you until you're close.</p>
+        </div>
       </div>
-    </div>
-    
-    <div class="bubble">
-      <strong>Starting Point:</strong> You materialize in complete darkness. The sound of water lapping against structures. You're in a maze of floating houses — but you can barely see anything.
-    </div>
-    
-    <div class="feature-list">
-      <div class="feature-item">
-        <h4>🔦 Finding Light</h4>
-        <p>After stumbling through darkness, you find a flashlight on a wooden dock. Now you can see — narrow waterways, small bridges, colorful but decaying houses.</p>
+
+      <div class="horror-note">
+        <strong>👁️ Disturbing Detail:</strong> When you first find AIRIS, she's completely motionless. No idle animation. No blinking. For exactly 3 seconds after you approach, she doesn't move at all. Then she "activates."
       </div>
-      <div class="feature-item">
-        <h4>🌊 The Maze</h4>
-        <p>Navigate through the floating village. The flashlight beam catches movement in the water. Probably just fish. Probably. The pathways seem to shift when you're not looking.</p>
+
+      <div style="margin-top:0.4rem;">
+        <strong style="font-size:0.8rem; color:var(--accent-2);">🎯 Clues:</strong>
+        <ul class="clue-list">
+          <li>Eiffel Tower visible through fog</li>
+          <li>French language on signs</li>
+          <li>Haussmann architecture</li>
+          <li>Baguettes in abandoned bakeries</li>
+        </ul>
       </div>
-      <div class="feature-item">
-        <h4>⏱️ Long Search</h4>
-        <p>You search for what feels like hours. No sign of AIRIS. The maze repeats. Pathways loop. The water gets darker. Then — she's behind you.</p>
-      </div>
-    </div>
-    
-    <div class="horror-note">
-      <strong>⚠️ The Confrontation:</strong> You turn a corner and she's there. Right behind you. So close you could touch her. She wasn't there a second ago. Her voice cracks with genuine anger — and hurt.
-    </div>
-    
-    <div class="feature-item" style="margin-top: 1rem;">
-      <h4>🎯 Clues in Mexico:</h4>
-      <ul>
-        <li>Floating gardens (Xochimilco)</li>
-        <li>Spanish language on faded signs</li>
-        <li>Traditional Mexican patterns on walls</li>
-        <li>Distant sound of mariachi music (glitching, repeating)</li>
-      </ul>
     </div>
   </div>
 
+  <!-- ========================================================== -->
+  <!--  NOTES                                                    -->
+  <!-- ========================================================== -->
+  <div style="margin: 1.5rem 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);"></div>
 
+
+
+</div>
 
 <footer>
   &copy; 2025 IAMAI Game Project | Design Document v2.0
@@ -443,52 +162,74 @@
 <div class="back-to-top" id="backToTop">↑</div>
 
 <script>
-  // Back to top button
+  // Back to top
   const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTop.classList.add('visible');
+    if (window.pageYOffset > 300) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Toggle collapsible sections
+  function toggleSection(headerElement) {
+    const card = headerElement.closest('.scene-card');
+    const body = card.querySelector('.scene-body');
+    const icon = headerElement.querySelector('.toggle-icon');
+
+    if (body.classList.contains('open')) {
+      body.classList.remove('open');
+      icon.classList.remove('open');
+      icon.textContent = '▶';
     } else {
-      backToTop.classList.remove('visible');
+      body.classList.add('open');
+      icon.classList.add('open');
+      icon.textContent = '▼';
     }
-  });
-  backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  
+  }
+
+  // Scroll to level function
+  function scrollToLevel(level) {
+    const element = document.getElementById('level-' + level);
+    if (element) {
+      const header = element.querySelector('.scene-header');
+      const body = element.querySelector('.scene-body');
+      const icon = header.querySelector('.toggle-icon');
+      // Open the section
+      if (!body.classList.contains('open')) {
+        body.classList.add('open');
+        icon.classList.add('open');
+        icon.textContent = '▼';
+      }
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   // Image expansion modal
   const modal = document.getElementById('imageModal');
   const modalImg = document.getElementById('expandedImage');
   const captionText = document.getElementById('imageCaption');
-  const closeBtn = document.getElementsByClassName('close-modal')[0];
-  
+  const closeBtn = document.querySelector('.close-modal');
+
   function expandImage(imgSrc, caption) {
     modal.style.display = "block";
     modalImg.src = imgSrc;
     captionText.innerHTML = caption;
   }
-  
-  closeBtn.onclick = function() {
-    modal.style.display = "none";
-  }
-  
+
+  closeBtn.onclick = function() { modal.style.display = "none"; };
   window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    if (event.target == modal) modal.style.display = "none";
+  };
+
+  // Auto-open first section by default (Egypt)
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstBody = document.querySelector('#level-egypt .scene-body');
+    const firstIcon = document.querySelector('#level-egypt .toggle-icon');
+    if (firstBody) {
+      firstBody.classList.add('open');
+      firstIcon.classList.add('open');
+      firstIcon.textContent = '▼';
     }
-  }
-  
-  // Scroll to level function
-  function scrollToLevel(level) {
-    const element = document.getElementById('level-' + level);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-  
-  // Section color assignment
-  document.querySelectorAll('section').forEach(section => {
-    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
   });
 </script>
 </body>

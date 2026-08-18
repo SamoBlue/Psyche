@@ -8,13 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #1e2124; /* Charcoal */
+            --bg-dark: #1e2124;
             --bg-medium: #2f3136;
-            --accent: #e67e22; /* Terracotta / Copper */
+            --bg-card: #36393f;
+            --accent: #e67e22;
             --accent-hover: #cf6e1d;
-            --text-main: #f4f4f4; /* Stone White */
+            --text-main: #f4f4f4;
             --text-dim: #b9bbbe;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 12px;
         }
 
         * {
@@ -29,13 +32,26 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            padding-top: 72px;
         }
 
-        /* Navigation */
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        /* ─── NAVIGATION ─── */
         nav {
-            background: rgba(30, 33, 36, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem 5%;
+            background: rgba(30, 33, 36, 0.96);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,20 +59,237 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            height: 72px;
         }
 
-        .logo { font-weight: 700; font-size: 1.4rem; letter-spacing: 1px; color: var(--accent); }
+        .logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            font-size: 1.6rem;
+        }
 
-        .nav-links { list-style: none; display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.85rem; text-transform: uppercase; font-weight: 500; transition: var(--transition); }
-        .nav-links a:hover { color: var(--accent); }
-
-        /* Buttons with Effects */
-        .btn {
-            padding: 14px 28px;
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-main);
             text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .lang-switch {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 16px;
             border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+        .lang-switch:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text-main);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ─── HERO / SLIDESHOW ─── */
+        .hero {
+            height: 85vh;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        .hero-slide {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .hero-slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 800px;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.2rem, 7vw, 4.2rem);
+            margin-bottom: 16px;
+            color: white;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 1s ease-out;
+        }
+        .hero-content p {
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+            animation: fadeUp 1s ease-out 0.2s both;
+        }
+        .hero-content .btn {
+            animation: fadeUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 12px;
+        }
+        .hero-dots button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0;
+        }
+        .hero-dots button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.2);
+        }
+        .hero-dots button:hover {
+            border-color: var(--accent);
+        }
+
+        .hero-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            pointer-events: none;
+        }
+        .hero-arrows button {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .hero-arrows button:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            padding: 14px 32px;
+            text-decoration: none;
+            border-radius: 6px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
@@ -65,232 +298,991 @@
             border: none;
             transition: var(--transition);
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             position: relative;
             overflow: hidden;
         }
-
         .btn-primary {
             background: var(--accent);
             color: white;
-            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+            box-shadow: 0 4px 20px rgba(230, 126, 34, 0.35);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             background: var(--accent-hover);
-            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.5);
+            box-shadow: 0 8px 30px rgba(230, 126, 34, 0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--accent);
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .btn-sm {
+            padding: 8px 18px;
+            font-size: 0.75rem;
         }
 
-        .lang-switch {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 5px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
+        /* ─── MAIN LAYOUT: Posts + Sidebar ─── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 40px;
+            padding: 60px 5% 80px;
+            max-width: 1440px;
+            margin: 0 auto;
         }
-        
-        .lang-switch:hover {
+
+        /* ─── POSTS FEED ─── */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .feed-header h2 {
+            font-size: 1.6rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feed-header h2 i {
+            font-size: 1.4rem;
+        }
+        .feed-tabs {
+            display: flex;
+            gap: 6px;
+            background: var(--bg-medium);
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .feed-tabs button {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .feed-tabs button.active {
             background: var(--accent);
             color: white;
         }
+        .feed-tabs button:hover:not(.active) {
+            color: var(--text-main);
+        }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
+        .post {
+            background: var(--bg-medium);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+        }
+        .post:hover {
+            transform: translateY(-4px);
+            border-color: rgba(230, 126, 34, 0.3);
+            box-shadow: var(--shadow);
+        }
+
+        .post-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg-card);
+        }
+
+        .post-body {
+            padding: 22px 24px 18px;
+        }
+        .post-meta {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920');
-            background-size: cover;
-            background-attachment: fixed;
-            padding: 20px;
+            gap: 14px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
         }
-
-        .hero h1 { font-size: clamp(2rem, 8vw, 4rem); margin-bottom: 20px; color: white; }
-        .hero p { color: var(--text-dim); max-width: 600px; margin: 0 auto 30px; font-size: 1.1rem; }
-
-        /* Grid System (Desktop, Tablet, Mobile) */
-        section { padding: 100px 8%; }
-        
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.2rem; color: var(--accent); text-transform: uppercase; }
-        .underline { width: 60px; height: 3px; background: var(--accent); margin: 15px auto; }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+        .post-meta .tag {
+            background: rgba(230, 126, 34, 0.2);
+            color: var(--accent);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
         }
-
-        .card {
-            background: var(--bg-medium);
-            padding: 40px;
-            border-radius: 8px;
+        .post-body h3 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
             transition: var(--transition);
-            border: 1px solid rgba(255,255,255,0.03);
+            cursor: default;
+        }
+        .post-body h3:hover {
+            color: var(--accent);
+        }
+        .post-body p {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .post-actions button {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .post-actions button:hover {
+            color: var(--accent);
+            background: rgba(230, 126, 34, 0.08);
+        }
+        .post-actions button.liked {
+            color: #e74c3c;
+        }
+        .post-actions button.liked i {
+            animation: heartPop 0.3s ease;
+        }
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.4);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-medium);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+        }
+        .sidebar-card:hover {
+            border-color: rgba(230, 126, 34, 0.2);
+        }
+        .sidebar-card h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Quick Menu */
+        .quick-menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .quick-menu-list a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .quick-menu-list a i {
+            width: 22px;
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+        .quick-menu-list a:hover {
+            background: rgba(230, 126, 34, 0.1);
+            color: var(--text-main);
+            padding-left: 20px;
+        }
+
+        /* Popular / Trending */
+        .trend-item {
+            display: flex;
+            gap: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            align-items: center;
+        }
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+        .trend-item img {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--bg-card);
+        }
+        .trend-item .info {
+            flex: 1;
+        }
+        .trend-item .info h5 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: default;
+        }
+        .trend-item .info h5:hover {
+            color: var(--accent);
+        }
+        .trend-item .info span {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* Contact mini */
+        .contact-mini p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-mini p i {
+            color: var(--accent);
+            width: 20px;
+        }
+
+        /* Tags */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-cloud span {
+            background: var(--bg-dark);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        .tag-cloud span:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ─── STATS BAR ─── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 40px 5%;
+            background: var(--bg-medium);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .stat-item {
             text-align: center;
         }
-
-        .card:hover {
-            background: #36393f;
-            transform: translateY(-10px);
-            border-color: var(--accent);
+        .stat-item .number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+        .stat-item .label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; }
-
-        /* Contact Form */
-        .contact-flex {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            background: var(--bg-medium);
-            padding: 40px;
-            border-radius: 12px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            background: var(--bg-dark);
-            border: 1px solid #444;
-            color: white;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            outline: none;
-        }
-
-        input:focus, textarea:focus { border-color: var(--accent); }
-
-        /* Tablet & Mobile Adjustments */
-        @media (max-width: 1024px) {
-            .contact-flex { grid-template-columns: 1fr; }
-            section { padding: 60px 5%; }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; } /* Add hamburger menu logic here later */
-            .hero h1 { font-size: 2.5rem; }
-        }
-
+        /* ─── FOOTER ─── */
         footer {
             background: #111;
-            padding: 50px 5%;
+            padding: 40px 5%;
             text-align: center;
             border-top: 1px solid var(--accent);
         }
+        footer .socials {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 16px;
+        }
+        footer .socials a {
+            color: var(--text-dim);
+            font-size: 1.4rem;
+            transition: var(--transition);
+        }
+        footer .socials a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
 
-        [dir="rtl"] { text-align: right; }
-        [dir="rtl"] .hero, [dir="rtl"] .section-header, [dir="rtl"] footer { text-align: center; }
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .sidebar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: rgba(30, 33, 36, 0.98);
+                backdrop-filter: blur(12px);
+                padding: 20px 5%;
+                gap: 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                height: 70vh;
+                min-height: 400px;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .main-grid {
+                padding: 30px 4% 50px;
+            }
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                padding: 30px 4%;
+            }
+            .stat-item .number {
+                font-size: 1.6rem;
+            }
+
+            .feed-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .feed-tabs {
+                justify-content: center;
+            }
+            .post-img {
+                height: 160px;
+            }
+            .hero-arrows button {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-arrows {
+                padding: 0 8px;
+            }
+            .hero-arrows button {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            .hero-dots button {
+                width: 10px;
+                height: 10px;
+            }
+            .post-body {
+                padding: 16px 18px 14px;
+            }
+            .post-body h3 {
+                font-size: 1rem;
+            }
+        }
+
+        /* ─── RTL ─── */
+        [dir="rtl"] {
+            text-align: right;
+        }
+        [dir="rtl"] .hero-content,
+        [dir="rtl"] .feed-header,
+        [dir="rtl"] .sidebar-card,
+        [dir="rtl"] footer {
+            text-align: center;
+        }
+        [dir="rtl"] .post-meta {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .post-actions {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .quick-menu-list a {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .quick-menu-list a i {
+            transform: scaleX(-1);
+        }
+        [dir="rtl"] .trend-item {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .contact-mini p {
+            flex-direction: row-reverse;
+        }
+        [dir="rtl"] .stat-item .number {
+            direction: ltr;
+        }
+        @media (max-width: 768px) {
+            [dir="rtl"] .nav-links {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- ═══ NAVIGATION ═══ -->
     <nav>
-        <div class="logo">AEON SMART</div>
-        <ul class="nav-links">
+        <div class="logo">
+            <i class="fas fa-cube"></i>
+            <span>AEON SMART</span>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
             <li><a href="#home" class="tr" data-en="Home" data-ar="الرئيسية">Home</a></li>
-            <li><a href="#about" class="tr" data-en="About" data-ar="من نحن">About</a></li>
+            <li><a href="#feed" class="tr" data-en="Feed" data-ar="المجلة">Feed</a></li>
             <li><a href="#services" class="tr" data-en="Services" data-ar="خدماتنا">Services</a></li>
-            <li><a href="#contact" class="tr" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
+            <li><a href="#About Us" class="tr" data-en="About Us" data-ar="معلومات عنا">About Us</a></li>
         </ul>
-        <button class="lang-switch" onclick="toggleLanguage()">العربية</button>
+
+        <div class="nav-actions">
+            <button class="lang-switch" onclick="toggleLanguage()">العربية</button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </nav>
 
+    <!-- ═══ HERO / SLIDESHOW ═══ -->
     <header class="hero" id="home">
+        <div class="hero-slides" id="heroSlides">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=1920');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1920');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920');"></div>
+        </div>
+
+        <div class="hero-arrows">
+            <button id="heroPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+            <button id="heroNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <div class="hero-dots" id="heroDots"></div>
+
         <div class="hero-content">
             <h1 class="tr" data-en="Smart Engineering Solutions" data-ar="حلول هندسية ذكية">Smart Engineering Solutions</h1>
-            <p class="tr" data-en="Precision in design, innovation in structure. We build the future with advanced technology." 
-               data-ar="دقة في التصميم، ابتكار في التنفيذ. نبني المستقبل باستخدام أحدث التقنيات الهندسية.">
-               Precision in design, innovation in structure. We build the future with advanced technology.
-            </p>
-            <a href="#contact" class="btn btn-primary">
-                <i class="fab fa-whatsapp"></i> 
-                <span class="tr" data-en="Start a Project" data-ar="ابدأ مشروعك الآن">Start a Project</span>
+            <p class="tr" data-en="Precision in design, innovation in structure. We build the future with advanced technology."
+            data-ar="دقة في التصميم، ابتكار في التنفيذ. نبني المستقبل باستخدام أحدث التقنيات الهندسية.">
+            Precision in design, innovation in structure. We build the future with advanced technology.
+        </p>
+        <a href="#contact" class="btn btn-primary">
+            <i class="fab fa-whatsapp"></i>
+            <span class="tr" data-en="Start a Project" data-ar="ابدأ مشروعك الآن">Start a Project</span>
+        </a>
+    </div>
+</header>
+
+<!-- ═══ STATS BAR ═══ -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <span class="number" data-count="187">0</span>
+        <span class="label tr" data-en="Projects Delivered" data-ar="مشروع منفذ">Projects Delivered</span>
+    </div>
+    <div class="stat-item">
+        <span class="number" data-count="42">0</span>
+        <span class="label tr" data-en="Active Clients" data-ar="عميل نشط">Active Clients</span>
+    </div>
+    <div class="stat-item">
+        <span class="number" data-count="15">0</span>
+        <span class="label tr" data-en="Awards Won" data-ar="جائزة حصلنا عليها">Awards Won</span>
+    </div>
+    <div class="stat-item">
+        <span class="number" data-count="98">0</span>
+        <span class="label tr" data-en="% Satisfaction" data-ar="% رضا العملاء">% Satisfaction</span>
+    </div>
+</div>
+
+<!-- ═══ MAIN GRID: Feed + Sidebar ═══ -->
+<div class="main-grid" id="feed">
+
+    <!-- ─── LEFT: POSTS FEED ─── -->
+    <div class="feed-col">
+        <div class="feed-header">
+            <h2><i class="fas fa-rss"></i> <span class="tr" data-en="Latest Updates" data-ar="آخر المستجدات">Latest Updates</span></h2>
+            <div class="feed-tabs">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="project">Projects</button>
+                <button data-filter="insight">Insights</button>
+                <button data-filter="event">Events</button>
+            </div>
+        </div>
+
+        <!-- Post 1 -->
+        <div class="post" data-category="project">
+            <img class="post-img" src="https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?auto=format&fit=crop&q=80&w=800" alt="Project" loading="lazy">
+            <div class="post-body">
+                <div class="post-meta">
+                    <span class="tag">Project</span>
+                    <span>March 12, 2026</span>
+                    <span>• 5 min read</span>
+                </div>
+                <h3 class="tr" data-en="Tower Bridge Structural Retrofit" data-ar="إعادة تأهيل جسر البرج">Tower Bridge Structural Retrofit</h3>
+                <p class="tr" data-en="Advanced composite materials and smart monitoring systems were deployed to extend the lifespan of this iconic structure." data-ar="تم استخدام مواد مركبة متطورة وأنظمة مراقبة ذكية لإطالة عمر هذا المعلم التاريخي."></p>
+                <div class="post-actions">
+                    <button class="like-btn"><i class="far fa-heart"></i> <span>24</span></button>
+                    <button><i class="far fa-comment"></i> <span>8</span></button>
+                    <button><i class="far fa-share-square"></i> <span>12</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="post" data-category="insight">
+            <img class="post-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85f64d?auto=format&fit=crop&q=80&w=800" alt="Insight" loading="lazy">
+            <div class="post-body">
+                <div class="post-meta">
+                    <span class="tag">Insight</span>
+                    <span>March 8, 2026</span>
+                    <span>• 3 min read</span>
+                </div>
+                <h3 class="tr" data-en="BIM 4D: The Future of Construction" data-ar="نمذجة BIM رباعية الأبعاد: مستقبل البناء">BIM 4D: The Future of Construction</h3>
+                <p class="tr" data-en="Integrating time as a dimension in BIM models is revolutionizing project scheduling and clash detection." data-ar="دمج البُعد الزمني في نماذج BIM يُحدث ثورة في جدولة المشاريع وكشف التضاربات."></p>
+                <div class="post-actions">
+                    <button class="like-btn"><i class="far fa-heart"></i> <span>42</span></button>
+                    <button><i class="far fa-comment"></i> <span>15</span></button>
+                    <button><i class="far fa-share-square"></i> <span>27</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="post" data-category="event">
+            <img class="post-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800" alt="Event" loading="lazy">
+            <div class="post-body">
+                <div class="post-meta">
+                    <span class="tag">Event</span>
+                    <span>March 2, 2026</span>
+                    <span>• 2 min read</span>
+                </div>
+                <h3 class="tr" data-en="Smart Cities Summit 2026 – Recap" data-ar="قمة المدن الذكية 2026 – ملخص">Smart Cities Summit 2026 – Recap</h3>
+                <p class="tr" data-en="Our team showcased AI-driven structural health monitoring systems at the region's largest smart city expo." data-ar="استعرض فريقنا أنظمة مراقبة الصحة الإنشائية المعتمدة على الذكاء الاصطناعي في أكبر معرض للمدن الذكية بالمنطقة."></p>
+                <div class="post-actions">
+                    <button class="like-btn"><i class="far fa-heart"></i> <span>18</span></button>
+                    <button><i class="far fa-comment"></i> <span>6</span></button>
+                    <button><i class="far fa-share-square"></i> <span>9</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post 4 -->
+        <div class="post" data-category="project">
+            <img class="post-img" src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=800" alt="Project" loading="lazy">
+            <div class="post-body">
+                <div class="post-meta">
+                    <span class="tag">Project</span>
+                    <span>Feb 25, 2026</span>
+                    <span>• 4 min read</span>
+                </div>
+                <h3 class="tr" data-en="Green Roof Integration – Office Complex" data-ar="دمج الأسطح الخضراء – مجمع مكاتب">Green Roof Integration – Office Complex</h3>
+                <p class="tr" data-en="Sustainable design meets structural innovation with a 2,000 m² green roof that reduces energy consumption by 30%." data-ar="تصميم مستدام يلتقي بالابتكار الإنشائي بسطح أخضر بمساحة ٢٠٠٠ م² يقلل استهلاك الطاقة بنسبة ٣٠٪."></p>
+                <div class="post-actions">
+                    <button class="like-btn"><i class="far fa-heart"></i> <span>31</span></button>
+                    <button><i class="far fa-comment"></i> <span>11</span></button>
+                    <button><i class="far fa-share-square"></i> <span>19</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── RIGHT: SIDEBAR ─── -->
+    <aside class="sidebar">
+
+        <!-- Quick Menu -->
+        <div class="sidebar-card">
+            <h4><i class="fas fa-bolt"></i> <span class="tr" data-en="Quick Menu" data-ar="قائمة سريعة">Quick Menu</span></h4>
+            <ul class="quick-menu-list">
+                <li><a href="#"><i class="fas fa-home"></i> <span class="tr" data-en="Dashboard" data-ar="لوحة التحكم">Dashboard</span></a></li>
+                <li><a href="#"><i class="fas fa-folder-open"></i> <span class="tr" data-en="Projects Archive" data-ar="أرشيف المشاريع">Projects Archive</span></a></li>
+                <li><a href="#"><i class="fas fa-video"></i> <span class="tr" data-en="Live Cameras" data-ar="كاميرات حية">Live Cameras</span></a></li>
+                <li><a href="#"><i class="fas fa-file-alt"></i> <span class="tr" data-en="Reports" data-ar="التقارير">Reports</span></a></li>
+                <li><a href="#"><i class="fas fa-users-cog"></i> <span class="tr" data-en="Team" data-ar="الفريق">Team</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> <span class="tr" data-en="Settings" data-ar="الإعدادات">Settings</span></a></li>
+            </ul>
+        </div>
+
+        <!-- Trending / Popular -->
+        <div class="sidebar-card">
+            <h4><i class="fas fa-fire"></i> <span class="tr" data-en="Trending" data-ar="الأكثر رواجاً">Trending</span></h4>
+            <div class="trend-item">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=200" alt="Trend" loading="lazy">
+                <div class="info">
+                    <h5 class="tr" data-en="Earthquake-Resistant Design" data-ar="التصميم المقاوم للزلازل">Earthquake-Resistant Design</h5>
+                    <span>🔥 1.2k views</span>
+                </div>
+            </div>
+            <div class="trend-item">
+                <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=200" alt="Trend" loading="lazy">
+                <div class="info">
+                    <h5 class="tr" data-en="Sustainable Materials Guide" data-ar="دليل المواد المستدامة">Sustainable Materials Guide</h5>
+                    <span>🔥 876 views</span>
+                </div>
+            </div>
+            <div class="trend-item">
+                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=200" alt="Trend" loading="lazy">
+                <div class="info">
+                    <h5 class="tr" data-en="BIM vs Traditional Drafting" data-ar="BIM مقابل الرسم التقليدي">BIM vs Traditional Drafting</h5>
+                    <span>🔥 654 views</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Contact -->
+        <div class="sidebar-card contact-mini">
+            <h4><i class="fas fa-headset"></i> <span class="tr" data-en="Reach Us" data-ar="تواصل معنا">Reach Us</span></h4>
+            <p><i class="fas fa-envelope"></i> contact@aeonsmart.com</p>
+            <p><i class="fas fa-phone-alt"></i> +966 500 000 000</p>
+            <p><i class="fas fa-map-marker-alt"></i> <span class="tr" data-en="Riyadh, Saudi Arabia" data-ar="الرياض، المملكة العربية السعودية">Riyadh, Saudi Arabia</span></p>
+            <br>
+            <a href="#contact" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">
+                <i class="fas fa-paper-plane"></i> <span class="tr" data-en="Message Us" data-ar="أرسل رسالة">Message Us</span>
             </a>
         </div>
-    </header>
 
-    <section id="services">
-        <div class="section-header">
-            <h2 class="tr" data-en="Our Expertise" data-ar="مجالات الخبرة">Our Expertise</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="services-grid">
-            <div class="card">
-                <i class="fas fa-layer-group"></i>
-                <h3 class="tr" data-en="Structural Design" data-ar="التصميم الإنشائي">Structural Design</h3>
-                <p class="tr" data-en="Safe and optimized structures using ETABS & SAP2000." data-ar="منشآت آمنة ومدروسة باستخدام أحدث البرامج الإنشائية."></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-city"></i>
-                <h3 class="tr" data-en="BIM Modeling" data-ar="نمذجة BIM">BIM Modeling</h3>
-                <p class="tr" data-en="Full 3D building information modeling for better coordination." data-ar="نمذجة معلومات البناء ثلاثية الأبعاد لضمان دقة التنفيذ."></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-hard-hat"></i>
-                <h3 class="tr" data-en="Site Supervision" data-ar="الإشراف الهندسي">Site Supervision</h3>
-                <p class="tr" data-en="Professional engineering oversight to ensure quality." data-ar="إشراف هندسي ميداني لضمان مطابقة المواصفات والجودة."></p>
+        <!-- Tags -->
+        <div class="sidebar-card">
+            <h4><i class="fas fa-tags"></i> <span class="tr" data-en="Topics" data-ar="الموضوعات">Topics</span></h4>
+            <div class="tag-cloud">
+                <span>#Structural</span>
+                <span>#BIM</span>
+                <span>#Sustainability</span>
+                <span>#SmartCity</span>
+                <span>#AI</span>
+                <span>#Construction</span>
+                <span>#Design</span>
+                <span>#Innovation</span>
             </div>
         </div>
-    </section>
 
-    <section id="contact">
-        <div class="contact-flex">
-            <div>
-                <h2 class="tr" data-en="Let's Talk" data-ar="تواصل معنا">Let's Talk</h2>
-                <p class="tr" data-en="Have a question or a new project? Reach out to our team." data-ar="لديك استفسار أو مشروع جديد؟ فريقنا جاهز للرد عليك."></p>
-                <br>
-                <p><i class="fas fa-envelope" style="color:var(--accent)"></i> contact@aeonsmart.com</p>
-                <p><i class="fas fa-phone" style="color:var(--accent)"></i> +966 500 000 000</p>
-            </div>
-            <form>
-                <input type="text" placeholder="Name / الاسم">
-                <input type="email" placeholder="Email / البريد">
-                <textarea rows="4" placeholder="How can we help? / كيف يمكننا مساعدتك؟"></textarea>
-                <button type="submit" class="btn btn-primary tr" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
-            </form>
+    </aside>
+</div>
+
+<!-- ═══ SERVICES SECTION (compact) ═══ -->
+<section id="services" style="padding:60px 5%;background:var(--bg-medium);border-top:1px solid rgba(255,255,255,0.04);">
+    <div style="max-width:1440px;margin:0 auto;">
+        <div class="section-header" style="text-align:center;margin-bottom:40px;">
+            <h2 style="font-size:1.8rem;color:var(--accent);text-transform:uppercase;" class="tr" data-en="Our Expertise" data-ar="مجالات الخبرة">Our Expertise</h2>
+            <div class="underline" style="width:60px;height:3px;background:var(--accent);margin:12px auto;"></div>
         </div>
-    </section>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+            <div style="background:var(--bg-dark);padding:28px 20px;border-radius:var(--radius);text-align:center;border:1px solid rgba(255,255,255,0.04);transition:var(--transition);cursor:default;">
+                <i class="fas fa-layer-group" style="font-size:2.2rem;color:var(--accent);margin-bottom:12px;"></i>
+                <h4 style="font-size:1rem;" class="tr" data-en="Structural Design" data-ar="التصميم الإنشائي">Structural Design</h4>
+                <p style="color:var(--text-dim);font-size:0.85rem;" class="tr" data-en="ETABS · SAP2000 · SAFE" data-ar="ETABS · SAP2000 · SAFE">ETABS · SAP2000 · SAFE</p>
+            </div>
+            <div style="background:var(--bg-dark);padding:28px 20px;border-radius:var(--radius);text-align:center;border:1px solid rgba(255,255,255,0.04);transition:var(--transition);cursor:default;">
+                <i class="fas fa-city" style="font-size:2.2rem;color:var(--accent);margin-bottom:12px;"></i>
+                <h4 style="font-size:1rem;" class="tr" data-en="BIM Modeling" data-ar="نمذجة BIM">BIM Modeling</h4>
+                <p style="color:var(--text-dim);font-size:0.85rem;" class="tr" data-en="Revit · Navisworks · Dynamo" data-ar="Revit · Navisworks · Dynamo">Revit · Navisworks · Dynamo</p>
+            </div>
+            <div style="background:var(--bg-dark);padding:28px 20px;border-radius:var(--radius);text-align:center;border:1px solid rgba(255,255,255,0.04);transition:var(--transition);cursor:default;">
+                <i class="fas fa-hard-hat" style="font-size:2.2rem;color:var(--accent);margin-bottom:12px;"></i>
+                <h4 style="font-size:1rem;" class="tr" data-en="Site Supervision" data-ar="الإشراف الهندسي">Site Supervision</h4>
+                <p style="color:var(--text-dim);font-size:0.85rem;" class="tr" data-en="Quality · Safety · Progress" data-ar="جودة · سلامة · إنجاز">Quality · Safety · Progress</p>
+            </div>
+            <div style="background:var(--bg-dark);padding:28px 20px;border-radius:var(--radius);text-align:center;border:1px solid rgba(255,255,255,0.04);transition:var(--transition);cursor:default;">
+                <i class="fas fa-robot" style="font-size:2.2rem;color:var(--accent);margin-bottom:12px;"></i>
+                <h4 style="font-size:1rem;" class="tr" data-en="AI Diagnostics" data-ar="التشخيص بالذكاء الاصطناعي">AI Diagnostics</h4>
+                <p style="color:var(--text-dim);font-size:0.85rem;" class="tr" data-en="SHM · Predictive Analytics" data-ar="مراقبة الصحة · تحليل تنبؤي">SHM · Predictive Analytics</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <footer>
-        <p>© 2025 AEON SMART STRUCTURE. <span class="tr" data-en="All rights reserved." data-ar="جميع الحقوق محفوظة.">All rights reserved.</span></p>
-    </footer>
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <div class="socials">
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <p>© 2026 AEON SMART STRUCTURE. <span class="tr" data-en="All rights reserved." data-ar="جميع الحقوق محفوظة.">All rights reserved.</span></p>
+</footer>
 
-    <script>
-        function toggleLanguage() {
-            const body = document.body;
-            const btn = document.querySelector('.lang-switch');
-            const elements = document.querySelectorAll('.tr');
-            
-            if (body.dir === "ltr") {
-                body.dir = "rtl";
-                body.lang = "ar";
-                btn.innerText = "English";
-                elements.forEach(el => {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = el.getAttribute('data-ar');
-                    } else {
-                        el.innerText = el.getAttribute('data-ar');
-                    }
-                });
-            } else {
-                body.dir = "ltr";
-                body.lang = "en";
-                btn.innerText = "العربية";
-                elements.forEach(el => {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = el.getAttribute('data-en');
-                    } else {
-                        el.innerText = el.getAttribute('data-en');
-                    }
-                });
-            }
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+    // ─── LANGUAGE TOGGLE ───
+    function toggleLanguage() {
+        const body = document.body;
+        const btn = document.querySelector('.lang-switch');
+        const elements = document.querySelectorAll('.tr');
+
+        if (body.dir === 'ltr') {
+            body.dir = 'rtl';
+            body.lang = 'ar';
+            btn.textContent = 'English';
+            elements.forEach(el => {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.getAttribute('data-ar') || el.placeholder;
+                } else {
+                    const ar = el.getAttribute('data-ar');
+                    if (ar) el.textContent = ar;
+                }
+            });
+        } else {
+            body.dir = 'ltr';
+            body.lang = 'en';
+            btn.textContent = 'العربية';
+            elements.forEach(el => {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.getAttribute('data-en') || el.placeholder;
+                } else {
+                    const en = el.getAttribute('data-en');
+                    if (en) el.textContent = en;
+                }
+            });
         }
-    </script>
+    }
+
+    // ─── HAMBURGER ───
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+    // Close on link click (mobile)
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // ─── HERO SLIDESHOW ───
+    const slidesContainer = document.getElementById('heroSlides');
+    const slides = slidesContainer.querySelectorAll('.hero-slide');
+    const dotsContainer = document.getElementById('heroDots');
+    const prevBtn = document.getElementById('heroPrev');
+    const nextBtn = document.getElementById('heroNext');
+    let currentIndex = 0;
+    let autoPlayInterval;
+
+    // Create dots
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.setAttribute('data-index', i);
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    });
+    const dots = dotsContainer.querySelectorAll('button');
+
+    function goToSlide(index) {
+        currentIndex = (index + slides.length) % slides.length;
+        slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    }
+
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
+
+    prevBtn.addEventListener('click', () => { clearInterval(autoPlayInterval);
+        prevSlide();
+        startAutoPlay(); });
+    nextBtn.addEventListener('click', () => { clearInterval(autoPlayInterval);
+        nextSlide();
+        startAutoPlay(); });
+
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000);
+    }
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    hero.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+            clearInterval(autoPlayInterval);
+            if (diff > 0) nextSlide();
+            else prevSlide();
+            startAutoPlay();
+        }
+    }, { passive: true });
+
+    // Init
+    goToSlide(0);
+    startAutoPlay();
+
+    // ─── LIKE BUTTONS ───
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const icon = this.querySelector('i');
+            const span = this.querySelector('span');
+            let count = parseInt(span.textContent);
+            if (this.classList.contains('liked')) {
+                this.classList.remove('liked');
+                icon.className = 'far fa-heart';
+                span.textContent = count - 1;
+            } else {
+                this.classList.add('liked');
+                icon.className = 'fas fa-heart';
+                span.textContent = count + 1;
+            }
+        });
+    });
+
+    // ─── FEED TABS ───
+    const tabButtons = document.querySelectorAll('.feed-tabs button');
+    const posts = document.querySelectorAll('.post');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.dataset.filter;
+            posts.forEach(post => {
+                if (filter === 'all' || post.dataset.category === filter) {
+                    post.style.display = 'block';
+                    post.style.animation = 'fadeUp 0.4s ease-out';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // ─── STATS COUNTER ANIMATION ───
+    const statNumbers = document.querySelectorAll('.stat-item .number');
+    let animated = false;
+
+    function animateCounters() {
+        if (animated) return;
+        const rect = document.querySelector('.stats-bar').getBoundingClientRect();
+        if (rect.top < window.innerHeight - 60) {
+            animated = true;
+            statNumbers.forEach(el => {
+                const target = parseInt(el.dataset.count);
+                let current = 0;
+                const increment = Math.ceil(target / 40);
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(interval);
+                    }
+                    el.textContent = current;
+                }, 35);
+            });
+        }
+    }
+
+    window.addEventListener('scroll', animateCounters);
+    window.addEventListener('load', () => { setTimeout(animateCounters, 400); });
+
+    // ─── SMOOTH SCROLL ───
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // ─── PARALLAX HERO (mouse move) ───
+    document.querySelector('.hero')?.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 12;
+        const y = (e.clientY / window.innerHeight - 0.5) * 12;
+        const slides = document.querySelector('.hero-slides');
+        if (slides) slides.style.transform = `translateX(-${currentIndex * 100}%) translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+    document.querySelector('.hero')?.addEventListener('mouseleave', () => {
+        const slides = document.querySelector('.hero-slides');
+        if (slides) slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    });
+</script>
+
 </body>
 </html>

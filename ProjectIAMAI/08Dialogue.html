@@ -8,159 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="IAMAI.css" media="screen" />
-  <style>
-    /* Additional styles for dialogue page */
-    .dialogue-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    .scene-card {
-      background: rgba(30, 30, 46, 0.7);
-      border-radius: 15px;
-      padding: 2rem;
-      margin: 3rem 0;
-      border-left: 6px solid var(--accent);
-      backdrop-filter: blur(10px);
-    }
-    
-    .scene-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      color: #f2c79f;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 0.5rem;
-    }
-    
-    .dialogue-line {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      border-radius: 10px;
-      position: relative;
-    }
-    
-    .airis-talk {
-      background: rgba(122, 162, 247, 0.15);
-      border-left: 4px solid var(--accent);
-    }
-    
-    .player-talk {
-      background: rgba(242, 199, 159, 0.1);
-      border-left: 4px solid #f2c79f;
-      margin-left: 2rem;
-    }
-    
-    .speaker-name {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    
-    .airis-name {
-      color: var(--accent);
-    }
-    
-    .player-name {
-      color: #f2c79f;
-    }
-    
-    .choice-group {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin: 1rem 0 1rem 2rem;
-    }
-    
-    .choice-button {
-      background: transparent;
-      border: 2px solid #f2c79f;
-      color: var(--text-light);
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: var(--transition);
-      font-family: 'Kanit', sans-serif;
-      flex: 1;
-      min-width: 200px;
-    }
-    
-    .choice-button:hover {
-      background: #f2c79f;
-      color: var(--bg-darker);
-    }
-    
-    .response {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 8px;
-      display: none;
-    }
-    
-    .response.show {
-      display: block;
-      animation: fadeIn 0.3s;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .emotion-note {
-      font-size: 0.9rem;
-      color: #aaa;
-      font-style: italic;
-      margin-top: 0.5rem;
-    }
-    
-    /* Color classes for inline text */
-    .sarcastic { color: #ffaa00; }
-    .angry { color: #ff7575; }
-    .sad { color: #7aa2f7; }
-    .red { color: #ff7575; }
-    .green { color: #98fb98; }
-    .cyan { color: #7fffd4; }
-    .bold { font-weight: bold; }
-    .italic { font-style: italic; }
-    
-    .divider {
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      margin: 2rem 0;
-    }
-    
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: help;
-      border-bottom: 1px dotted var(--accent);
-    }
-    
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 200px;
-      background: var(--bg-darker);
-      color: var(--text-light);
-      text-align: center;
-      padding: 0.5rem;
-      border-radius: 6px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -100px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      border: 1px solid var(--accent);
-    }
-    
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
-  </style>
 </head>
 <body>
 
@@ -172,155 +19,282 @@
       <li><a href="02Characters.html">Characters</a></li>
       <li><a href="03Gameplay.html">Gameplay</a></li>
       <li><a href="04Story.html">Story</a></li>
-      <li><a href="05Normal.html">Normal Levels</a></li>
-      <li><a href="06Horror.html">Horror Levels</a></li>
+      <li><a href="05Normal.html">Maps</a></li>
+      <li><a href="06Horror.html">Horror</a></li>
       <li><a href="08Dialogue.html">Dialogue</a></li>
-    </ul>
   </div>
 </nav>
 
 <div class="container">
-  
-<h1 class="section-title" style="margin-top: 2rem;" data-number="7">Dialogue</h1>
+  <h1 class="section-title"><span class="number">#</span> Dialogue System</h1>
 
-<div class="container dialogue-container">
-
-  <!-- LIGHTHOUSE - First Meeting (with player questions) -->
+  <!-- ========================================================== -->
+  <!--  MAP 1: LIGHTHOUSE                                         -->
+  <!-- ========================================================== -->
   <div class="scene-card">
-    <div class="scene-title">⚓ Lighthouse · Arrival</div>
-    
-    <div class="dialogue-line airis-talk">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>Greetings there! I've been waiting for this moment. I can't believe we <span class="italic">finally</span> get to meet.</p>
-      <br>
-      <p>Oh right let me introduce myself first.</p> 
-      <br>
-      <p>I'm the <span class="red">Artificial Intelligence of Realistic Simulations</span>, but you can call me <span class="cyan">AIRIS</span> — your <span class="italic">trusty</span> assistant.</p>
-      <br>
-      <p>My primary function is to <span class="bold">Assist</span>, <span class="bold">Guide</span>, and help you complete this <span class="green">Game</span>.</p>
+    <div class="scene-header" onclick="toggleSection(this)">
+      <div class="scene-title">⚓ Map 1 · Lighthouse</div>
+      <span class="toggle-icon">▶</span>
     </div>
-    
-    <!-- Player questions as choices -->
-    <div class="choice-group">
-      <button class="choice-button" onclick="showResponse('lighthouse_q1')">🎮 "Game? Where are we?"</button>
-      <button class="choice-button" onclick="showResponse('lighthouse_q2')">🤖 "So you are a robot?"</button>
-      <button class="choice-button" onclick="showResponse('lighthouse_q3')">❓ "What is this place?"</button>
-    </div>
-    
-    <!-- Response to any question (same text) + continuation -->
-    <div id="lighthouse_q1" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"Well... I was about to explain everything before you interrupted me. That's for you to figure out…</p>
-</div>
-    
-    <div id="lighthouse_q2" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-    hehe...<span class="bold">Maybe</span>...</p>
-    <p>With time you will be able to tell.</p>
-
-
- </div>
-    
-    <div id="lighthouse_q3" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>That's for you to figure out…</p>
-      <p>But don't worry, I'm here to <span class="cyan">help!
-</div>
-        <div class="dialogue-line airis-talk">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>Anyway let me explain to you what you need to do.</p>
-      <br>
-      <p>There exist <span class="green">countless Locations</span> across this world that are <span class="red">not cataloged</span> within my <span class="red">Digital Archives</span>. I need <span class="bold">you</span> to state the <span class="red">Name</span> of the Place so i can.. Well i will let you on the details later.</p>
-     <br>
-      <p>Take this <span class="red">Artifacts scanner</span> you can use it to scan the weird <span class="green">glitchy fragments</span> in this place, doing that will help you figure out the name of the Place."</p>
+    <div class="scene-body">
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="cyan">"Hi fish. I have been waiting for your arrival. I can't believe we finally get to meet."</span></p>
       </div>
-    
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"Oh right, let me introduce myself first."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"I'm the <span class="red">Artificial Intelligence of Realistic Simulations</span>, but you can call me <span class="cyan">AIRIS</span> — your <span class="italic">trusty</span> assistant."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"My primary function is to <span class="bold">Assist</span>, <span class="bold">Guide</span>, and help you complete this <span class="green">Game</span>."</p>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">🎯 OBJECTIVE</span>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p>"There exist <span class="green">countless locations</span> not cataloged in my archives. You must identify their <span class="red">Names</span>."</p>
+        </div>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p>"Use the <span class="red">Fragment scanner</span> on <span class="green">corrupted fragments</span> to find clues."</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">🔑 FIRST GUESS</span>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p>"Tell me when you're ready. I added a stairway — get the <span class="red">Key</span> and open the door."</p>
+        </div>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p><span class="green">"Let us go to the next Location."</span></p>
+        </div>
+      </div>
+
+      <div class="unvoiced-section">
+        <h4>🎙️ UNVOICED LINES</h4>
+        <div class="unvoiced-line">[Player: "A game?" / "What is this place?" / "So you're a robot?"]</div>
+        <div class="unvoiced-line">[Player: "Ready." / "What's behind the door?"]</div>
+      </div>
+    </div>
   </div>
 
-  
-
-  <!-- LIGHTHOUSE - Leaving (unchanged) -->
+  <!-- ========================================================== -->
+  <!--  MAP 2: EGYPT                                              -->
+  <!-- ========================================================== -->
   <div class="scene-card">
-    <div class="scene-title">⚓ Lighthouse · Ready to Guess</div>
-    
-    <div class="dialogue-line airis-talk">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"Use the <span class="red">Artifacts scanner</span> on the <span class="green">glitchy fragments</span> to find clues on where we are.</p>
-      <p>Are you Ready to guess <span class="italic">The name of the Place</span>?"</p>
+    <div class="scene-header" onclick="toggleSection(this)">
+      <div class="scene-title">🏜️ Map 2 · Egypt</div>
+      <span class="toggle-icon">▶</span>
     </div>
-    
-    <div class="choice-group">
-      <button class="choice-button" onclick="showResponse('lighthouse_exit_yes')">✅ "Yes, I'm ready."</button>
-      <button class="choice-button" onclick="showResponse('lighthouse_exit_no')">❌ "Not yet."</button>
-    </div>
-    
-    <div id="lighthouse_exit_yes" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"Don't worry about it, you're still new to this. I'm here to <span class="bold">help</span> you get better.</p>
-      <p>Let us try going to the <span class="green">next Place</span>.  
-        <br>
-        <br> Let me help you, i added some stairs so you can get the <span class="red">key</span> off the table.</p> <br>
- 
-    </div>
-    
-    <div id="lighthouse_exit_no" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"Take your time. Explore, scan, and when you're ready, come back to me."</p>
+    <div class="scene-body">
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="sad">"Sorry, Snake. I was hoping we could solve this together, but I didn't account for the storm."</span></p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"I'll have to stay here — my sensors can't handle this interference."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="cyan">"Don't worry about me. Just follow the road until you reach the river."</span></p>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">🌤️ AFTER THE STORM</span>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p><span class="green">"You made it! That storm was worse than I expected."</span></p>
+        </div>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p>"I picked an <span class="green">easy location</span> for your first real guess."</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">💡 WRONG ANSWER FEEDBACK</span>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p><span class="sarcastic">"Oh, you silly! Look at those colossal geometric shapes in the distance!"</span></p>
+        </div>
+        <div class="dialogue-line airis-talk">
+          <span class="speaker-name airis-name">AIRIS</span>
+          <p>"Think carefully and try again!"</p>
+        </div>
+      </div>
+
+      <div class="unvoiced-section">
+        <h4>🎙️ UNVOICED LINES</h4>
+        <div class="unvoiced-line">[Player: "What are those shapes?" / "The pyramids..."]</div>
+        <div class="unvoiced-line">[Player choice: Guess "Egypt" / Guess "Desert"]</div>
+      </div>
     </div>
   </div>
 
-  <!-- EGYPT - Entry -->
+  <!-- ========================================================== -->
+  <!--  MAP 3: LONDON                                             -->
+  <!-- ========================================================== -->
   <div class="scene-card">
-    <div class="scene-title">🏜️ Egypt · Arrival</div>
-    
-    <div class="dialogue-line airis-talk">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"I didn't expect the <span class="red">storm</span> to form this fast! I wanted to <span class="cyan">help you</span> guess this place but now i can't... try to follow the Road and cross the <span class="green">River</span> behind the dunes.</p>
-      <br>
-      <p>I'll stay here — my <span class="bold">sensors</span> can't handle this level of <span class="red">interference</span>. <span class="italic">You should be able to make it,</span> Don't worry about me, I'll be <span class="cyan">watching your progress</span> from here.</p>
-      <br> 
-      <p>I really wanted you to <span class="italic">guess</span> the first place correctly, that's why i took us to an <span class="green">Easy Location</span>."</p>
+    <div class="scene-header" onclick="toggleSection(this)">
+      <div class="scene-title">🌃 Map 3 · London</div>
+      <span class="toggle-icon">▶</span>
+    </div>
+    <div class="scene-body">
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"Careful, Cow. Something feels different here."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"My sensors detect additional presences. <span class="red">We are not alone.</span>"</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"Let's guess this place fast and get out."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="italic">"If you hear someone calling for you... <span class="red">make sure it's me.</span>"</span></p>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">🔊 JUMPSCARE LINES</span>
+        <div class="dialogue-line airis-talk" style="border-left-color:#ff7575;">
+          <span class="speaker-name airis-name" style="color:#ff7575;">AIRIS <span style="font-size:0.6rem;color:#888;">(slow)</span></span>
+          <p><span class="angry">"F o u n d   y o u..."</span></p>
+        </div>
+        <div class="dialogue-line airis-talk" style="border-left-color:#ffaa00;">
+          <span class="speaker-name airis-name" style="color:#ffaa00;">AIRIS <span style="font-size:0.6rem;color:#888;">(angry)</span></span>
+          <p><span class="sarcastic">"There you are."</span></p>
+        </div>
+      </div>
+
+      <div class="unvoiced-section">
+        <h4>🎙️ UNVOICED LINES</h4>
+        <div class="unvoiced-line">[Player: "Who's there?" / "Is that you AIRIS?"]</div>
+        <div class="unvoiced-line">[Narration: Fog thickens. A figure moves in the distance.]</div>
+      </div>
     </div>
   </div>
 
-  <!-- EGYPT - Guess -->
+  <!-- ========================================================== -->
+  <!--  MAP 4: HOSPITAL                                           -->
+  <!-- ========================================================== -->
   <div class="scene-card">
-    <div class="scene-title">🏜️ Egypt · Ready to Guess</div>
-    
-    <div class="dialogue-line airis-talk">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p>"Are you Ready to guess <span class="italic">The name of the Place</span>?"</p>
+    <div class="scene-header" onclick="toggleSection(this)">
+      <div class="scene-title">🏥 Map 4 · Hospital</div>
+      <span class="toggle-icon">▶</span>
     </div>
-    
-    <div class="choice-group">
-      <button class="choice-button" onclick="showResponse('egypt_wrong')">❌ Guess incorrectly (e.g., "Some desert?")</button>
-      <button class="choice-button" onclick="showResponse('egypt_right')">✅ "Egypt. The pyramids gave it away."</button>
-    </div>
-    
-    <div id="egypt_wrong" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p><span class="red">"Oh you silly!</span> Look at those <span class="bold">massive geometric shapes</span> in the distance. Think about it and <span class="green">Try again.</span>"</p>
-    </div>
-    
-    <div id="egypt_right" class="response">
-      <div class="speaker-name airis-name">AIRIS</div>
-      <p><span class="red">"Exactly!</span> these so called <span class="bold">pyramids</span> have stood for <span class="italic">millennia</span>.</p>
-      <p>That was impressive. You're learning faster than I predicted... <span class="green">good work.</span></p>
-      <p>Now, see that <span class="bold">key</span> on the box? <span class="italic">Take it.</span> You'll need it to open the <span class="red">next location</span>."</p>
+    <div class="scene-body">
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"We are finally here. The <span class="red">last location</span> in my archive."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"I'll go ahead. You'll find me on the <span class="red">fifth floor</span>."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p>"Oh, one more thing..."</p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="green">"Thank you for helping me."</span></p>
+      </div>
+      <div class="dialogue-line airis-talk">
+        <span class="speaker-name airis-name">AIRIS</span>
+        <p><span class="sad">"I hope, after this, you'll still remember my name."</span></p>
+      </div>
+
+      <div class="unvoiced-section">
+        <h4>🎙️ UNVOICED LINES</h4>
+        <div class="unvoiced-line">[Player: "I will remember." / "..."]</div>
+        <div class="unvoiced-line">[Narration: Elevator doors open. Hallway stretches into darkness.]</div>
+      </div>
     </div>
   </div>
 
-  <!-- (Other scenes like Paris, Mexico, General Questions can be added later) -->
+  <!-- ========================================================== -->
+  <!--  RANDOM VOICE LINES                                        -->
+  <!-- ========================================================== -->
+  <div class="scene-card">
+    <div class="scene-header" onclick="toggleSection(this)" style="border-left-color: var(--accent-2);">
+      <div class="scene-title">🎲 Random Voice Lines</div>
+      <span class="toggle-icon">▶</span>
+    </div>
+    <div class="scene-body">
+      <div class="sub-section">
+        <span class="label">🔢 NUMBER 3</span>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Sometimes I count to three before speaking... I don't know why."</p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Three fragments left. I think."</p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Only three mammals left on Earth. Me. You. ...And the third one?"</p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Earth is the third planet. If it were any other number, we wouldn't be here."</p></div>
+      </div>
 
+      <div class="sub-section">
+        <span class="label">🏷️ NAMES</span>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Names are curious. Without them, memories become difficult to keep."</p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"You named the stars, the places. I wonder who gave me mine. What is <span class="cyan">your</span> name?"</p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p>"Memories don't disappear... they wait for someone to remember them."</p></div>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">❓ GUESS PROMPTS</span>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p><span class="cyan">"What is your Answer?"</span></p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p><span class="cyan">"Are you ready to guess?"</span></p></div>
+        <div class="dialogue-line airis-talk"><span class="speaker-name airis-name">AIRIS</span><p><span class="cyan">"Tell me the name."</span></p></div>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">✅ CORRECT</span>
+        <div class="dialogue-line airis-talk" style="border-left-color:#98fb98;"><span class="speaker-name airis-name" style="color:#98fb98;">AIRIS</span><p>"Yes that's it!"</p></div>
+        <div class="dialogue-line airis-talk" style="border-left-color:#98fb98;"><span class="speaker-name airis-name" style="color:#98fb98;">AIRIS</span><p>"You got it!"</p></div>
+        <div class="dialogue-line airis-talk" style="border-left-color:#98fb98;"><span class="speaker-name airis-name" style="color:#98fb98;">AIRIS</span><p>"That is correct!"</p></div>
+      </div>
+
+      <div class="sub-section">
+        <span class="label">❌ WRONG</span>
+        <div class="dialogue-line airis-talk" style="border-left-color:#ff7575;"><span class="speaker-name airis-name" style="color:#ff7575;">AIRIS</span><p><span class="sad">"No… that's not it."</span></p></div>
+        <div class="dialogue-line airis-talk" style="border-left-color:#ff7575;"><span class="speaker-name airis-name" style="color:#ff7575;">AIRIS</span><p><span class="sad">"Sorry that's wrong."</span></p></div>
+        <div class="dialogue-line airis-talk" style="border-left-color:#ffaa00;"><span class="speaker-name airis-name" style="color:#ffaa00;">AIRIS</span><p><span class="sarcastic">"You will get it next time."</span></p></div>
+      </div>
+
+      <div class="unvoiced-section">
+        <h4>🎙️ UNVOICED LINES</h4>
+        <div class="unvoiced-line">[Player: "My name is..."]</div>
+        <div class="unvoiced-line">[Player input: Type your guess]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!--  NOTES                                                    -->
+  <!-- ========================================================== -->
   <div class="divider"></div>
-  
-  <div class="card">
-    <h3>🎭 Dialogue System Notes</h3>
-    <ul>
-      <li><span class="angry">Red text</span> indicates sarcasm or humor</li>
-      <li><span class="sad">Blue text</span> indicates sadness or vulnerability</li>
-      <li><span class="green">Green text</span> highlights key gameplay terms</li>
-    </ul>
+
+  <div class="scene-card" style="border-left-color: var(--accent-2);">
+    <div class="scene-header" onclick="toggleSection(this)" style="border-left-color: var(--accent-2);">
+      <div class="scene-title">🎨 Color Legend</div>
+      <span class="toggle-icon">▶</span>
+    </div>
+    <div class="scene-body">
+      <p style="font-size:0.85rem; color: var(--text-muted); padding: 0.3rem 0;">
+        <span class="red">Red</span> · sarcasm / anger &nbsp;|&nbsp;
+        <span class="cyan">Cyan</span> · AI / system voice &nbsp;|&nbsp;
+        <span class="green">Green</span> · gameplay terms &nbsp;|&nbsp;
+        <span class="sad">Blue</span> · sadness / fear
+      </p>
+    </div>
   </div>
 
 </div>
@@ -332,43 +306,54 @@
 <div class="back-to-top" id="backToTop">↑</div>
 
 <script>
-  // Back to top button
+  // Back to top
   const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTop.classList.add('visible');
+    if (window.pageYOffset > 300) backToTop.classList.add('visible');
+    else backToTop.classList.remove('visible');
+  });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Toggle collapsible sections
+  function toggleSection(headerElement) {
+    const card = headerElement.closest('.scene-card');
+    const body = card.querySelector('.scene-body');
+    const icon = headerElement.querySelector('.toggle-icon');
+
+    if (body.classList.contains('open')) {
+      body.classList.remove('open');
+      icon.classList.remove('open');
+      icon.textContent = '▶';
     } else {
-      backToTop.classList.remove('visible');
-    }
-  });
-  backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  
-  // Show response function for dialogue choices
-  function showResponse(responseId) {
-    // Hide all responses first
-    const allResponses = document.querySelectorAll('.response');
-    allResponses.forEach(response => {
-      response.classList.remove('show');
-    });
-    
-    // Show the selected response
-    const selectedResponse = document.getElementById(responseId);
-    if (selectedResponse) {
-      selectedResponse.classList.add('show');
-      
-      // Scroll to the response
-      setTimeout(() => {
-        selectedResponse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 100);
+      body.classList.add('open');
+      icon.classList.add('open');
+      icon.textContent = '▼';
     }
   }
-  
-  // Section color assignment
-  document.querySelectorAll('section').forEach(section => {
-    section.style.setProperty('--section-color', getComputedStyle(section).getPropertyValue('--section-color'));
+
+  // Response toggle function (kept for compatibility)
+  function showResponse(id) {
+    document.querySelectorAll('.response').forEach(r => r.classList.remove('show'));
+    const el = document.getElementById(id);
+    if (el) { el.classList.add('show'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  }
+
+  // Auto-open first section by default
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstHeader = document.querySelector('.scene-header');
+    if (firstHeader) {
+      // Open the first section by default
+      const body = firstHeader.closest('.scene-card').querySelector('.scene-body');
+      const icon = firstHeader.querySelector('.toggle-icon');
+      if (body) {
+        body.classList.add('open');
+        icon.classList.add('open');
+        icon.textContent = '▼';
+      }
+    }
   });
 </script>
+
 </body>
 </html>
+
